@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/rowReordering/rowReorder.dataTables.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <style>
+    td.highlight {
+      background-color: red !important;
+    }
+
+    tr.am-primary {
+      background-color: yellow !important;
+    }
+  </style>
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body>
+  <!-- Site wrapper -->
+  <div class="wrapper">
+
+    <!-- =============================================== -->
+    <!-- Content Wrapper. Contains page content -->
+    <div>
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <div class="box-header">
+                <button type="button" class="btn btn-primary btn-sm" onclick="add();">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                </button>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th width="30">序号</th>
+                      <!-- <th>年级</th>
+                      <th>学期</th> -->
+                      <!-- <th>分类</th> -->
+                      <th>关卡</th>
+                      <th width="30">数量</th>
+                      <th width="30">时间</th>
+                      <!-- <th>关卡说明</th> -->
+                      <!-- <th>练习技巧</th>
+                      <th>练习举例</th>
+                      <th>解题思路</th> -->
+                      <th style="display:none;">ID</th>
+                      <th width="220">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody">
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer" style="display:none;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="sort();">
+                  <span class="glyphicon glyphicon-sort-by-order" aria-hidden="true"></span>修改顺序
+                </button>
+              </div>
+            </div>
+            <!-- /.box -->
+          </div>
+        </div>
+        <div class="modal modal-danger fade" tabindex="-1" id="mymodal" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                  <i class="fa fa-exclamation-circle"></i>
+                  <span id="mtitle">[Title]</span>
+                </h4>
+              </div>
+              <div class="modal-body">
+                <p id="msg">[Message]</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline ok" data-dismiss="modal" id="BtnOk">[BtnOk]</button>
+                <button type="button" class="btn btn-outline cancel" data-dismiss="modal" id="BtnCancel">[BtnCancel]</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="addform" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" i>
+                  <i class="glyphicon glyphicon-plus"></i> 新增关卡</h4>
+              </div>
+              <div class="modal-body">
+                <form role="form">
+                  <div class="box-body">
+                    <div class="form-group" id="genreNameForm">
+                      <label for="genreName">分类名称</label>
+                      <input type="input" class="form-control" id="genreName" value="" readonly>
+                      <span class="help-block" style="display:none;">
+                        <i class="fa fa-times-circle-o"></i>分类名称不能为空</span>
+                    </div>
+                    <div class="form-group" id="stageNameForm">
+                      <label for="stageName">关卡名称</label>
+                      <input type="input" class="form-control" id="stageName" placeholder="关卡名称">
+                      <span class="help-block" style="display:none;">
+                        <i class="fa fa-times-circle-o"></i>关卡名称不能为空</span>
+                    </div>
+                    <div class="form-group" id="stageNameForm">
+                      <label for="stageName">答题时间</label>
+                      <input type="input" class="form-control" id="totaltime" placeholder="答题时间">
+                    </div>
+                    <div class="form-group" id="stageNameForm">
+                      <label for="stageName">练习技巧</label>
+                      <input type="input" class="form-control" id="jiqiao" placeholder="练习技巧">
+                    </div>
+                    <div class="form-group" id="stageNameForm">
+                      <label for="stageName">练习举例</label>
+                      <input type="input" class="form-control" id="example" placeholder="练习举例">
+                    </div>
+                    <div class="form-group" id="stageNameForm">
+                      <label for="stageName">解题思路</label>
+                      <input type="input" class="form-control" id="silu" placeholder="解题思路">
+                    </div>
+                    <div class="form-group has-error" style="display:none;" id="errMsg">
+                      <label class="control-label"></label>
+                    </div>
+                    <div class="box-footer">
+                      <button type="button" class="btn btn-primary pull-right">提交</button>
+                    </div>
+                  </div>
+                  <!-- /.box-body -->
+                </form>
+              </div>
+
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <!-- DataTables -->
+  <script src="__PUBLIC__/dist/js/jquery.dataTables.min.js"></script>
+  <script src="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.js"></script>
+  <script src="__PUBLIC__/dist/js/rowReordering/dataTables.rowReorder.min.js"></script>
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script>
+    $.ajaxSetup({
+      async: false
+    }); //异步很重要
+    var genreid = GetQueryString('genreid');
+	var subject = GetQueryString('subject');
+    var datatable;
+    $(function () {
+      getUser();
+      stepList();
+      showTable();
+      datatable.on('row-reorder', function (e, diff, edit) {
+        var arr = [];
+        for (var i = 0, ien = diff.length; i < ien; i++) {
+          var rowData = datatable.row(diff[i].node).data();
+          var obj = {};
+          // console.log(rowData);
+          obj.id = rowData[4];
+          obj.sortid = diff[i].newData;
+          arr.push(obj);
+        }
+        // console.log(arr);
+        // return false;
+        $.ajax({
+          url: '../Index/sortStageData',
+          type: 'post',
+          data: {
+            data: JSON.stringify(arr),
+            ran: Math.random()
+          },
+          dataType: 'json',
+          success: function (data) {},
+          error: function (e) {
+            console.log(e);
+          }
+        })
+      });
+    })
+
+    function showTable() {
+      datatable = $('#example1').DataTable({
+        paging: true,
+        lengthChange: true,
+        searching: true, //开启搜索功能
+        ordering: true,
+        info: true,
+        autoWidth: true, //让Datatables自动计算宽度
+        rowReorder: {
+          selector: 'button.bg-navy'
+        },
+        lengthMenu: [50],
+        language: {
+          lengthMenu: "显示 _MENU_ 条数据",
+          // lengthMenu: '<select class="form-control input-xsmall">' + '<option value="2">2</option>' + '<option value="20">20</option>'  + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
+          search: '<span>搜索：</span>', //右上角的搜索文本，可以写html标签
+          //分页的样式内容。
+          paginate: {
+            previous: "上一页",
+            next: "下一页",
+            first: "第一页",
+            last: "最后"
+          },
+          zeroRecords: "没有内容", //table tbody内容为空时，tbody的内容。
+          //下面三者构成了总体的左下角的内容。
+          info: "总共_PAGES_ 页，显示第_START_ 到第 _END_ ，筛选之后得到 _TOTAL_ 条，初始_MAX_ 条 ", //左下角的信息显示，大写的词为关键字。
+          infoEmpty: "0条记录", //筛选为空时左下角的显示。
+          infoFiltered: "" //筛选之后的左下角筛选提示，
+        }
+      });
+    }
+
+    function setGenre() {
+      var grade = $('#grade').val();
+      var term = $('#term').val();
+      $.ajax({
+        url: '../Index/getAllGenre',
+        type: 'get',
+        data: {
+          grade: grade,
+          term: term,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $('#genre').empty();
+          $.each(data, function (k, v) {
+            $('#genre').append($('<option>').html(v.name).val(v.id));
+          });
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    //弹出新增页面
+    function add() {
+      // $('#genreName').val($('#genre').find("option:selected").text());
+      // $('#addform').find('#stageName').val('');
+      // $('#addform').find('#totaltime').val('');
+      // $('#addform').find('#jiqiao').val('');
+      // $('#addform').find('#example').val('');
+      // $('#addform').find('#silu').val('');
+      // $('#addform').modal('show');
+      location.href = 'addstep?type=add&genreid=' + genreid;
+
+    }
+
+    //解决多个moadl的层级问题
+    $(document).on('show.bs.modal', '.modal', function (event) {
+      var zIndex = 1040 + (10 * $('.modal:visible').length) + 10;
+      $(this).css('z-index', zIndex);
+    });
+
+    $('#addform').find('.pull-right').click(function () {
+      var stageName = $("#stageName").val();
+      var genreid = $('#genre').val();
+      var jiqiao = $('#jiqiao').val();
+      var example = $('#example').val();
+      var silu = $('#silu').val();
+      var totaltime = $('#totaltime').val();
+      if (!genreid) {
+        var options = {
+          id: 'mymodal',
+          msg: '分类不能为空'
+        }
+        Modal(options).alert();
+        return false;
+      }
+
+      if (totaltime == '') {
+        var options = {
+          id: 'mymodal',
+          msg: '答题时间不能为空'
+        }
+        Modal(options).alert();
+        return false;
+      }
+
+      if (stageName == '') {
+        var options = {
+          id: 'mymodal',
+          msg: '关卡名称不能为空'
+        }
+        Modal(options).alert();
+        return false;
+      } else {
+        $.ajax({
+          url: '../Index/addStageData',
+          type: 'get',
+          data: {
+            name: stageName,
+            genreid: genreid,
+            jiqiao: jiqiao,
+            example: example,
+            silu: silu,
+            totaltime: totaltime,
+            type: 'add',
+            ran: Math.random()
+          },
+          dataType: 'json',
+          success: function (data) {
+            if (data.status == 'ok') {
+              $('#addform').modal('hide');
+              stepList();
+            } else {
+              var options = {
+                id: 'mymodal',
+                msg: data.msg
+              }
+              Modal(options).alert();
+            }
+          },
+          error: function (e) {
+            console.log(e);
+          }
+        })
+      }
+    })
+
+    $('#grade').change(function () {
+      setGenre();
+      $('#genre').change();
+    })
+    $('#term').change(function () {
+      setGenre();
+      $('#genre').change();
+    })
+    $('#genre').change(function () {
+      $('#example1').DataTable().destroy();
+      stepList();
+      showTable();
+    })
+
+
+    function stepList() {
+      $.ajax({
+        url: '../Index/getStepList',
+        type: 'get',
+        data: {
+          genreid: genreid,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          var html = '';
+          $.each(data, function (k, v) {
+            html += '<tr>';
+            html +=
+              '<td>' + (k + 1) + '</td>';
+            // html += '<td>' + getGradeName(v.grade) + '</td>';
+            // html += '<td>' + getTermName(v.term) + '</td>';
+            // html += '<td>' + v.name + '</td>';
+            html += '<td>' + v.stagename + '</td>';
+            html += '<td>' + v.total + '</td>';
+            html += '<td>' + v.totaltime + '</td>';
+            // html += '<td>' + v.remark + '</td>';
+            // html += '<td>' + v.keypoint + '</td>';
+            // html += '<td>' + v.example + '</td>';
+            // html += '<td>' + v.thinking + '</td>';
+            html += '<td style="display:none;">' + v.id + '</td>';
+            // <button class="btn btn-primary btn-sm" type="button" bid="' + v.id +
+            //   '"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>试题</button>
+            html +=
+              '<td><button class="btn btn-success btn-sm" type="button" bid="' +
+              v.id +
+              '"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改</button><button class="btn bg-purple btn-sm" type="button" bid="' +
+              v.id +
+              '"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>预览</button><button class="btn btn-danger btn-sm" type="button" bid="' +
+              v.id +
+              '"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除</button><button class="btn bg-navy btn-sm" type="button" bid="' +
+              v.id + '"><span class="glyphicon glyphicon-move" aria-hidden="true"></span>拖动</button></td>';
+            html += '</tr>';
+          })
+          $('#tbody').html(html);
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    //修改顺序
+    function sort() {
+      var arr = [];
+      var checkArr = [];
+      var flag = true;
+      $.each($('input[name="sort"]'), function (k, v) {
+        var sortid = $(v).val() * 1;
+        if (!sortid) {
+          var options = {
+            id: 'mymodal',
+            msg: '序号必须是数字'
+          }
+          Modal(options).alert();
+          flag = false;
+          return false;
+        }
+        var obj = {};
+        obj.id = $(v).attr('bid');
+        obj.sortid = sortid;
+        arr.push(obj);
+        checkArr.push(sortid);
+      })
+      if (flag) {
+        if (isRepeat(checkArr)) {
+          //重复了
+          var options = {
+            id: 'mymodal',
+            msg: '序号重复了'
+          }
+          Modal(options).alert();
+          return false;
+        } else {
+          //修改数据库
+          $.ajax({
+            url: '../Index/sortStageData',
+            type: 'post',
+            data: {
+              data: JSON.stringify(arr),
+              ran: Math.random()
+            },
+            dataType: 'json',
+            success: function (data) {
+              if (data.status == 'ok') {
+                stepList();
+              } else {
+                var options = {
+                  id: 'mymodal',
+                  msg: data.msg
+                }
+                Modal(options).alert();
+              }
+            },
+            error: function (e) {
+              console.log(e);
+            }
+          })
+        }
+      }
+    }
+
+    function getGradeName($num) {
+      var gradeName = '';
+      if ($num == '0001') {
+        gradeName = '一年级';
+      } else if ($num == '0002') {
+        gradeName = '二年级';
+      } else if ($num == '0003') {
+        gradeName = '三年级';
+      } else if ($num == '0004') {
+        gradeName = '四年级';
+      } else if ($num == '0005') {
+        gradeName = '五年级';
+      } else if ($num == '0006') {
+        gradeName = '六年级';
+      }
+      return gradeName;
+    }
+
+    function getGradeCode($name) {
+      var gradeCode = '';
+      if ($name == '一年级') {
+        gradeCode = '0001';
+      } else if ($name == '二年级') {
+        gradeCode = '0002';
+      } else if ($name == '三年级') {
+        gradeCode = '0003';
+      } else if ($name == '四年级') {
+        gradeCode = '0004';
+      } else if ($name == '五年级') {
+        gradeCode = '0005';
+      } else if ($name == '六年级') {
+        gradeCode = '0006';
+      } else {
+        gradeCode = '0';
+      }
+      return gradeCode;
+    }
+
+    function getTermName($num) {
+      var termName = '';
+      if ($num == '0001') {
+        termName = '上学期';
+      } else if ($num == '0002') {
+        termName = '下学期';
+      }
+      return termName;
+    }
+
+    function getTermCode($name) {
+      var termCode = '';
+      if ($name == '上学期') {
+        termCode = '0001';
+      } else if ($name == '下学期') {
+        termCode = '0002';
+      } else {
+        termCode = '0';
+      }
+      return termCode;
+    }
+
+    //预览
+    $("#example1 tbody").on("click", ".bg-purple", function () {
+      var bid = $(this).attr('bid');
+      window.open('phoneview?stageid=' + bid+'&subject='+subject);
+    });
+    //进入试题列表
+    // $('#example1 tbody').on('click', '.btn-primary', function () {
+    //   var bid = $(this).attr('bid');
+    //   window.location.href = "questionlist?genreid=" + bid;
+    // })
+    /****删除********************************************************************************/
+    $("#example1 tbody").on("click", ".btn-danger", function () {
+      var bid = $(this).attr('bid');
+      confirmDel(bid);
+    });
+
+    function confirmDel(id) {
+      $.ajax({
+        url: '../Index/checkHasQues',
+        data: {
+          id: id
+        },
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+          if (data.status == 'ok') {
+            var options = {
+              id: 'mymodal',
+              msg: '确定要删除此关卡么？'
+            }
+            Modal(options).confirm().on(function (e) {
+              if (e) {
+                //确定按钮
+                del(id);
+              } else {
+                //取消按钮
+              }
+            });
+          } else {
+            var options = {
+              id: 'mymodal',
+              msg: '关卡下有试题，禁止删除！'
+            }
+            Modal(options).alert();
+            return false;
+          }
+        },
+        error: function (e) {
+
+        }
+      })
+    }
+
+
+    //删除
+    function del(id) {
+      $.ajax({
+        url: '../Index/delStep',
+        data: {
+          id: id
+        },
+        type: 'get',
+        success: function (data) {
+          // $('#example1').DataTable().draw(false);
+          $('#example1').DataTable().destroy();
+          stepList();
+          showTable();
+        },
+        error: function (e) {
+
+        }
+      })
+    }
+
+    /****行内编辑********************************************************************************/
+    $("#example1 tbody").on("click", ".btn-success", function () {
+      var bid = $(this).attr('bid');
+      window.location.href = 'addstep?type=edit&genreid=' + genreid + '&id=' + bid;
+      // var tds = $(this).parents("tr").children();
+      // $.each(tds, function (i, val) {
+      //   var jqob = $(val);
+      //   if (i < 1 || jqob.has('button').length) {
+      //     return true;
+      //   } //跳过第1项 序号,按钮
+      //   if (i == 2 || i == 4 || i == 5 || i == 6 || i == 7) {
+      //     var txt = jqob.text();
+      //     var put = $("<input type='text' />");
+      //     put.val(txt);
+      //     jqob.html(put);
+      //   }
+      // });
+      // $(this).html('<span class="glyphicon glyphicon-floppy-save"></span>保存');
+      // $(this).toggleClass("btn-success");
+      // $(this).toggleClass("btn-info");
+    });
+    $("#example1 tbody").on("click", ".btn-info", function () {
+      var row = datatable.row($(this).parents("tr"));
+      var tds = $(this).parents("tr").children();
+      var bid = $(this).attr('bid');
+      var data = {};
+      $.each(tds, function (i, val) {
+        var jqob = $(val);
+        //把input变为字符串
+        if (i == 2 || i == 4 || i == 5 || i == 6 || i == 7) {
+          var txt = jqob.children("input").val();
+          if (i == 2) {
+            data.stagename = txt;
+          } else if (i == 4) {
+            data.totaltime = txt;
+          } else if (i == 5) {
+            data.keypoint = txt;
+          } else if (i == 6) {
+            data.example = txt;
+          } else if (i == 7) {
+            data.thinking = txt;
+          }
+
+          jqob.html(txt);
+        }
+      });
+      var self = this;
+      data.id = bid;
+      data.type = 'edit',
+
+        $.ajax({
+          url: "../Index/editStage",
+          data: data,
+          type: "post",
+          error: function (e) {
+            console.log(e);
+          },
+          success: function (response) {
+            if (response.status == 'ok') {
+              $(self).html('<span class="glyphicon glyphicon-pencil"></span>编辑');
+              $(self).toggleClass("btn-info");
+              $(self).toggleClass("btn-success");
+            } else {
+              var options = {
+                id: 'mymodal',
+                msg: response.msg
+              }
+              Modal(options).alert();
+            }
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>

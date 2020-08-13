@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>新页面</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=green"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<table width="100%" cellpadding='0' cellspacing='0' class='list_table'>
+	<tr>
+		<th align="right">用户名：</th>
+		<td align="left"><input type="text" id="userName" class="input-text2"/></td>
+	</tr>
+	<tr>
+		<th align="right">密码：</th>
+		<td align="left"><input type="text" id="passWord" class="input-text2"/></td>
+	</tr>
+	<tr>
+		<th></th>
+		<td><input type="button" value="调用父窗口方法" id="dd" /></td>
+	</tr>
+</table>
+<script>
+//保存输入内容
+function saveData(){
+	$.ajaxSetup({async:false});//异步很重要
+	var userName=$('#userName').val();
+	var passWord=$('#passWord').val();
+	var flag=false;
+	if(userName==''){
+		art.dialog.alert('用户名不能为空！',function(){
+			$('#userName').focus();
+		});
+		flag = false;
+	}else if(passWord==''){
+		art.dialog.alert('密码不能为空！',function(){
+			$('#passWord').focus();
+		});
+		flag = false;
+	}else{
+		//进行数据处理
+		flag = true;
+		art.dialog.data('userName',userName);
+	}
+
+	return flag;
+}
+
+
+$('#dd').click(function(){
+	var filename = $('#userName').val();
+	filename==''?filename='aaa':filename;
+	window.parent.insertFileinfo(filename);
+});
+</script>
+</body>
+</html>

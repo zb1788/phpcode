@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>artDialog的用法</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; artDialog的用法
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+			<tr>
+				<td class="box_top pl_10 f14"><strong>artDialog的用法</strong></td>
+			</tr>
+			<tr>
+				<td height="50px">
+					<input type="button" class="ext_btn ext_btn_success" id="a" value="加载中" />
+					<input type="button" class="ext_btn ext_btn_success" id="b" value="弹窗按钮" />
+					<input type="button" class="ext_btn ext_btn_success" id="c" value="不带X的弹窗" />
+					<input type="button" class="ext_btn ext_btn_success" id="d" value="不随滚动条移动" />
+					<input type="button" class="ext_btn ext_btn_success" id="e" value="指定位置弹窗" />
+					<input type="button" class="ext_btn ext_btn_success" id="f" value="超时自动关闭" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn8" value="tips" />
+					<script type="text/javascript">
+					$('#btn8').click(function(){
+						art.dialog.tips('啊啊');
+					});
+					</script>
+					<input type="button" class="ext_btn ext_btn_success" onclick="addMaterial();" value="调用父窗口方法" />
+					<script type="text/javascript">
+						function addMaterial(){
+							var myDialog = art.dialog.open('newpage',{
+								id:'addMaterial',
+								title:'添加文件',
+								window:'top',
+								width:270,
+								height:150,
+								lock:true,
+								opacity:0.3
+							});
+						}
+						function insertFileinfo(filename){
+							//alert(filename);
+							$('#bianhua').html(filename);
+						}
+					</script>
+					<input type="button" class="ext_btn ext_btn_success" id="g" value="confirm" />
+					<input type="button" class="ext_btn ext_btn_success" id="h" value="打开新页面" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn1" value="图片查看" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn2" value="视频播放" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn6" value="打开swf" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn3" value="公告消息" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn4" value="不能改变大小" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn5" value="无法拖动" />
+					<input type="button" class="ext_btn ext_btn_success" id="btn7" value="prompt弹窗" />
+					<script>
+					//art.prompt(content, ok, [defaultValue])
+					//第三个参数是输入框默认值，可以不写
+					//
+					$('#btn7').click(function(){
+						art.dialog.prompt('请输入名称',
+										   function(data){
+										   		alert(data);
+										   });
+					});
+					</script>
+				</td>
+			</tr>
+		</table>
+		<div>
+			<p id='here'>绑定ID，操作指定ID的弹窗：art.dialog({id:'uploadPhotoDialog'}).close()</p>
+			<p id="bianhua">这里的值变化</p>
+		</div>
+	</div>
+<script>
+$(function(){
+	//加载中效果
+	$('#a').click(function(){
+		art.dialog({title:'导入中……',width:130,height:30,opacity:0.3,lock:true});
+	});
+	//弹窗按钮
+	$('#b').click(function(){
+		art.dialog({
+			title:'弹窗',
+			content:'这是弹窗的内容',
+			width:200,
+			height:30,
+			opacity:0.3,
+			lock:true,
+			button:[
+			{
+				name:'同意',
+				callback:function(){
+					art.dialog.alert('同意');
+					return false;
+				},
+				focus:true
+			},
+			{
+				name:'不同意',
+				callback:function(){
+					//默认关闭弹窗
+				},
+				focus:true
+			},
+			{
+				name:'无效按钮',
+				disabled: true
+			}
+			]
+		});
+	});
+	//右上角不带X的弹窗
+	$('#c').click(function(){
+		art.dialog({
+			title:'弹窗',
+			content:'这是不带关闭按钮的弹窗',
+			width:240,
+			height:30,
+			opacity:0.3,
+			lock:true,
+			cancel:false,//取消右上角的X
+			button:[
+			{
+				name:'关闭',
+				callback:function(){}
+			}
+			]
+		});
+	});
+	//固定的无法拖动
+	$('#d').click(function(){
+		art.dialog({
+			fixed:true,
+			content:'请拖动滚动条试试'
+		});
+	});
+	//让对话框跟着某个元素，一个元素同时只能出现一个对话框
+	$('#e').click(function(){
+		art.dialog({
+			follow: document.getElementById('btn3'),
+			content: '让对话框跟着某个元素'
+		});
+	});
+	//超过设置时间自动关闭
+	$('#f').click(function(){
+		art.dialog({
+			time:2,
+		});
+	});
+
+	//confirm警告
+	$('#g').click(function(){
+		art.dialog.confirm('你相爱情么？',function(){
+			art.dialog.alert('确定');
+		},function(){
+			//art.dialog.alert('取消');
+		});
+	});
+	//打开新页面
+	$('#h').click(function(){
+		var myDialog = art.dialog.open('newpage?ran='+Math.random(),{
+			title:'新页面标题',
+			window:'top',
+			width:272,
+			height:100,
+			lock:true,
+			opacity:0.3,
+			button:[
+			{
+				name:'保存',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re=iframe.saveData();//调用弹出窗口页面的保存方法
+					var userName = art.dialog.data('userName');
+					alert(userName);
+					return re;
+				},
+				focus:true
+			},
+			{
+				name:'关闭',
+				callback:function(){
+				},
+				focus:false
+			}
+			]
+		});
+	});
+
+	//图片查看
+	$('#btn1').click(function(){
+		artDialog({title:'图片查看', content:'<img width="817" height="479" src="../Uploads/pic/images/1.jpg" />', fixed:true});
+		return false;
+	});
+
+	//视频播放
+	$('#btn2').click(function(){
+		artDialog({title:'功夫兔', content:'<object width="420" height="363"><param name="movie" value="http://www.tudou.com/v/bXwe7XgTxuA"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><param name="wmode" value="opaque"></param><embed src="http://www.tudou.com/v/bXwe7XgTxuA" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" width="420" height="363"></embed></object>', fixed:true});
+		return false;
+	});
+
+	//打开swf
+	$('#btn6').click(function(){
+		var title = '全屏';
+		art.dialog.open('../Uploads/5608e9a2baf4d.swf',{width: '100%',height: '100%',title:title,padding: 0,fixed:true});
+	});
+
+
+	//公告消息
+	$('#btn3').click(function(){
+		artDialog({content:'您收到 <strong>2</strong> 条消息',fixed:true, left:'100%', top:'100%', time:'10', fixed:true});//x和y坐标可以使用关键字，当然也可以使用数字
+		return false;
+	});
+
+	//无法改变尺寸
+	$('#btn4').click(function(){
+		art.dialog({
+			content:'请拖动边框改变大小试试',
+			resize:false
+		});
+	});
+
+	//无法拖动位置
+	$('#btn5').click(function(){
+		art.dialog({
+			content:'请拖动框改变位置试试',
+			drag:false
+		});
+	});
+
+
+
+});
+
+</script>
+</body>
+</html>

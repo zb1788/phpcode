@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/rowReordering/rowReorder.dataTables.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <style>
+    td.highlight {
+      background-color: red !important;
+    }
+
+    tr.am-primary {
+      background-color: yellow !important;
+    }
+  </style>
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body class="hold-transition skin-blue fixed sidebar-mini">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+
+    <include file="Common/header" />
+    <include file="Common/left" />
+
+    <!-- =============================================== -->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          分类
+          <small>分类列表</small>
+        </h1>
+        <ol class="breadcrumb">
+          <li>
+            <a href="index">
+              <i class="fa fa-dashboard"></i> 首页</a>
+          </li>
+          <li class="active">分类列表</li>
+        </ol>
+      </section>
+      <!-- /.content -->
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box">
+              <!-- /.box-header -->
+              <div class="box-body">
+                <table id="example" class="table table-bordered table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>次序</th>
+                      <th>年级</th>
+                      <th>学期</th>
+                      <th>分类名称</th>
+                      <th style="display:none;">ID</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody">
+
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+              <div id="result"></div>
+            </div>
+            <!-- /.box -->
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <include file="Common/footer" />
+
+
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <!-- DataTables -->
+  <script src="__PUBLIC__/dist/js/jquery.dataTables.min.js"></script>
+  <script src="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.js"></script>
+  <script src="__PUBLIC__/dist/js/rowReordering/dataTables.rowReorder.min.js"></script>
+  <!-- <script src="__PUBLIC__/dist/js/jquery.dataTables.rowReordering.js"></script> -->
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script>
+    $.ajaxSetup({
+      async: false
+    }); //异步很重要
+    var grade = GetQueryString('grade');
+    var term = GetQueryString('term');
+    var datatable;
+
+    function getData() {
+      $.ajax({
+        type: 'get',
+        url: '../Index/getGenreListBaseSort',
+        data: {
+          ran: Math.random(),
+          grade: grade,
+          term: term
+        },
+        dataType: 'json',
+        success: function (data) {
+          $('#tbody').empty();
+          var html = '';
+          $.each(data, function (k, v) {
+            html += '<tr><td name="sort">' + (k + 1) + '</td><td>' + getGradeName(v.grade) +
+              '</td><td>' + getTermName(v.term) +
+              '</td><td>' + v.name + '</td><td style="display:none;">' + v.id + '</td></tr>';
+          });
+          $('#tbody').html(html);
+          console.log(data);
+        },
+        error: function (e) {}
+      })
+    }
+    $(document).ready(function () {
+      getData();
+      var table = $('#example').DataTable({
+        rowReorder: {
+          selector: 'td'
+        },
+        columnDefs: [{
+          targets: 0,
+          visible: true
+        }]
+      });
+
+      table.on('row-reorder', function (e, diff, edit) {
+        // var result = 'Reorder started on row: ' + edit.triggerRow.data()[1] + '<br>';
+        var arr = [];
+        for (var i = 0, ien = diff.length; i < ien; i++) {
+          var rowData = table.row(diff[i].node).data();
+          // result += rowData[1] + ' updated to be in position ' +
+          //   diff[i].newData + ' (was ' + diff[i].oldData + ')<br>';
+          var obj = {};
+          obj.id = rowData[4];
+          obj.sortid = diff[i].newData;
+          arr.push(obj);
+        }
+        $.ajax({
+          url: '../Index/sortGenreDataBase',
+          type: 'post',
+          data: {
+            data: JSON.stringify(arr),
+            ran: Math.random()
+          },
+          dataType: 'json',
+          success: function (data) {},
+          error: function (e) {
+            console.log(e);
+          }
+        })
+        // $('#result').html('Event result:<br>' + result);
+      });
+    });
+  </script>
+</body>
+
+</html>

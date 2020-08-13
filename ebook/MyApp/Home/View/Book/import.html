@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图片导入</title>
+<link href="__PUBLIC__/bgcss/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 图片导入
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="box_border">
+			<tr>
+				<td class="box_top pl_10 f14">图片导入</td>
+			</tr>
+			<tr>
+				<td class="p5">
+					<input type="submit" name="import" id="import" class="btn btn82 btn_save2" value="导入" />
+				</td>
+			</tr>
+		</table>
+		<div class="h10"></div>
+		<div>
+			<font color="red" size="4">
+			新版ftp地址：192.168.151.126；ftp用户名：ebook密码：ebook@123先通过ftp上传图片文件夹，文件夹名称：比如一年级-上学期-语文-人教版，图片名称001.jpg,002.jpg以此类推
+			点击导入，即可完成批量导入。
+			</font>
+		</div>
+		<div id="errorinfo"></div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr>
+				<th>序号</th>
+				<th>书籍名称</th>
+				<th>页数</th>
+				<th>左右位置</th>
+			</tr>
+		</table>
+	</div>
+
+<table id="demo">
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+</body>
+</html>
+<script>
+//批量导入excel
+$(function(){
+	$("#import").click(function(){
+		$('#errorinfo').html('');
+		$('.list_table tr:not(:eq(0))').remove();
+		var dloading = art.dialog({title:'导入中……',width:130,height:30,opacity:0.3,lock:true});
+		$.get("../Book/importPics",{ran:Math.random()},
+		  function(data,status){
+		  	//alert(typeof(data.suc));
+			if(status=='success'){
+				dloading.close();
+			}
+		  	 $('#errorinfo').html(data.err);
+			 $.each(data.suc,function(k,v){
+			   // alert(v);
+			   var tr=$('#demo').children('tbody').children('tr').clone();
+				$.get('../Book/getBookInfo',{ran:Math.random(),id:v},function(data){
+					tr.children('td').eq(0).html(k+1);
+					tr.children('td').eq(1).html(data.bookname);
+					tr.children('td').eq(2).html(data.totalpage);
+					var str='';
+					if(data.pageflag==0){
+						str='双页左';
+					}else{
+						str='单页左';
+					}
+					tr.children('td').eq(3).html(str);
+				});
+			 tr.appendTo('.list_table');
+			 });
+		  });
+	});
+})
+</script>

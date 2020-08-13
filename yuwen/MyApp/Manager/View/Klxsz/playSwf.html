@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>播放动画</title>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/swfobject.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=green"></script>
+<script>
+$(function(){
+	url='../{$url}';
+	//checkFile(url);
+	$.ajax({
+   url:url,
+   type:'HEAD',
+   error: function() {
+       //file not exists
+	   //alert('文件不存在');
+	   
+	   $("#error").html('找不到文件了');
+	   return false;
+   },
+   success: function() {
+       //file exists
+	  // alert(document.documentElement.clientWidth+'/'+document.documentElement.clientHeight);
+	   var width=620;
+	   var height=470;
+//	   if('{$type}'==1){
+//	   	width=595;
+//		height=440;
+//	   }else{
+//	   	width='{$width}'-600;
+//		height='{$height}'-80;
+//	   }
+	   var src='<embed src="../{$url}"  id="swfEmbed"  allowFullScreen="true" allowFullScreenInteractive="true" wmode="transparent" quality="high" width="'+width+'" height="'+height+'" align="L" scale="noborder"  type="application/x-shockwave-flash"></embed>';
+  	   $('#error').html(src);
+   }
+});
+});
+
+$('#swfEmbed').hide();
+var a=document.getElementById("swfEmbed");
+
+a.onreadystatechange = function() { 
+
+if (this.readyState=="complete") { //最近才知道的。不然也写不出来。
+// 解释：一个iframe加载完毕的状态是complete,
+	$('#img').hide();
+	$('#swfEmbed').show();
+} 
+}
+</script>
+</head>
+<body>
+	<div id="error" align="center" style="width:100%;height:800px;">
+		<img id="img" src="__PUBLIC__/style/klxsz/hct.gif"/>
+	</div>
+<!--	
+	<object type="application/x-shockwave-flash" data="" width="100%" height="100%" id="flashContent" style="visibility: visible;">
+		<param name="quality" value="high">
+		<param name="allowscriptaccess" value="sameDomain">
+		<param name="allowfullscreen" value="true">
+		<param name="WMode" value="transparent">
+	</object>
+-->
+</body>
+</html>

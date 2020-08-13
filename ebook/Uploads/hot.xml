@@ -1,0 +1,22 @@
+<page bookid="123" yema="12">
+  <hotmusic>
+    <name>热点</name>
+    <link>Uploads/test.mp3</link>
+    <linkName>冷风中.mp3</linkName>
+    <plist>312.62079062957537,353.9970717423133|565.475841874085,353.9970717423133|565.475841874085,609.1508052708638|312.62079062957537,609.1508052708638</plist>
+    <play>00:48:985</play>
+    <stop>00:53:202</stop>
+    <yuanwen>aaa</yuanwen>
+    <fanyi>aaaaa</fanyi>
+  </hotmusic>
+  <hotmusic>
+    <name>热点</name>
+    <link>Uploads/test.mp3</link>
+    <linkName>冷风中.mp3</linkName>
+    <plist>370.0878477306003,836.7203513909224|719.4875549048315,836.7203513909224|719.4875549048315,1052.796486090776|370.0878477306003,1052.796486090776</plist>
+    <play>04:31:853</play>
+    <stop>04:42:559</stop>
+    <yuanwen>bbb</yuanwen>
+    <fanyi>cccc</fanyi>
+  </hotmusic>
+</page>

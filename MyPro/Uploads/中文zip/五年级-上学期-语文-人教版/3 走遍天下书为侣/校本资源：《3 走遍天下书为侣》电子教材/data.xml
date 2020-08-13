@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<data name="威科姆电子教材">
+
+	<bookmusic name="课文声音" id="1">
+		<name>《走遍天下书为侣》课文朗读</name>
+		<link>《走遍天下书为侣》课文朗读.mp3</link>
+		<icon>mp3</icon>
+	</bookmusic>
+
+
+
+	<hotpage name="第一整页热点声音" id="8">
+	<hotmusic id="1">
+			<name>热区</name>
+			<link>null</link>
+			<pX>1</pX>
+			<pY>1</pY>
+			<width>1</width>
+			<height>1</height>
+			<play>00:13.890</play>
+			<stop>00:17.890</stop>
+		</hotmusic>
+	</hotpage>
+	<hotpage name="第一整页热点声音" id="10">
+	<hotmusic id="1">
+			<name>热区</name>
+			<link>null</link>
+			<pX>1</pX>
+			<pY>1</pY>
+			<width>1</width>
+			<height>1</height>
+			<play>00:13.890</play>
+			<stop>00:17.890</stop>
+		</hotmusic>
+	</hotpage>
+
+
+
+	<content name="书页内容" id="1" width="460" height="613">
+
+			<page>008.jpg</page>
+			<page>009.jpg</page>
+			<page>010.jpg</page>
+			<page>011.jpg</page>
+
+
+	</content>
+
+</data>

@@ -1,0 +1,190 @@
+<!DOCTYPE public>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>artDialog的用法</title>
+<style type="text/css">
+    * {
+        margin:0;
+        padding:0;
+    }
+    body {
+        font:14px Verdana, Arial, Geneva, sans-serif;
+        color:#404040;
+        background:#fff;
+    }
+    img {
+        border-style:none;
+    }
+    .main{
+        width:300px;
+        height:60px;
+        position:absolute;
+        left:50%;
+        top:50%;
+        margin-left:-150px;
+        margin-top:-30px;
+    }
+    .box{
+        position:relative;
+        float:left;
+    }
+    input.uploadFile{
+        position:absolute;
+        right:0px;
+        top:0px;
+        opacity:0;
+        filter:alpha(opacity=0);
+        cursor:pointer;
+        width:276px;
+        height:36px;
+        overflow: hidden;
+    }
+    input.textbox{
+        float:left;
+        padding:5px;
+        color:#999;
+        height:36px;
+        line-height:24px;
+        border:1px #ccc solid;
+        width:200px;
+        margin-right:4px;
+    }
+    a.link{
+        float:left;
+        display:inline-block;
+        padding:4px 16px;
+        color:#fff;
+        font:14px "Microsoft YaHei", Verdana, Geneva, sans-serif;
+        cursor:pointer;
+        background-color:#0099ff;
+        line-height:28px;
+        text-decoration:none;
+    }
+</style>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.form.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=green"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+
+<style>
+.but1{
+color: #555;
+background-color: #f3f3f3;
+border: 1px solid #c6c6c6;
+font: normal 14px 微软雅黑;
+padding: 0px 10px;
+right: px;
+height: 25px;
+line-height: 25px;
+position: absolute;
+margin-top: 3px;
+}
+.but2{
+color: #555;
+background-color: #f3f3f3;
+border: 1px solid #c6c6c6;
+font: normal 14px 微软雅黑;
+padding: 0px 10px;
+right: px;
+height: 28px;
+line-height: 25px;
+margin-top: 3px;
+}
+.filed {
+position:relative;
+margin-top: 3px;
+bottom: 0px;
+right: 0px;
+width: 54px;
+height: 32px;
+opacity: 0;
+}
+</style>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; UPLOADIFY的用法
+	</div>
+	<div class="container">
+		<div class="h5"></div>
+		<div class="box">
+			<form id="form4" >
+		     <input type="text" id="filename"  class="textbox" />
+		     <a href="javascript:void(0);"  class="link">浏览</a>
+		     <input type="file" class="uploadFile" name="upload" onchange="checkImage();"  />
+			 </form>
+			 <br><br><br>
+			 <hr>
+			 <h2>form表单文件上传</h2>
+			<form action="../Uploadify/index2" id="formup" method="POST" enctype="multipart/form-data">
+				<a href="javascript:void(0);"  class="but1">浏&nbsp;览</a>
+				<input type="file" name="file" id="fileUp" class="filed" onchange="getImgName(this);"/>
+				<input type="hidden"  id="hide"  />
+				<input type="submit"  value="上传" class="but2"/>
+				<span>{$filepath}</span>
+			</form>
+
+		</div>
+	</div>
+<script type="text/javascript">
+
+
+function checkImage()
+{
+	var mydialog;
+            var options = {
+
+               url:"../Uploadify/uploadimg?ran="+Math.random(),//后台的处理，也就是form里的action
+               type:"POST",
+//               dataType:"script", //数据格式，有XML，html，json，默认为文本
+		       beforeSubmit : function() {
+		          mydialog=art.dialog({title:'上传中……',width:130,height:30,opacity:0.3,lock:true});
+		        },
+               success:function(msg){
+			   	mydialog.close();
+			   	var arr=[];
+				arr=msg.split('|');
+				var NewFileName=arr[0];
+				var OriginName=arr[1];
+				//$('#filename').val(OriginName);
+			   	art.dialog.alert('上传成功！'+NewFileName);
+              //msg为接受后台的反馈信息。将他格式化为文本。也许我的代码的问题，后台返回的一直带有HTML标记的文本，所以我将他格式成文本。
+                 //var msgText = $("<div>"+msg+"</div>").text();
+                 //下面可以根据后台反馈的信息做相应的处理
+               }
+            };
+         $("#form4").ajaxSubmit(options);
+         return false;//为了防止刷新
+}
+
+
+$('.but2').click(function(){
+	//$('#formup').submit();
+	//document.getElementById("formup").submit();
+	var img=$('#hide').val();
+	if(img==''){
+		art.dialog.tips('文件不能为空！',2);
+		return false;
+	}
+//	$('#formup').submit();
+});
+
+function getImgName(obj){
+	var imgName =$(obj).val();
+	imgName = imgName.substr(imgName.lastIndexOf("\\")+1);
+	$('#hide').val(imgName);
+
+
+}
+
+
+</script>
+</body>
+</html>

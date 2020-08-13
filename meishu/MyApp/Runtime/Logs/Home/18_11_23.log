@@ -1,0 +1,10 @@
+[ 2018-11-23T16:21:18+08:00 ] 192.168.144.107 /Home/Vue/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.015600s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.015600s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0624s ]
+SQL: SELECT * FROM db_vue.t_user WHERE ( username="admin" and pwd="5d793fc5b00a2348c3fb9ab59e5ca98a" ) LIMIT 1   [ RunTime:0.0156s ]
+

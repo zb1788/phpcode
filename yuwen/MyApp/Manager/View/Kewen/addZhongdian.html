@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加重点语段</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr style="display:none;">
+			<td align="left">节数：</td>
+			<td><input type="text" id="step"  class="input-text" size="8"/></td>
+		</tr>
+		<tr>
+			<td align="left">课文内容：</td>
+			<td><textarea type="text" id="textContent" style="width:485px;height:66px;color:#999999;"  onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue;this.style.color='#999'}" class="textarea">课文内容和导读内容字数之和现代文不能超过340字,文言文不能超过200字！</textarea></td>	
+		</tr>
+		<tr>
+			<td align="left">导读：</td>
+			<td><textarea id="textGuide" style="width:485px;height:66px;color:#999999" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue;this.style.color='#999'}" class="textarea">课文内容和导读内容字数之和现代文不能超过340字,文言文不能超过200字！</textarea></td>	
+		</tr>		
+		<tr>
+			<td align="left">时间段：</td>
+			<td><input type="text" id="timeStep" style="color:#999999;" value="时间格式为:00:46.446-01:03.797" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue;this.style.color='#999'}" class="input-text" size="30"/></td>	
+		</tr>		
+</table>
+<div class="h5"></div> 
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+$(function(){
+	
+});
+
+
+
+function savedata(){
+	    var kecheng_id={$kecheng_id};
+		//var step=$('#step').val();
+		var textContent=$('#textContent').val();
+		var textGuide=$('#textGuide').val();
+		var timeStep=$('#timeStep').val();
+		var total=textContent.length+textGuide.length;
+		var flag=false;
+//		if(step==''){
+//			art.dialog.alert('节数不能为空！',function(){
+//				$('#step').focus();
+//			});
+//			return false;
+//		}else 
+		if(textContent==''||textContent=='课文内容和导读内容字数之和现代文不能超过340字,文言文不能超过200字！'){
+			art.dialog.alert('课文内容不能为空！',function(){
+				$('#textContent').focus();
+			});
+			return false;			
+		}else if(textGuide==''||textGuide=='课文内容和导读内容字数之和现代文不能超过340字,文言文不能超过200字！'){
+			art.dialog.alert('导读不能为空！',function(){
+				$('#textGuide').focus();
+			});
+			return false;			
+		}else if(timeStep==''){
+			art.dialog.alert('时间段不能为空！',function(){
+				$('#timeStep').focus();
+			});
+			return false;			
+		}else if(timeStep.length!=19){
+			art.dialog.alert('时间段不合法!',function(){
+				$('#timeStep').focus();
+			});
+			return false;
+		}else if({$mobanid}==1 && total>340){
+			art.dialog.alert('现代文课文内容和导读字数之和不能超过340字!当前总字数'+total+'字!');
+			return false;
+		}else if({$mobanid}==2 && total>200){
+			art.dialog.alert('文言文课文内容和导读字数之和不能超过200字!当前总字数'+total+'字!');
+			return false;
+		}else{
+		$.get('../kewen/addText_zhongdian',
+			{ran:Math.random(),
+			 kecheng_id:kecheng_id,
+			 //step:step,
+			 textContent:textContent,
+			 textGuide:textGuide,
+			 timeStep:timeStep
+			},
+			function(data){
+				if(data=='已存在'){
+					flag=false;
+				}else{
+					flag=true;
+					art.dialog.data('step_key_id', data);
+				}
+			});
+			return flag;
+		}
+
+}
+
+
+
+</script>

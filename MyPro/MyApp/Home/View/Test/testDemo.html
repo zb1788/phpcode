@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<style type="text/css">
+*{margin:0px;padding:0px;}
+body{background:#000;}
+/* music */
+@-webkit-keyframes reverseRotataZ{
+    0%{ -webkit-transform: rotateZ(0deg);}
+    100%{ -webkit-transform: rotateZ(-360deg);}
+}
+@-webkit-keyframes rotataZ{
+    0%{ -webkit-transform: rotateZ(0deg);}
+    100%{ -webkit-transform: rotateZ(360deg);}
+}
+
+</style>
+</head>
+<body>
+
+
+<form action="" id="form1">
+    用户名：<input name="name" type="text" /><br />
+    密 码：<input name="pass" type="text" /><br />
+
+</form>
+    <input type="button" id="sub" value="提交" /> <br />
+    <p id="result"></p>
+
+
+
+<script>
+$(function () {
+  $("#sub").click(function () {
+      var rerial = $("#form1").serializeArray();
+      $.post("../Test2/tt", {'data':rerial}, function (data, status) {
+          if (status == "success") {
+              $("#result").html(data);
+          }
+      });
+
+ });
+
+});
+
+</script>
+
+
+</body>
+
+</html>

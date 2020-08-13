@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=0.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<meta charset="UTF-8">
+        <meta name="wap-font-scale" content="no">
+		<title>语文快乐学</title>
+		<link rel="stylesheet" href="__PUBLIC__/css/ywcurr.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/fonts.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/iscroll.css" />
+        <script type="text/javascript" src="__PUBLIC__/js/zepto.min.js" ></script>
+		<script type="text/javascript" src="__PUBLIC__/js/demoUtils.js" ></script>
+		<script type="text/javascript" src="__PUBLIC__/js/TouchSlide.1.1.js" ></script>
+        <script type="text/javascript" src="__PUBLIC__/js/vue/vue.min.js" ></script>
+        <script type="text/javascript" src="__PUBLIC__/js/vue/axios.min.js" ></script>
+<style>
+#mask1{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: #000;
+    opacity: .4;
+    z-index: 982;
+}
+.dialog21{
+    box-shadow: 1px 1px 10px #333;
+    width: 90%;
+    position: fixed;
+    top: 32%;
+    left: 50%;
+    margin-left: -45%;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 983;
+}
+</style>
+
+
+</head>
+<body>
+<main id="main">
+<my-header v-bind:params="header_data"></my-header>
+		<section>
+
+        <div id="leftTabBox" class="tabBox">
+				<div class="hd qie_b fen3">
+
+                    <ul>
+                        <li
+                            v-for="(item,index) in lis"
+                            v-bind:class="{ on : item.isShow}"
+                            v-on:click="changeTag(index)">
+                            {{item.title}}
+                        </li>
+            		</ul>
+				</div>
+				<div class="bd mT85">
+						<ul>
+							<div id="a" class="overYY pad10">
+                            <ul id="myrecord">
+                            <!-- 我的录音 -->
+                                <my-li
+                                    v-for="(item,index) in my"
+                                    v-bind:params="item"
+                                    v-bind:index="index"
+                                    v-on:increment="delRecord"
+                                    v-on:bf="bofang">
+                                    </my-li>
+                            </ul>
+                            </div>
+                        </ul>
+
+						<ul>
+							<div id="b" class="overYY pad10">
+        					<ul id="mysiblings">
+        						<!-- 同学录音 -->
+                                <my-li v-for="item in siblings" v-bind:params="item"></my-li>
+                   <!--              <li class="lyList" v-for="(v,index) in siblings">
+                                    <h3 class="lyH3 afterBorder"><span class="fl"><img class="toux radius100" src="__PUBLIC__/images/toux.jpg" /></span><span class="font08 spanM">{{v.username}}</span><span class="fr yingFont">{{showRecordType(v.type)}}</span></h3><div class="tabBox afterBorder"><div class="pad10"><span class="left"><a name="beg" class="btnY02 radius100 mR10"><i class="icon-playk"  name="playbutton" onclick="playKewenLuyin(this);" url="'+v.filepath.getBaseName()+'" isfirst="1"></i></a><a name="end" class="btnY02 radius100 mR10" style="display:none;"><i class="icon-playt" bid="'+v.id+'" name="playbutton" onclick="playKewenLuyin(this);" url="'+v.filepath.getBaseName()+'" isfirst="1"></i></a></span><span class="left d1">{{v.filename}}<h4 class="textH4">{{v.addtime}}</h4></span></div></div><h3 class="lyH3"><span class="fl font08"><font>{{v.listencount}}</font>次收听</span><span class="fr tubL10"><i bid="'+v.id+'" filepath="'+v.filepath+'" onclick="delClick(this)" class="icon-del"></i><strong class="zan-on"><i bid="'+v.id+'" onclick="praiseClick(this)" class="'+praiseHtml+'"></i><font>{{v.praise}}</font></strong></span></h3>
+                                    </li> -->
+        					</ul>
+							</div>
+						</ul>
+						<ul>
+							<div id="c" class="overYY pad10">
+							<ul id="myother">
+							<!-- 其他人录音 -->
+							</ul>
+							</div>
+						</ul>
+				</div>
+			</div>
+
+
+
+</section>
+
+<div id="tips"></div>
+<div id="mask1" v-show="isshow"></div>
+<div class="dialog21" v-show="isshow">
+	<h2>确定要删除录音吗</h2>
+	<div class="btn_d"><a @click="delRecordImp">确定</a><a @click="close">取消</a></div>
+</div>
+
+</main>
+
+
+<script>
+var respath = '__RESOURCE__';
+var recordpath = '__RECORD__';
+var baseNetUrl = respath;
+var recordNetUrl = recordpath;
+var kewenNetUrl = respath+'/uploadsyw/kewenvoice/';
+
+var ks_code = '00010203020402';
+
+
+
+
+var header = Vue.extend({
+    props: ['params'],
+    template: '<header class="head border-nav"><a class="head-left" v-on:click="back"><i class="icon-back"></i>{{params.back}}</a><h1 class="title">{{params.title}}</h1></header>',
+    methods:{
+        back : function(){
+            alert('返回');
+        }
+    }
+})
+
+Vue.component('my-header',header)
+ </script>
+
+<script type="text/x-template" id="li-template">
+ <li class="lyList">
+    <h3 class="lyH3 afterBorder">
+        <span class="fl"><img class="toux radius100" src="__PUBLIC__/images/toux.jpg" /></span>
+        <span class="font08 spanM">{{params.username}}</span>
+        <span class="fr yingFont">{{showRecordType(params.type)}}</span>
+    </h3>
+    <div class="tabBox afterBorder">
+        <div class="pad10">
+            <span class="left">
+            <a name="beg" class="btnY02 radius100 mR10"><i class="icon-playk"  name="playbutton" @click="bofang(index)" isfirst="1"></i></a>
+            </span>
+            <span class="left d1">{{params.filename}}<h4 class="textH4">{{params.addtime}}</h4></span>
+        </div>
+    </div>
+    <h3 class="lyH3">
+        <span class="fl font08"><font>{{params.listencount}}</font>次收听</span>
+        <span class="fr tubL10"><i bid="'+v.id+'" filepath="'+v.filepath+'" @click="delClick(params.id,index)" class="icon-del"></i><strong class="zan-on"><i bid="'+v.id+'" onclick="praiseClick(this)" class="'+praiseHtml+'"></i><font>{{params.praise}}</font></strong></span>
+    </h3>
+</li>
+</script>
+
+<script>
+Vue.component('my-li',{
+    template : '#li-template',
+    props:['params','index'],
+    methods:{
+        showRecordType : function(type){
+            if(type == 1){
+                return '背诵';
+            }else{
+                return '朗读';
+            }
+        },
+        delClick : function(id,index){
+            this.$emit('increment',id,index);
+        },
+        bofang : function(index){
+            this.$emit('bf',index);
+        }
+    }
+})
+
+
+var aa = new Vue({
+    el: '#main',
+    data: {
+        header_data:{
+            back : '返回',
+            title : 'Vue'
+        },
+        lis: [
+            { index : 0, title : '我的录音', isShow : true},
+            { index : 1,  title : '同学录音', isShow : false},
+            { index : 2,  title : '其他', isShow : false}
+        ],
+        my: '',
+        siblings: '',
+        other: '',
+        isshow: false,
+        delId: 0,
+        delIndex: 0
+    },
+    created: function(){
+        this.getMyRecord();
+    },
+    methods:{
+        changeTag : function(index){
+            // var self = this;
+            // for(i=0;i<self.lis.length;i++){
+            //     self.lis[i].isShow = false ;
+            // }
+            // self.lis[index].isShow = true ;
+        },
+        getMyRecord : function(){
+          var self = this;
+          axios.get('../Text/selectVoice',{params:{ks_code:ks_code}})
+            .then(function (response) {
+                self.res = response.data;
+                console.log(self.res);
+                self.my = self.res.my;
+                self.siblings = self.res.siblings;
+                self.other = self.res.other;
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        },
+        delRecord : function(id,index){
+            this.isshow = true;
+            this.delId = id;
+            this.delIndex = index;
+        },
+        close : function(){
+            this.isshow = false;
+        },
+        delRecordImp : function(){
+             this.my.splice(this.delIndex,1);
+             this.isshow = false;
+        },
+        bofang : function(index){
+          // alert(index);
+          this.my[index].listencount = parseInt(this.my[index].listencount) + 1;
+        }
+
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        // $('.overYY').height($(window).height()-90);
+        //
+        // alert('xx');
+      })
+    }
+})
+
+
+
+// aa.$nextTick(function () {
+//  // DOM 现在更新了
+//     //
+// })
+
+
+
+// document.getElementById('a').style.height = window.screen.height-90+'px';
+// $('.overYY').height($(window).height()-90);
+
+
+
+//点赞
+function praiseClick(obj){
+	var bid = $(obj).attr('bid');
+    if($(obj).hasClass('icon-favorite')){
+        $(obj).prop('class','icon-favorite-o');
+    }else{
+        $(obj).prop('class','icon-favorite');
+    }
+	$.get('../Text/checkUserLike',
+		{
+			recordid:bid,
+			ran:Math.random()
+		},function(data){
+			$(obj).next('font').html(data.praise);
+		})
+}
+//删除
+function delClick1111(obj){
+	$('#mask').show();
+	$('.dialog2').show();
+	//取消
+	$('#fanhui').click(function(){
+		$('#mask').hide();
+		$('.dialog2').hide();
+	})
+	//确定删除
+	$('#fangqi').click(function(){
+		var bid = $(obj).attr('bid');
+        var filepath = $(obj).attr('filepath');
+		var aa = $(obj).parent().parent().parent();
+        var ul = $(aa).parent();
+		$.get('../Text/delVoice',
+			{
+				ran:Math.random(),
+				id:bid,
+                filepath:filepath
+			},function(data){
+				$(aa).remove();
+                if($(ul).children('li').length == 0){
+                    var html = '<li class="lyList"><h3 class="lyH3 afterBorder">暂无录音</h3></li>';
+                    $(ul).html(html);
+                }
+		});
+		$('#mask').hide();
+		$('.dialog2').hide();
+	})
+
+}
+
+
+//播放课文录音
+function playKewenLuyin1111(obj){
+    var bid = $(obj).attr('bid');
+    var url = $(obj).attr('url');
+    var isfirst = $(obj).attr('isfirst');
+
+    if($(obj).hasClass('icon-playk')){
+        //开始播放
+        $('a[name=end]').hide();
+        $('a[name=beg]').show();
+        $('i[name=playbutton].icon-playk').attr('isfirst',1);
+        $(obj).parent().hide();
+        $(obj).parent().next().show();
+
+        if(isfirst == 1){
+            //第一次播放
+            try{
+                downloadJson = '[{"name":"'+url.getBaseName()+'","size":"10","format":"mp3","url":"'+recordNetUrl+url+'"}]';
+                downloadAudio(url);
+                // var netLuyin = recordNetUrl+url;
+                // UXinJSInterfaceSpeech.playAudio(this.list.getBaseName());
+                // mp3 = new player(url,'luyin');
+                // mp3.playSingle();
+            }catch(err){
+                setTip("升级到最新版本的优信");
+            }
+            $(obj).attr('isfirst','0');
+            addListenCount(bid);
+            var nowCount = $(obj).parent().parent().parent().parent().next('h3').find('font').eq(0).html();
+            nowCount++;
+             $(obj).parent().parent().parent().parent().next('h3').find('font').eq(0).html(nowCount);
+        }else{
+            //暂停后继续播放
+            $(obj).attr('isfirst','0');
+            try{
+                mp3.resumeAudio();
+            }catch(err){
+                setTip("升级到最新版本的优信");
+            }
+        }
+    }else if($(obj).hasClass('icon-playt')){
+        //暂停播放
+        $('a[name=end]').hide();
+        $('a[name=beg]').show();
+        $(obj).parent().hide();
+        $(obj).parent().prev().show();
+        try{
+            mp3.pauseAudio();
+        }catch(err){
+            setTip("升级到最新版本的优信");
+        }
+    }
+}
+
+function addListenCount(id){
+	$.get('../Text/addListenCount',
+		{
+			ran:Math.random(),
+			id:id
+		},function(data){
+
+		});
+}
+
+
+function goback(){
+    try{
+        UXinJSInterfaceSpeech.stopAudio();
+    }catch(err){
+
+    }
+	location.href=backurl+"?index="+index+"&ks_code="+ks_code;
+}
+</script>
+</body>
+</html>

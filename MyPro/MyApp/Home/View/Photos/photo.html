@@ -1,0 +1,98 @@
+<!DOCTYPE public>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>artDialog的用法</title>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<style>
+.upPic{
+	float:left;
+	margin:0 auto;
+	width:230px;
+}
+.pic_pre{
+	padding-bottom:5px;
+	margin:0 auto;
+}
+.juzhong{
+	display:block;
+	text-align:center;
+	margin:0 auto;
+}
+.edit_tx{
+	background:url(__PUBLIC__/img/edit_tx.png) no-repeat 0 0;
+	width:102px;
+	height:34px;
+	font:normal 13px/34px Microsoft YaHei;
+	color:#555;
+	text-indent:30px;
+	margin:0 auto;
+	display:block;
+}
+</style>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 头像上传
+	</div>
+	<div class="container">
+		<div class="h5"></div>
+		<div class="box">
+			<div class="upPic">
+	            <div class="pic_pre">
+	            	<table width="200" style="height:150px;" border="0" cellspacing="0" cellpadding="0">
+	                  <tr>
+	                    <td style="height:100%;vertical-align:middle;text-align:center;">
+	                    	<img id="photoPic" name="photoPic" src="../Uploads/img/tou.png?9583" width="144" height="144"/>
+	                    </td>
+	                  </tr>
+	                </table>
+	            </div>
+	    		<div class="juzhong">
+	    			<a href="javascript:void(0);" onclick="swap_photo();" class="edit_tx">更换头像</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+<script type="text/javascript">
+ /*更换头像*/
+ function swap_photo(){
+ 	//var flag = false;
+ 	//var uploadPhoto = document.getElementById("uploadPhoto");
+ //	uploadPhoto.src = "http://tms.youjiaotong.com:80/tms/uc/teacher/uploadPhoto.jsp";
+ 	//uploadPhoto.style.height = "260px";
+
+	var dialog=art.dialog.open('../Photos/photoInfo',{
+		padding:0,
+		top:50,
+		width:500,
+		height:270,
+		title:'更换头像',
+		lock:true,
+		opacity: 0.2,
+		id:'uploadPhotoDialog',
+		resize:false,
+		drag:false
+	});
+
+}
+
+function setImg(data){
+	$('#photoPic').attr('src','../'+data);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>教材信息导出</title>
+<link href="__PUBLIC__/bgcss/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.ztree.core-3.5.js"></script>
+<link href="__PUBLIC__/bgcss/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0"
+            class="box_border">
+            <tr>
+            <td class="box_top pl_10 f14" align="center"><h2>中心库EXCEL单子导出</h2></td>
+            </tr>
+            <tr>
+                <td class="p5">
+                    <TABLE border=0 height=600px align=left>
+                        <TR>
+                            <TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+                                <ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+                            </TD>
+                            <TD width=770px align=left valign=top>
+                                <table width="100%"  border="0px" cellspacing="0" cellpadding="0" class="list_table">
+                                    <tr>
+                                    <th><input type="checkbox"  id="CheckAll"/></th>
+                                        <th>章节名称</th>
+                                    </tr>
+                                </table>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input type="button" id="outFile" class="btn btn82 btn_save2"  value="导出" style="display:none;" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </TD>
+                        </TR>
+                    </TABLE>
+                </td>
+            </tr>
+        </table>
+        <div class="h10"></div>
+
+
+
+
+<table id="demo" style="display:none;">
+    <tr>
+        <td><input type="checkbox" name="item" /></td>
+        <td align="center"></td>
+    </tr>
+</table>
+
+
+<script>
+$.ajaxSetup({async:true});
+$(function(){
+    var d = art.dialog.defaults;
+    d.fixed=true;
+    d.left="60%";
+    d.top="20%";
+});
+
+
+
+function closeArt(){
+    dloading.close();
+}
+
+$('#outFile').click(function(){
+    var dloading = art.dialog({id:'load',title:'导出中……',width:130,height:30,opacity:0.3,lock:true});
+    auditAll();
+    //setTimeout("art.dialog({id:'load'}).close()", 5000 );
+});
+
+function downloadRes(str,bookid){
+    //location.href='../Book/downloadRes?ran='+Math.random()+'&bookid='+bookid+'&chapterid='+chapterid;
+    //location.href='../Book/downloadRes?ran='+Math.random()+'&str='+str+'&bookid='+bookid;
+    $.get('../Book/downloadRes?ran='+Math.random()+'&str='+str+'&bookid='+bookid,function(data){art.dialog({id:'load'}).close()});
+}
+
+
+
+//全选全不选
+$("#CheckAll").click(function(){
+    $('.list_table [name=item]:checkbox').attr("checked",this.checked);
+});
+
+$(".list_table [name=item]:checkbox").live('click',function(){
+    var flag=true;
+    $('.list_table [name=item]:checkbox').each(function(){
+        if(!this.checked){
+            flag=false;
+        }
+    });
+    $('#CheckAll').attr("checked",flag);
+});
+
+
+// }
+
+//获取选中的章节id
+function auditAll(){
+    var arr = []; //定义一个数组
+    $('.list_table td input[name="item"]:checked').each(function(){
+        arr.push($(this).val());//把选中的区域放入数组
+    });
+    var str=arr.join('|');
+    if(str==''){
+        art.dialog.alert('请选择后再导出！');
+        return false;
+    }
+    //var bookid=$('#outFile').attr('bookid');
+    //location.href='../Outccm/downloadRes?ran='+Math.random()+'&str='+str;
+	$.get('../Outccm/downloadRes',{'ran':Math.random,'str':str},function(data){
+		art.dialog({id:'load'}).close();
+		location.href='../Outccm/xiazai?ran='+Math.random()+'&filename='+data;
+	});
+}
+</script>
+
+<SCRIPT type="text/javascript">
+    //异步加载的树
+    var setting = {
+        async: {
+            enable: true,
+            url:"../Outccm/getTreeNodes",
+            autoParam:["id"],
+            //otherParam:{"otherParam":"zTreeAsyncTest"},
+            dataFilter: filter
+        },
+        callback: {
+            beforeClick: function(treeId, treeNode){
+                if (treeNode.isParent){
+                    //alert('父亲：'+treeNode.id);
+                    var level=treeNode.file;//当前目录层级
+                    var maxLevel = treeNode.maxLevel;//当前目录最大级别
+                    //alert(maxLevel+level);
+                    //if(level==(maxLevel-1))
+                    if(1==1){
+                        var bookid=treeNode.pId;//父id
+                        var chapterid=treeNode.id;//id
+                        var name=treeNode.name;//章节名称
+                        $('.list_table tr:not(:eq(0))').remove();
+                        $('#outFile').show();
+                        $.get('../Outccm/getLists',{ran:Math.random(),chapterid:chapterid},function(data){
+                            if(data=='error'){
+                                art.dialog.alert('没有课本相关信息!');
+                                $('#outFile').hide();
+                                return false;
+                            }else{
+                                $('#outFile').show();
+                                $.each(data,function(k,v){
+                                    var tr=$('#demo').children('tbody').children('tr').eq(0).clone();
+                                    tr.children('td').eq(0).children('input').val(v.ks_id);
+                                    tr.children('td').eq(0).children('input').attr('name','item');
+                                    tr.children('td').eq(1).html(v.ks_name);
+                                    tr.appendTo('.list_table');
+                                });
+                                $('.list_table input[type="checkbox"]').attr('checked',false);
+                            }
+
+                        });
+                    }
+                }else {
+                    //alert('孩子：'+treeNode.name);
+                    $('.list_table tr:not(:eq(0))').remove();
+                    var bookid=treeNode.pId;//父id
+                    var chapterid=treeNode.id;//id
+                    var name=treeNode.name;//章节名称
+
+                    $('#outFile').show();
+                    var tr=$('#demo').children('tbody').children('tr').eq(0).clone();
+                    tr.children('td').eq(0).children('input').val(chapterid);
+                    tr.children('td').eq(0).children('input').attr('name','item');
+                    tr.children('td').eq(1).html(name);
+                    tr.appendTo('.list_table');
+
+                    $('.list_table input[type="checkbox"]').attr('checked',true);
+
+
+                }
+            }
+        }
+    };
+
+    function filter(treeId, parentNode, childNodes) {
+        if (!childNodes) return null;
+        for (var i=0, l=childNodes.length; i<l; i++) {
+            childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+        }
+        return childNodes;
+    }
+
+    $(document).ready(function(){
+        $.fn.zTree.init($("#tree"), setting);
+    });
+
+
+
+
+</SCRIPT>
+    </body>
+</html>

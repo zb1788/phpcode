@@ -1,0 +1,343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加课程</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+<!-- 		<tr>
+	        <td align="right">年级：</td>
+	        <td colspan="2">
+	          <select id="grade" class="select">
+			  	<option value="一年级">一年级</option>
+			  	<option value="二年级">二年级</option>
+			  	<option value="三年级">三年级</option>
+			  	<option value="四年级">四年级</option>
+			  	<option value="五年级">五年级</option>
+			  	<option value="六年级">六年级</option>
+	          </select>
+	        </td>
+		</tr>
+		<tr>
+			<td  align="right">学期：</td>
+			<td colspan="2">
+	          <select id="term" class="select">
+			  	<option value="上学期">上学期</option>
+			  	<option value="下学期">下学期</option>
+	          </select>
+	        </td>
+		</tr>
+		<tr>
+			<td align="right">版本：</td>
+			<td colspan="2">
+				<select name="version" id="version" class="select">
+		        </select>
+			</td>
+		</tr> -->
+		<tr>
+			<td align="right">阅读名：</td>
+			<td colspan="2">
+				<input type="text" id="kecheng" class="input-text" value="{$kecheng_info.kecheng}"/>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">作者：</td>
+			<td colspan="2">
+				<input type="text" id="author" class="input-text" placeholder="佚名" value="{$kecheng_info.author}"/>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">体裁：</td>
+			<td width="75px">
+			  <select id="genre" class="select">
+			  	<volist name="genre_group" id="vo">
+			  		<if condition="$vo.id eq $genre_now">
+			  		<option value="{$vo.id}" selected>{$vo.name}</option>
+					<else />
+			  		<option value="{$vo.id}">{$vo.name}</option>
+			  		</if>
+			  	</volist>
+	          </select>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">内容：</td>
+			<td width="75px">
+			  <select id="cont" class="select">
+			  	<volist name="cont_group" id="vo">
+			  		<if condition="$vo.id eq $cont_now">
+			  		<option value="{$vo.id}" selected>{$vo.name}</option>
+					<else />
+			  		<option value="{$vo.id}">{$vo.name}</option>
+			  		</if>
+			  	</volist>
+	          </select>
+			</td>
+		</tr>
+      <tr>
+        <td align="right" class="td_right">关键词：</td>
+        <td>
+		 <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>
+		<input name="keywords" id="keywords" type="text" value="{$kecheng_info.keyword}" class="input-text" /></td>
+		 <td>
+		 	<input type="button" id="keyselect" class="ext_btn btn_edit" value="选择"/>
+		 </td>
+		 </tr>
+		 </table>
+         </td>
+      </tr>
+		<tr>
+			<td align="right">背景音乐：</td>
+			<td whidth="75px">
+			  <select id="music" class="select">
+			  	<volist name="music_group" id="vo">
+			  		<if condition="$vo.id eq $groupid_now">
+			  		<option value="{$vo.id}" selected>{$vo.title}</option>
+					<else />
+			  		<option value="{$vo.id}">{$vo.title}</option>
+			  		</if>
+			  	</volist>
+	          </select>
+			</td>
+			<td>
+	          <select id="music_file" class="select">
+	          </select>
+	        </td>
+		</tr>
+		<tr>
+			<td align="right">动画模版：</td>
+			<td colspan="2">
+	          <select id="moban" class="select">
+	            <option value="jingdian">经典</option>
+	          	<option value="fengjing">风景</option>
+	          	<option value="gudian">古典</option>
+	          	<option value="hongse">红色</option>
+	          	<option value="katong">卡通</option>
+	          	<option value="lengse">冷色</option>
+	          	<option value="nuanse">暖色</option>
+	          	<option value="yansu">严肃</option>
+	          </select>
+			</td>
+		</tr>
+</table>
+<div class="h5"></div>
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+$(function(){
+	var music_group_id=$('#music').val();
+	$.get('../Yuedu/queryMusic',{ran:Math.random(),music_group_id:music_group_id},function(data){
+		$.each(data,function(k,v){
+			var aa='';
+			if(v.id=={$kecheng_info.musicid}){
+				aa='<option value="'+v.id+'" selected>'+v.music_name+'</option>';
+			}else{
+				aa='<option value="'+v.id+'">'+v.music_name+'</option>';
+			}
+			$('#music_file').append(aa);
+		});
+	});
+
+	$('#moban').val('{$kecheng_info.moban}');
+
+});
+
+
+
+
+//背景切换时，音频切换
+$('#music').change(function(){
+	$('#music_file').html('');
+	var music_group_id=$('#music').val();
+	$.get('../Yuedu/queryMusic',{ran:Math.random(),music_group_id:music_group_id},function(data){
+		$.each(data,function(k,v){
+			var aa='<option value="'+v.id+'">'+v.music_name+'</option>';
+			$('#music_file').append(aa);
+		});
+	});
+});
+
+//点击关键字输入框
+$("#keyselect").click(function() {
+	edit();//弹出选择关键字对话框
+});
+$("#keywords").click(function() {
+	edit();//弹出选择关键字对话框
+});
+
+/**
+ * 弹出关键字选择框:vid为学科分类ID
+ */
+function edit() {
+	var myDialog = $.dialog.open("tags", {
+		id : 'verson_edit',
+		title : '关键字',
+		window : 'top',
+		width : 620,
+		height : 250,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				{
+					name : '保存',
+					callback : function() {
+						var iframe = this.iframe.contentWindow;
+						var chk_value = [];//定义一个数组
+						var count=0;
+						$('input[name="tags"]:checked', iframe.document)
+								.each(function() {
+									count++;
+									chk_value.push($(this).val());
+									//$(this).removeAttr("checked");
+								});
+						var ids = chk_value.join("|");
+						var tagname = $('#tagname',iframe.document).val();
+
+						if (ids == ""&&tagname =="") {
+							dialogTips("请选择关键字");
+							return false;
+						}
+						if(tagname!==""){
+							count++;
+							ids = ids +'|'+tagname;
+						}
+						if(count>4){
+							dialogTips("最多有4个关键字");
+							return false;
+						}
+						$("#keywords").attr("value", ids);
+						return true;
+					},
+					focus : true
+				}, {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+}
+/**
+ * dialog警告框
+ * @param  {[type]} content [提示内容]
+ * @return {[type]}         [description]
+ */
+function dialogTips(content){
+  art.dialog.tips('<font color="red">' + content + '……</font>', 0.5);
+}
+
+
+function savedata(){
+	    var id={$id};
+		var kecheng=$('#kecheng').val();
+		var author=$('#author').val();
+
+
+		var music_file=$('#music_file').val();
+		var moban=$('#moban').val();
+		var genre=$('#genre').val();
+		var cont=$("#cont").val();
+		var keywords=$('#keywords').val();
+		var flag=false;
+		//alert(groupid+groupname+issuc+filename+filepath);
+
+
+		if(author == ""){
+			author = "佚名";
+		}
+		if(kecheng==''){
+			art.dialog.alert('课程不能为空！',function(){
+				$('#kecheng').focus();
+			});
+			return false;
+		}else if(keywords == ""){
+			art.dialog.alert('关键字不能为空！',function(){
+				$('#keywords').focus();
+			});
+			return false;
+		}else{
+		$.get('../Yuedu/updateKechengInfo',
+			{ran:Math.random(),
+			 	 id:id,
+				 kecheng:kecheng,
+				 author:author,
+				 moban:moban,
+				 genre:genre,
+				 cont:cont,
+				 keywords:keywords,
+				 music_file:music_file
+			},
+			function(data){
+				flag=true;
+				art.dialog.data('kechenginfos',data);
+			});
+			return flag;
+		}
+
+}
+
+
+
+/**
+ * 文件上传
+ */
+ $(function() {
+		$("#file_upload").uploadify(
+				{
+					'debug' : false,
+ 					'buttonText' : '选择文件',
+ 					'height' : 30,
+ 					'removeCompleted' : false,
+ 					'auto' : true,
+ 					'swf' : '__PUBLIC__/js/uploadify/uploadify.swf?ran='+Math.random(),
+					'uploader' : '../Upload/uploadfiles',
+					'width' : 70,
+					'fileSizeLimit' : '100MB',
+					'fileTypeExts' : '*.mp3',
+					'fileTypeDesc' : '请选择mp3文件',
+					'multi' : false,
+					'removeCompleted':true,
+					'removeTimeout':0.5,
+					'onUploadSuccess' : function(file, data, response) {
+						if (response) {
+							$('#' + file.id).find('.data').html(' 上传完毕');
+							$('.uploadify-button-text').empty();
+							$('.uploadify-button-text').append('上传完毕');
+							/**
+							issuc:1成功；2失败;
+							name:文件原名称；
+							size：文件大小；
+							ext：文件后缀名；
+							savename：上传后文件名
+							savepath：保存路径（201504/）
+							 **/
+							 //alert(data);
+							var obj = eval("(" + data + ")");
+							if (obj.issuc == 1) {
+								//alert(obj.msg.savepath+obj.msg.savename);
+								$("#filepath").attr("value",obj.msg.savepath + obj.msg.savename);
+								$("#filename").attr("value", obj.msg.name);
+								$("#issuc").attr("value", obj.issuc);
+								$('.form_table tr:last').children('td').eq(1).html(obj.msg.name);
+							}
+						}
+
+					}
+				});
+	});
+
+</script>

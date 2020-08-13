@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="place"><strong>位置</strong>：首页 &gt; 管理</div>
+<div class="container">
+
+<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+	<tr>
+		<td>
+			<input type="button" id="backManage" value="体裁管理" class="ext_btn ext_btn_submit"/>
+			<input type="button" id="conManage" value="内容管理" class="ext_btn ext_btn_error" />
+		</td>
+	</tr>
+</table>
+<div class="h10"></div>
+
+
+</div>
+
+
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+  $.ajaxSetup({async:false});
+  $('#backManage').click(function(){
+  	backs();
+  });
+  $('#conManage').click(function(){
+  	cons();
+  });
+});
+
+
+
+//体裁
+function backs(){
+	var myDialog = $.dialog.open('genre',{
+		title:'体裁分类管理',
+		window : 'top',
+		width : 520,
+		height : 350,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+}
+
+
+//内容
+function cons(){
+	var myDialog = $.dialog.open('cont',{
+		title:'内容分类管理',
+		window : 'top',
+		width : 520,
+		height : 350,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+}
+
+
+</script>

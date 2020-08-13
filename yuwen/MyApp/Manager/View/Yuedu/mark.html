@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>课程列表</title>
+<style>
+ .page{width:auto;height:25px; margin:auto; line-height:25px;}
+ .page a{display:block; height:25px; padding:0px 6px; border:solid 1px #e7e7e7; border-radius:3px; color:#333; font-family:'微软雅黑'; font-size:13px; text-align:center; text-decoration:none;float:left; margin-right:10px;min-width:20px;}
+ .page a:hover, .page a.this{background:#f7f7f7; font-weight:bold}
+</style>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jPlayer/dist/jplayer/jquery.jplayer.min.js"></script>
+</head>
+<body>
+<div class="container">
+	<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td>
+				<input type="button" id="addKecheng" value="添加备注" class="ext_btn ext_btn_submit" />
+			</td>
+		</tr>
+	</table>
+	<div class="h10"></div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" id="table_data">
+	  <tr>
+	    <th>序号</th>
+	    <th>年级</th>
+	    <th>学期</th>
+	    <th>版本</th>
+	    <th>章节</th>
+	    <th>操作</th>
+	  </tr>
+	</table>
+	<div class="h5"></div>
+	<div class="page"></div>
+</div>
+
+
+<table style="display:none;" id="demo">
+	<tr class="tr">
+		<td align="center">内容</td>
+		<td align="center">内容</td>
+		<td align="center">内容</td>
+		<td align="center">内容</td>
+		<td align="center">内容</td>
+		<td align="left">
+			<input type="button" name="edit" value="编辑" class="ext_btn ext_btn_success" />
+			<input type="button" name="del" value="删除" class="ext_btn ext_btn_error" />
+		</td>
+	</tr>
+</table>
+<div id="jplayer"></div>
+</body>
+</html>
+<script type="text/javascript">
+var pagesize=100;
+$(function(){
+  $.ajaxSetup({async:false});
+  pagelist(1,pagesize);
+
+});
+
+
+
+//添加备注
+$('#addKecheng').click(function(){
+	var myDialog = $.dialog.open('addmark?kid={$id}&type=add',{
+		id:'addKecheng',
+		title:'添加课程',
+		window : 'top',
+		width : 390,
+		height : 270,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						pagelist(1,pagesize);
+						return re;
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+});
+
+//删除课程
+$('input[name="del"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+	var aa=$(this).parent().parent();
+	if($.dialog.confirm('确定删除？',function(){
+		$.get('../Yuedu/delremark',{ran:Math.random(),id:id},function(data){
+			$(aa).remove();
+		});
+	}));
+});
+
+
+//编辑课程信息
+$('input[name="edit"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+	var aa=$(this).parent().parent();
+	var myDialog = $.dialog.open('addmark?type=edit&id='+id,{
+		title:'修改课程',
+		window : 'top',
+		width : 790,
+		height : 370,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						if(re==false){
+							art.dialog.alert('添加失败！');
+							return false;
+						}else{
+							pagelist(1,pagesize);
+							return true;
+						}
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+});
+
+
+
+
+
+//分页查询
+ function pagelist(pageCurrent,page_size){
+ 	var kid='{$id}';
+
+ 	$.get("../Yuedu/fenyeremark",
+ 			{
+ 			  ran:Math.random(),
+ 			  pageCurrent:pageCurrent,
+ 			  page_size:page_size,
+			  kid:kid
+ 			},
+ 			function(data){
+			$(".page").empty();
+			$('.list_table tr:not(:first)').remove();
+			$.each(data,function(k,v){
+				$('.page').html(k);
+				$.each(v,function(k,v){
+					//alert(v.nianji);
+					var tr=$('#demo').children('tbody').children('tr').eq(0).clone();
+					tr.children('td').eq(0).html(k+1);
+					tr.children('td').eq(1).html(v.grade);
+					tr.children('td').eq(2).html(v.term);
+					tr.children('td').eq(3).html(v.version);
+					tr.children('td').eq(4).html(v.chapter);
+					tr.find('input').attr('bid',v.id);
+					tr.appendTo('.list_table');
+				});
+			});
+ 			$("#SelectPages").change(function(){
+ 				 pagelist($("#SelectPages").val(),page_size);
+ 				 });
+ 		})
+ }
+
+
+
+</script>

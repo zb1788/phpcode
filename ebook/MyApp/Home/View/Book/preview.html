@@ -1,0 +1,296 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>预览图书</title>
+<link href="__PUBLIC__/bgcss/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.ztree.core-3.5.js"></script>
+<link href="__PUBLIC__/bgcss/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 预览
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="box_border">
+			<tr>
+				<td class="p5">
+					<TABLE border=0 height=600px align=left>
+						<TR>
+							<TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+								<ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+							</TD>
+							<TD width=770px align=left valign=top>
+								<table border=1>
+									<tr>
+										<td align="center">第<font id="shang"></font>页</td>
+										<td align="center">第<font id="xia"></font>页</td>
+									</tr>									
+									<tr>
+										<td><img id="zuotu" width="400px" height="460px" /></td>
+										<td><img id="youtu" width="400px" height="460px" /></td>
+									</tr>
+									<tr>
+										<td align="center"><img id="right" src="__PUBLIC__/bgimg/16-arrow-left.png"/></td>
+										<td align="center"><img id="left" src="__PUBLIC__/bgimg/16-arrow-right.png"/></td>
+									</tr>
+									<tr>
+										<input type="hidden" id="chapterid" value="" />
+										<input type="hidden" id="bookid" value="" />
+										<input type="hidden" id="minNum" value="" />
+										<input type="hidden" id="maxNum" value="" />
+									</tr>
+								</table>
+							</TD>
+							
+						</TR>
+					</TABLE>
+				</td>
+			</tr>
+		</table>
+		<div class="h10"></div>
+		
+	</div>
+
+</body>
+</html>
+<script>
+$.ajaxSetup({async:false});
+$(function(){
+	var d = art.dialog.defaults; 
+	d.fixed=true;
+	d.left="60%";
+	d.top="20%";
+});
+
+	<!--
+	var zTree;
+	var demoIframe;
+
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			showLine: true,
+			selectedMulti: false
+		},
+		data: {
+			simpleData: {
+				enable:true,
+				idKey: "id",
+				pIdKey: "pId",
+				rootPId: ""
+			}
+		},
+		callback: {
+			beforeClick: function(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("tree");
+				if (treeNode.isParent) {
+					//demoIframe.attr("src",treeNode.file + ".jsp");
+					zTree.expandNode(treeNode);
+					var level=treeNode.file;//当前目录层级
+					if(level==5){
+						var bookid=treeNode.id;//当前id
+						$('#bookid').val(bookid);
+						$('#chapterid').val('');
+						$.get('../Book/getPicsForBook',{ran:Math.random(),bookid:bookid},function(data){
+							if(data.data==''){
+								art.dialog.alert('没有课本相关信息，请导入后查看!');
+								return false;
+							}
+							var arr_file=[];
+							var arr_num=[];
+							$.each(data.data,function(k,v){
+								arr_file.push("../"+v.pagefile);
+								arr_num.push(v.pagenum);
+							});
+							var type='';
+							$.each(data.flag,function(k,v){
+								type=v.pageflag;
+							});
+							setPics(type,arr_file,arr_num);
+						});
+					}
+					//return false;
+				} else {
+					//demoIframe.attr("c1",treeNode.file);
+					$('#left').show();
+					$('#right').show();
+					var bookid=treeNode.pId;//父id
+					var chapterid=treeNode.id;//id
+					var name=treeNode.name;//章节名称
+					$('#chapterid').val(chapterid);
+					$('#bookid').val(bookid);
+					$.get('../Book/getPics',{ran:Math.random(),bookid:bookid,chapterid:chapterid},function(data){
+						if(data.data==''){
+							art.dialog.alert('请先设置当前章节页码!');
+							return false;
+						}
+						var arr_file=[];
+						var arr_num=[];
+						$.each(data.data,function(k,v){
+							arr_file.push("../"+v.pagefile);
+							arr_num.push(v.pagenum);
+						});
+						var type='';
+						$.each(data.flag,function(k,v){
+							type=v.pageflag;
+						});
+						setPics(type,arr_file,arr_num);
+					});
+					return true;
+					
+	
+				}
+			}
+		}
+	};
+	
+	var zNodes=[
+	            {$json}
+	           ];
+// 	var zNodes =[
+//		
+// 			{id:1, pId:0, name:"[core] 基本功能 演示",file:"test"},
+// 			{id:101, pId:1, name:"最简单的树 --  标准 JSON 数据", file:"test"},
+//
+// 			{id:2, pId:0, name:"[excheck] 复/单选框功能 演示",file:"test2"},
+// 			{id:201, pId:2, name:"Checkbox 勾选操作", file:"test2"},
+//		
+//
+// 	];
+		var t = $("#tree");
+		t = $.fn.zTree.init(t, setting, zNodes);
+		demoIframe = $("#testIframe");
+		//demoIframe.bind("load", loadReady);
+	
+	//-->
+
+//设置页码
+function setPics(type,arr_file,arr_num){
+	$('#zuotu').removeAttr('src');
+	$('#youtu').removeAttr('src');
+	$("#shang").html('');
+	$('#xia').html('');	
+	$('#minNum').val(arr_num[0]);
+	$('#maxNum').val(arr_num[(arr_num.length-1)]);
+	if(type==0){
+		//偶数在左
+		if(arr_num[0]%2==0){
+			$("#shang").html(arr_num[0]);
+			$('#xia').html(arr_num[1]);
+			$('#zuotu').attr('src',arr_file[0]);
+			$('#youtu').attr('src',arr_file[1]);
+			$('#left').attr('bid',arr_num[0]);
+			$('#right').attr('bid',arr_num[1]);
+		}else{
+			$('#xia').html(arr_num[0]);
+			$('#youtu').attr('src',arr_file[0]);
+			$('#right').attr('bid',arr_num[0]);
+			$('#left').attr('bid',(arr_num[0]-1));
+		}
+	}else{
+		//奇数在左
+		if(arr_num[0]%2==0){
+			$('#xia').html(arr_num[0]);
+			$('#youtu').attr('src',arr_file[0]);
+			$('#right').attr('bid',arr_num[0]);
+			$('#left').attr('bid',(arr_num[0]-1));
+		}else{
+			$("#shang").html(arr_num[0]);
+			$('#xia').html(arr_num[1]);
+			$('#zuotu').attr('src',arr_file[0]);
+			$('#youtu').attr('src',arr_file[1]);
+			$('#left').attr('bid',arr_num[0]);
+			$('#right').attr('bid',arr_num[1]);
+		}
+	}
+}
+
+$('#left').click(function(){
+	$('#right').show();
+	var pageleft=$('#left').attr('bid');//左边原来的页码数
+	var pageright=$('#right').attr('bid');//右边原来的页码数
+	var page1=(parseInt(pageleft)+2);//翻页后左边的当前页码
+
+	var minNum=$('#minNum').val();//最小页码
+	var maxNum=$('#maxNum').val();//最大页码
+	if(pageleft>=Number(maxNum)||pageright>=Number(maxNum)){
+		art.dialog.alert('到头了！');
+		return false;
+	}
+	
+	$('#left').attr('bid',page1);
+	$('#right').attr('bid',(parseInt(pageright)+2));
+	$('#shang').html(parseInt(pageleft)+2);
+	$('#xia').html(parseInt(pageright)+2);
+	var chapterid=$('#chapterid').val();//章节ID
+	var bookid=$('#bookid').val();//书本ID
+	var flag=1;//向左滑
+	$.get('../Book/changepage',{ran:Math.random(),pageleft:pageleft,chapterid:chapterid,bookid:bookid,flag:flag},function(data){
+		var arr=[];
+		arr=data.split('|');
+		
+		$('#zuotu').attr('src','../'+arr[0]);
+		$('#youtu').attr('src','../'+arr[1]);		
+		
+		if(arr[0]==''){
+			//$('#left').hide();
+			$('#zuotu').removeAttr('src');
+			return false;
+		}
+		if(arr[1]==''){
+			//$('#left').hide();
+			$('#youtu').removeAttr('src');
+			return false;
+		}		
+	});
+	
+});
+$('#right').click(function(){
+	$('#left').show();
+	var pageleft=$('#left').attr('bid');//左边原来的页码数
+	var pageright=$('#right').attr('bid');//右边原来的页码数
+	var page1=(parseInt(pageleft)-2);
+
+	var minNum=$('#minNum').val();//最小页码
+	var maxNum=$('#maxNum').val();//最大页码
+	//alert(pageleft+'|'+minNum+'|'+pageright);
+	if(pageleft<=Number(minNum)||pageright<=Number(minNum)){
+		art.dialog.alert('到头了！');
+		return false;
+	}	
+	$('#left').attr('bid',page1);
+	$('#right').attr('bid',(parseInt(pageright)-2));
+	$('#shang').html(parseInt(pageleft)-2);
+	$('#xia').html(parseInt(pageright)-2);	
+	var chapterid=$('#chapterid').val();//章节ID
+	var bookid=$('#bookid').val();//书本ID
+	var flag=2;//向左滑
+	$.get('../Book/changepage',{ran:Math.random(),pageleft:pageleft,chapterid:chapterid,bookid:bookid,flag:flag},function(data){
+		var arr=[];
+		arr=data.split('|');
+		
+		$('#zuotu').attr('src','../'+arr[0]);
+		$('#youtu').attr('src','../'+arr[1]);		
+		
+		if(arr[0]==''){
+			//$('#right').hide();
+			$('#zuotu').attr('dsds','ss');
+			$('#zuotu').removeAttr('src');
+			return false;
+		}
+		if(arr[1]==''){
+			//$('#right').hide();
+			$('#youtu').removeAttr('src');
+			return false;
+		}		
+		
+
+	});
+	
+});
+</script>

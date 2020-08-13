@@ -1,0 +1,781 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>课程内容管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="/Public/Manager/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ue/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ue/ueditor.all.min.js"></script>
+<script type="text/javascript" src="/Public/Manager/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="container">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+		<tr>
+			<td class="box_top pl_10 f14">
+				<input type="hidden" id="kecheng_id" value="{$kecheng_id}" />
+				<input type="button" id="kewenneirong" value="课文内容" class="ext_btn ext_btn_submit"/>
+				<input type="button" id="ciyushiyi" value="词语释义" class="ext_btn ext_btn_submit"/>
+				<input type="button" id="zhongdianyuduan" value="重点语段" class="ext_btn ext_btn_submit"/>
+				<input type="button" id="jingcaiyuduan" value="精彩语段" class="ext_btn ext_btn_submit"/>
+				<input type="button" id="yujushiyi" value="语句释义" class="ext_btn ext_btn_submit"/>
+			</td>
+		</tr>
+	</table>
+	<div class="h5"></div> 
+	<!--课文内容 beg -->
+	<div id="kewenneirong_table" style="display:none;">
+	    <p> 
+	    	<script id="editor" type="text/plain" style="width:978px;height:300px;">{$text_info.text_content}</script>
+	  	</p>
+		<div class="h5"></div> 
+		<p>
+			<font size="3">请录入识记词汇:</font>(词汇之间用顿号分割)
+		</p>
+		<div class="h5"></div>
+		<p>
+			<textarea id="words" style="width:978px;height:70px;">{$text_info.words}</textarea>
+		</p>
+	</div>
+	<!--课文内容 end -->
+	<!--词语释义 beg -->
+	<div id="ciyushiyi_table" style="display:none;">
+		<p>
+			<font size="3">请录入词语释义:</font>&nbsp;&nbsp;<input type="button" id="addWord" value="添加词语" class="ext_btn ext_btn_error"/>&nbsp;&nbsp;(按顺序添加)
+		</p>
+		<div class="h5"></div>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
+		  <tr>
+		    <th>序号</th> 
+		    <th>词语</th> 
+		    <th>释义</th> 
+		    <th>操作</th>
+		  </tr> 
+		  <volist name="word_info" id="vo">
+		  	<tr class="tr">
+		  		<td >【{$vo.sortid}】</td>
+				<td >{$vo.word}</td>
+				<td style="text-align:left;">{$vo.explain}</td>
+				<td>
+					<input type="button" name="wordedit" bid="{$vo.id}" value="编辑" class="ext_btn ext_btn_error" />
+					<input type="button" name="worddel" bid="{$vo.id}" value="删除" class="ext_btn ext_btn_error" />
+				</td>
+		  	</tr>
+		  </volist>
+		</table>
+	</div>
+	<!--词语释义end -->
+	<!--重点语段 beg -->
+	<div id="zhongdianyuduan_table" style="display:none;">
+		<p>
+			<font size="3">请录入重点语段:</font>&nbsp;&nbsp;<input type="button" id="addzhongdian" value="添加节" class="ext_btn ext_btn_error"/>
+		</p>
+		<div class="h5"></div>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
+		  <tr>
+		    <th style="width:83px;display:none;">节数</th> 
+		    <th style="width:270px;">课文内容</th> 
+		    <th style="width:350px;">导读</th> 
+		    <th style="width:135px;">起始时间</th>
+		    <th>操作</th>
+		  </tr> 
+		  <volist name="zhongdian_info" id="vo">
+		  	<tr class="tr">
+		  		<td style="text-align:left;display:none;">{$vo.step}</td>
+				<td style="text-align:left;">{$vo.content}</td>
+				<td style="text-align:left;">{$vo.tag}</td>
+				<td style="text-align:left;">{$vo.time}</td>
+				<td>
+					<input type="button" name="" bid="{$vo.id}" filepath="uploads/{$filepath}"  dates="{$vo.time}" value="试听" class="ext_btn ext_btn_error" onclick="playmp3(this);"/> 
+					<input type="button" name="zhongdianedit" bid="{$vo.id}" value="编辑" class="ext_btn ext_btn_error" />
+					<input type="button" name="zhongdiandel" bid="{$vo.id}" value="删除" class="ext_btn ext_btn_error" />
+				</td>
+		  	</tr>
+		  </volist>
+		</table>
+	</div>
+	<!--重点语段end -->	
+	<!--精彩语段 beg -->
+	<div id="jingcaiyuduan_table" style="display:none;">
+		<p>
+			<font size="3">请录入精彩语段:</font>&nbsp;&nbsp;<input type="button" id="addjingcai" value="添加语句" class="ext_btn ext_btn_error"/>
+		</p>
+		<div class="h5"></div>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
+		  <tr>
+		    <th>内容</th> 
+		    <th>操作</th>
+		  </tr> 
+		  <volist name="jingcai_info" id="vo">
+		  	<tr class="tr">
+		  		<td style="text-align:left;">{$vo.section}</td>
+				<td style="width:110px;">
+					<input type="button" name="jingcaiedit" bid="{$vo.id}" value="编辑" class="ext_btn ext_btn_error" />
+					<input type="button" name="jingcaidel" bid="{$vo.id}" value="删除" class="ext_btn ext_btn_error" />
+				</td>
+		  	</tr>
+		  </volist>
+		</table>
+	</div>
+	<!--精彩语段end -->		
+	<!--语句释义beg -->
+		<div id="yujushiyi_table" style="display:none;">
+		<p>
+			<font size="3">请录入语句释义:</font>&nbsp;&nbsp;<input type="button" id="addshiyi" value="添加文言" class="ext_btn ext_btn_error"/>
+		</p>
+		<div class="h5"></div>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table">
+		  <tr>
+		    <th>语句</th> 
+		    <th>释义</th> 
+		    <th>操作</th>
+		  </tr> 
+		  <volist name="guwen_info" id="vo">
+		  	<tr class="tr">
+		  		<td style="text-align:left;">{$vo.sentence}</td>
+				<td style="text-align:left;">{$vo.description}</td>
+				<td style="width:110px;">
+					<input type="button" name="guwenedit" bid="{$vo.id}" value="编辑" class="ext_btn ext_btn_error" />
+					<input type="button" name="guwendel" bid="{$vo.id}" value="删除" class="ext_btn ext_btn_error" />
+				</td>
+		  	</tr>
+		  </volist>
+		</table>
+	</div>
+	<!--语句释义end -->
+</div> 
+<!--词语demo区域 beg-->
+<table id="demo_word" style="display:none;">
+	<tr class="tr">
+		<td>序号</td>
+		<td>词语</td>
+		<td>释义</td>
+		<td>
+			<input type="button" name="wordedit" value="编辑" class="ext_btn ext_btn_error" />
+			<input type="button" name="worddel" value="删除" class="ext_btn ext_btn_error" />
+		</td>
+	</tr>
+</table>
+
+<!--词语demo区域end -->
+
+<!--重点语段demo区域 beg-->
+<table id="demo_zhongdian" style="display:none;">
+	<tr class="tr">
+		<td style="display:none;">节数</td>
+		<td>课文内容</td>
+		<td>导读</td>
+		<td>起始时间</td>
+		<td>
+			<input type="button" name="zhongdianplay"  value="试听" class="ext_btn ext_btn_error" />
+			<input type="button" name="zhongdianedit" value="编辑" class="ext_btn ext_btn_error" />
+			<input type="button" name="zhongdiandel" value="删除" class="ext_btn ext_btn_error" />
+		</td>
+	</tr>
+</table>
+
+<!--重点语段demo区域end -->
+
+<!--精彩语段demo区域 beg-->
+<table id="demo_jingcai" style="display:none;">
+	<tr class="tr">
+		<td>内容</td>
+		<td>
+			<input type="button" name="jingcaiedit" value="编辑" class="ext_btn ext_btn_error" />
+			<input type="button" name="jingcaidel" value="删除" class="ext_btn ext_btn_error" />
+		</td>
+	</tr>
+</table>
+
+<!--精彩语段demo区域end -->
+
+<!--古文释义demo区域 beg-->
+<table id="demo_guwen" style="display:none;">
+	<tr class="tr">
+		<td>语句</td>
+		<td>释义</td>
+		<td>
+			<input type="button" name="guwenedit" value="编辑" class="ext_btn ext_btn_error" />
+			<input type="button" name="guwendel" value="删除" class="ext_btn ext_btn_error" />
+		</td>
+	</tr>
+</table>
+
+<!--古文释义demo区域end -->
+<div id="play" align="center">
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+$(function(){
+	var ue = UE.getEditor('editor');//ueditor插件
+	$('#kewenneirong_table').show();//默认展示课文内容模块
+	$('#kewenneirong').attr('class','ext_btn ext_btn_error');
+	if({$mobanid}==1){
+		$('#yujushiyi').hide();
+	}
+	//点击课文内容按钮展示相关内容
+	$('#kewenneirong').click(function(){
+		$('#kewenneirong').attr('class','ext_btn ext_btn_error');
+		$('#kewenneirong').siblings().attr('class','ext_btn ext_btn_submit');
+		$('#kewenneirong_table').show();
+		$('#ciyushiyi_table').hide();
+		$('#zhongdianyuduan_table').hide();
+		$('#jingcaiyuduan_table').hide();
+		$('#yujushiyi_table').hide();
+	});
+	//点击词语释义按钮
+	$('#ciyushiyi').click(function(){
+		$('#ciyushiyi').attr('class','ext_btn ext_btn_error');
+		$('#ciyushiyi').siblings().attr('class','ext_btn ext_btn_submit');
+		$('#ciyushiyi_table').show();
+		$('#kewenneirong_table').hide();
+		$('#zhongdianyuduan_table').hide();
+		$('#jingcaiyuduan_table').hide();
+		$('#yujushiyi_table').hide();
+	});
+	//点击重点语段按钮
+	$('#zhongdianyuduan').click(function(){
+		$('#zhongdianyuduan').attr('class','ext_btn ext_btn_error');
+		$('#zhongdianyuduan').siblings().attr('class','ext_btn ext_btn_submit');		
+		$('#zhongdianyuduan_table').show();
+		$('#ciyushiyi_table').hide();
+		$('#kewenneirong_table').hide();
+		$('#jingcaiyuduan_table').hide();
+		$('#yujushiyi_table').hide();
+	});
+	//点击精彩语段按钮
+	$('#jingcaiyuduan').click(function(){
+		$('#jingcaiyuduan').attr('class','ext_btn ext_btn_error');
+		$('#jingcaiyuduan').siblings().attr('class','ext_btn ext_btn_submit');		
+		$('#jingcaiyuduan_table').show();
+		$('#zhongdianyuduan_table').hide();
+		$('#ciyushiyi_table').hide();
+		$('#kewenneirong_table').hide();
+		$('#yujushiyi_table').hide();
+	});
+	//点击语句释义按钮
+	$('#yujushiyi').click(function(){
+		$('#yujushiyi').attr('class','ext_btn ext_btn_error');
+		$('#yujushiyi').siblings().attr('class','ext_btn ext_btn_submit');	
+		$('#yujushiyi_table').show();	
+		$('#jingcaiyuduan_table').hide();
+		$('#zhongdianyuduan_table').hide();
+		$('#ciyushiyi_table').hide();
+		$('#kewenneirong_table').hide();
+	});
+	//点击添加词语按钮
+	$('#addWord').click(function(){
+		var myDialog=$.dialog.open('addWord?id={$kecheng_id}',{
+			id:'tianjiaword',
+			title:'添加词语',
+			window : 'top',
+			width : 460,
+			height : 100,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'继续添加',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('添加失败！');
+					}else{
+						var wordid=art.dialog.data('wordid');
+						insertFileinfo(wordid);
+						iframe.document.getElementById('word').value='';
+						iframe.document.getElementById('explain').value='';
+					}
+				  	return false;
+				},
+				focus:true
+			 },
+			 {
+				name : '保存',
+				callback : function() {
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('添加失败！');
+					}else{
+						var wordid=art.dialog.data('wordid');
+						insertFileinfo(wordid);
+					}
+					return re;
+				},
+				focus : false
+			} ]
+		});
+	});
+	//单词删除
+	$('input[name="worddel"]').live('click',function(){
+		var id=$(this).attr('bid');//单词的ID
+		var aa=$(this).parent().parent();
+		$.get('../Kewen/delword',{ran:Math.random(),id:id},function(data){
+			$(aa).remove();
+		});
+	});
+	//单词编辑
+	$('input[name="wordedit"]').live('click',function(){
+		var id=$(this).attr('bid');//单词的ID
+		var aa=$(this).parent().parent();
+		var myDialog=$.dialog.open('editWord_info?wordid='+id,{
+			title:'编辑词语',
+			window : 'top',
+			width : 450,
+			height : 130,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'确定',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					//更新词语信息
+					var wordinfo=art.dialog.data('wordinfo');
+					var arr=wordinfo.split('|');
+					$(aa).children('td').eq(0).html('【'+arr[2]+'】');
+					$(aa).children('td').eq(1).html(arr[0]);
+					$(aa).children('td').eq(2).html(arr[1]);
+				  	return re;
+				},
+				focus:true
+			 },
+			 {
+				name : '关闭',
+				callback : function() {
+					return true;
+				},
+				focus : false
+			} ]
+		});
+
+		
+	});	
+	
+	//点击添加重点语段按钮
+	$('#addzhongdian').click(function(){
+		var myDialog=$.dialog.open('addZhongdian?id={$kecheng_id}&mobanid={$mobanid}',{
+			id:'tianjiaword',
+			title:'添加节',
+			window : 'top',
+			width : 600,
+			height : 300,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'继续添加',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('时间段不能重复,添加失败！');
+					}else{
+						var step_key_id=art.dialog.data('step_key_id');
+						insertZhongdianinfo(step_key_id);
+						iframe.document.getElementById('step').value='';
+						iframe.document.getElementById('textContent').value='';
+						iframe.document.getElementById('textGuide').value='';
+						iframe.document.getElementById('timeStep').value='';
+					}
+				  	return false;
+				},
+				focus:true
+			 },
+			 {
+				name : '保存',
+				callback : function() {
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('添加失败！');
+					}else{
+						var step_key_id=art.dialog.data('step_key_id');
+						insertZhongdianinfo(step_key_id);
+					}
+					return re;
+				},
+				focus : false
+			} ]
+		});
+	});	
+	//重点语段删除
+	$('input[name="zhongdiandel"]').live('click',function(){
+		var id=$(this).attr('bid');//重点语段的ID
+		var aa=$(this).parent().parent();
+		$.get('../Kewen/delzhongdian',{ran:Math.random(),id:id},function(data){
+			$(aa).remove();
+		});
+	});
+	//重点语段编辑
+	$('input[name="zhongdianedit"]').live('click',function(){
+		var id=$(this).attr('bid');//重点语段的ID
+		var aa=$(this).parent().parent();
+		var myDialog=$.dialog.open('editZhongdian?id='+id+'&mobanid={$mobanid}',{
+			title:'编辑语段',
+			window : 'top',
+			width : 600,
+			height : 300,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'确定',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					//更新词语信息
+					var step_key_info=art.dialog.data('step_key_info');
+					var arr=step_key_info.split('|');
+					$(aa).children('td').eq(0).html(arr[0]);
+					$(aa).children('td').eq(1).html(arr[1]);
+					$(aa).children('td').eq(2).html(arr[2]);
+					$(aa).children('td').eq(3).html(arr[3]);
+				  	return re;
+				},
+				focus:true
+			 },
+			 {
+				name : '关闭',
+				callback : function() {
+					return true;
+				},
+				focus : false
+			} ]
+		});
+
+		
+	});	
+	
+
+	
+	
+	
+	//点击添加精彩语句按钮
+	$('#addjingcai').click(function(){
+		var myDialog=$.dialog.open('addJingcai?id={$kecheng_id}',{
+			id:'tianjiaword',
+			title:'添加语句',
+			window : 'top',
+			width : 600,
+			height : 100,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'继续添加',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('添加失败！');
+					}else{
+						var jingcai_id=art.dialog.data('jingcai_id');
+						insertJingcaiinfo(jingcai_id);
+						iframe.document.getElementById('textContent').value='';
+					}
+				  	return false;
+				},
+				focus:true
+			 },
+			 {
+				name : '保存',
+				callback : function() {
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('添加失败！');
+					}else{
+						var jingcai_id=art.dialog.data('jingcai_id');
+						insertJingcaiinfo(jingcai_id);
+					}
+					return re;
+				},
+				focus : false
+			} ]
+		});
+	});	
+	//精彩语段删除
+	$('input[name="jingcaidel"]').live('click',function(){
+		var id=$(this).attr('bid');//精彩语段的ID
+		var aa=$(this).parent().parent();
+		$.get('../Kewen/deljingcai',{ran:Math.random(),id:id},function(data){
+			$(aa).remove();
+		});
+	});
+	//精彩语段编辑
+	$('input[name="jingcaiedit"]').live('click',function(){
+		var id=$(this).attr('bid');//精彩语段的ID
+		var aa=$(this).parent().parent();
+		var myDialog=$.dialog.open('editJingcai?id='+id,{
+			title:'编辑语段',
+			window : 'top',
+			width : 600,
+			height : 100,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'确定',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					//更新词语信息
+					var jingcai_section=art.dialog.data('jingcai_section');
+					$(aa).children('td').eq(0).html(jingcai_section);
+				  	return re;
+				},
+				focus:true
+			 },
+			 {
+				name : '关闭',
+				callback : function() {
+					return true;
+				},
+				focus : false
+			} ]
+		});
+
+		
+	});	
+	
+	//点击添加语句释义按钮
+	$('#addshiyi').click(function(){
+		var myDialog=$.dialog.open('addShiyi?id={$kecheng_id}',{
+			title:'添加文言',
+			window : 'top',
+			width : 600,
+			height : 100,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'继续添加',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('添加失败！');
+					}else{
+						var guwen_id=art.dialog.data('guwen_id');
+						insertGuweninfo(guwen_id);
+						iframe.document.getElementById('sentence').value='';
+						iframe.document.getElementById('description').value='';
+					}
+				  	return false;
+				},
+				focus:true
+			 },
+			 {
+				name : '保存',
+				callback : function() {
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					if(re==false){
+						art.dialog.alert('添加失败！');
+					}else{
+						var guwen_id=art.dialog.data('guwen_id');
+						insertGuweninfo(guwen_id);
+					}
+					return re;
+				},
+				focus : false
+			} ]
+		});
+	});	
+	//古文释义删除
+	$('input[name="guwendel"]').live('click',function(){
+		var id=$(this).attr('bid');//精彩语段的ID
+		var aa=$(this).parent().parent();
+		$.get('../Kewen/delguwen',{ran:Math.random(),id:id},function(data){
+			$(aa).remove();
+		});
+	});
+	//古文释义编辑
+	$('input[name="guwenedit"]').live('click',function(){
+		var id=$(this).attr('bid');//精彩语段的ID
+		var aa=$(this).parent().parent();
+		var myDialog=$.dialog.open('editGuwen?id='+id,{
+			title:'编辑语段',
+			window : 'top',
+			width : 600,
+			height : 100,
+			lock : true,
+			opacity : 0.3,
+			button : [
+			 {
+			 	name:'确定',
+				callback:function(){
+					var iframe = this.iframe.contentWindow;
+					var re = iframe.savedata();//调用窗口的方法
+					//更新词语信息
+					var guwen_section=art.dialog.data('guwen_section');
+					var arr=guwen_section.split('|');
+					$(aa).children('td').eq(0).html(arr[0]);
+					$(aa).children('td').eq(1).html(arr[1]);
+				  	return re;
+				},
+				focus:true
+			 },
+			 {
+				name : '关闭',
+				callback : function() {
+					return true;
+				},
+				focus : false
+			} ]
+		});
+
+		
+	});	
+	
+	
+	
+});
+
+//重点度播放mp3
+function playmp3(obj){
+	var filepath = $(obj).attr('filepath');
+	var dates = $(obj).attr('dates');
+	//alert(filepath+'||'+dates);
+	var times = dates.split('-');
+	var st = times[0];
+	var end = times[1];
+	
+	
+	//var html = '<embed id="aaa" src="__PUBLIC__/play.swf" allowFullScreen="true" allowFullScreenInteractive="true" wmode="transparent" quality="high" width="1" height="1" align="L" scale="noborder" flashvars="'+filepath+'&startTime='+st+'&endTime='+end+'&mp3name=aaaa" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" ></embed>';
+	//alert(html);
+	//$('#play').html(html);
+		var myDialog = art.dialog.open('play?ran='+Math.random()+'&filepath='+filepath+'&st='+st+'&end='+end,{
+			title:'新页面标题',
+			window:'top',
+			width:320,
+			height:127,
+			lock:true,
+			opacity:0.3,
+			button:[
+			{
+				name:'关闭',
+				callback:function(){
+				},
+				focus:false
+			}
+			]
+		});
+	
+	
+	
+	
+	
+}
+
+
+
+//保存课文内容
+function savedata(){
+	var ue = UE.getEditor('editor');//ueditor插件
+	var tncontent=ue.getContent();//获取编辑器内容
+	var words=$('#words').val();
+	var kecheng_id={$kecheng_id};
+	//alert(tncontent);
+	if(tncontent==''){
+		art.dialog.alert('课文内容不能为空!');
+	}else if(words==''){
+		art.dialog.alert('识记词汇不能为空！');
+	}else{
+		$.post('../Kewen/addKewen',
+		{
+			ran:Math.random(),
+			kecheng_id:kecheng_id,
+			tncontent:tncontent,
+			words:words
+		},
+		function(data){
+			
+		});
+	}
+	return true;
+}
+//将添加的单词信息展示到当前页面
+function insertFileinfo(id){
+	$.get('../Kewen/queryWordInfo',{ran:Math.random(),id:id},function(data){
+		var tr=$('#demo_word').children('tbody').children('tr').eq(0).clone();
+		tr.children('td').eq(0).html('【'+data.sortid+'】');
+		tr.children('td').eq(1).html(data.word);
+		tr.children('td').eq(2).html(data.explain);
+		tr.find('input').attr('bid',data.id);
+		tr.appendTo('#ciyushiyi_table .list_table');
+	});
+}
+
+//将添加的重点语段信息展示到当前页面
+function insertZhongdianinfo(id){
+	$.get('../kewen/queryTextInfo',{ran:Math.random(),id:id},function(data){
+		var tr=$('#demo_zhongdian').children('tbody').children('tr').eq(0).clone();
+		tr.children('td').eq(0).html(data.step);
+		tr.children('td').eq(1).html(data.content);
+		tr.children('td').eq(2).html(data.tag);
+		tr.children('td').eq(3).html(data.time);
+		tr.find('input').attr('bid',data.id);
+		tr.appendTo('#zhongdianyuduan_table .list_table');
+	});
+}
+//添加的精彩语句展示到当前页面
+function insertJingcaiinfo(id){
+	$.get('../kewen/queryJingcaiInfo',{ran:Math.random(),id:id},function(data){
+		var tr=$('#demo_jingcai').children('tbody').children('tr').eq(0).clone();
+		tr.children('td').eq(0).html(data.section);
+		tr.find('input').attr('bid',data.id);
+		tr.appendTo('#jingcaiyuduan_table .list_table');
+	});	
+}
+//添加的古文释义展示到当前页面
+function insertGuweninfo(id){
+	$.get('../kewen/queryGuwenInfo',{ran:Math.random(),id:id},function(data){
+		var tr=$('#demo_guwen').children('tbody').children('tr').eq(0).clone();
+		tr.children('td').eq(0).html(data.sentence);
+		tr.children('td').eq(1).html(data.description);
+		tr.find('input').attr('bid',data.id);
+		tr.appendTo('#yujushiyi_table .list_table');
+	});	
+}
+
+
+UE.registerUI('myblockquote',function(editor,uiName){
+    editor.registerCommand(uiName,{
+        execCommand:function(){
+            this.execCommand('inserthtml',"【】");
+        }
+    }); 
+    var btn = new UE.ui.Button({
+        name:uiName,
+        title:'插入中括号',
+        cssRules :"background-position: -660px -40px;",
+        onclick:function () {
+           editor.execCommand(uiName);
+        }
+    });
+    editor.addListener('selectionchange', function () {
+        var state = editor.queryCommandState('blockquote');
+        if (state == -1) {
+            btn.setDisabled(true);
+            btn.setChecked(false);
+        } else {
+            btn.setDisabled(false);
+            btn.setChecked(state);
+        }
+    });
+    return btn;
+});
+</script>

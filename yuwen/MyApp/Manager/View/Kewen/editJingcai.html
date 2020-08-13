@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑精彩语段</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td align="left">语句内容：</td>
+			<td><textarea id="textContent" style="width:485px;height:66px;" class="textarea">{$data.section}</textarea></td>	
+		</tr>
+</table>
+<div class="h5"></div> 
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+$(function(){
+	
+});
+
+
+
+function savedata(){
+	    var jingcaiId={$data.id};
+		var textContent=$('#textContent').val();
+		var flag=false;
+		if(textContent==''){
+			art.dialog.alert('内容不能为空！',function(){
+				$('#textContent').focus();
+			});
+			return false;			
+		}else{
+		$.get('../kewen/editText_jingcai',
+			{ran:Math.random(),
+			 jingcaiId:jingcaiId,
+			 textContent:textContent
+			},
+			function(data){
+				art.dialog.data('jingcai_section', data);
+			});
+			return true;
+		}
+
+}
+
+
+
+</script>

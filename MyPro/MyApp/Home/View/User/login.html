@@ -1,0 +1,54 @@
+<!DOCTYPE public>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>artDialog的用法</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 用户登录弹窗
+	</div>
+	<div class="container">
+		<input type="button"  id="login" class="btn btn82 btn_save2" value="登录" />
+	</div>
+<script>
+$('#login').click(function(){
+	art.dialog.open("../User/loginpage",
+	{
+		title:"登录",
+		window:top,
+		lock:true,
+		opacity:0.3,
+		width:450,
+		height:490,
+		button: [
+		{
+			name:"登录",
+			callback:function(){
+				var iframe = this.iframe.contentWindow;
+				var re=iframe.submit();
+				location.reload();
+				return re;
+				}
+		},
+		{
+			name:"注册",
+			callback:function(){
+				location.href="../User/regist";
+				}
+		}
+		]
+	});
+});
+</script>
+</body>
+</html>

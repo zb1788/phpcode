@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>版本列表</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jPlayer/dist/jplayer/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script> 
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="place"><strong>位置</strong>：首页 &gt; 生字信息管理</div>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="box_top pl_10 f14"><strong>搜索</strong></td> 
+  </tr>
+  <tr>
+    <td class="pl_5"><table border="0" cellspacing="0" cellpadding="0" class="form_table">
+      <tr>
+        <td width="50" align="right">生字：</td>
+        <td>
+          <input type="text" id="szi" name="szi" class="input-text" size="10" maxlength="1" />
+        </td>
+        <td>
+          &nbsp;<input type="button" id="btn_so" name="btn_so" class="btn btn82 btn_search" value="查询" /></td>
+        <td>
+          &nbsp;<input type="button" id="btn_addnew"  name="btn_addnew" class="btn btn82 btn_add" value="添加" />
+        </td>
+        <td>
+          &nbsp;<input type="button" id="btn_addall"  name="btn_addnew" class="btn" value="一键生成生字JSON" />
+        </td>
+      </tr>
+    </table>
+    </td> 
+  </tr> 
+</table>
+<div class="h5"></div> 
+<div id="msginfo" class="red"></div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border" id="dataedit">
+  <tr>
+    <td class="box_top pl_10 f14"><strong>生字基本信息编辑</strong></td> 
+  </tr>
+  <tr>
+    <td class="p5">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+      <tr>
+        <td class="td_right">字：</td>
+        <td>
+          <input type="text" name="zi" id="zi" class="input-text" maxlength="1" size="10" />&nbsp;
+          偏旁：<input type="text" name="pianpang" id="pianpang" class="input-text" size="10" maxlength="1" />&nbsp;
+          笔画数：<input type="text" name="name" id="bihuashu" class="input-text" size="5" maxlength="2" />&nbsp;
+		  结构：<select class="select" name="jiegou" id="jiegou">
+            <option value="独体字">独体字</option>
+            <option value="上下">上下</option>
+            <option value="上中下">上中下</option>
+            <option value="左右">左右</option>
+            <option value="左中右">左中右</option>
+            <option value="半包围">半包围</option>
+            <option value="全包围">全包围</option>
+            <option value="嵌套">嵌套</option>
+            <option value="品字体">品字体</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="td_right">笔顺：</td>
+        <td><input type="text" name="bishun" id="bishun" class="input-text" size="60" /></td>
+      </tr>
+      <tr>
+        <td class="td_right">识字方法：</td>
+        <td><input type="text" name="shizi" id="shizi" class="input-text" size="60" /></td>
+      </tr>
+      <tr>
+        <td class="td_right">写字指导：</td> 
+        <td><input type="text" name="xiezi" id="xiezi" class="input-text" size="60" /></td>
+      </tr>
+      <tr>
+        <td class="td_right">笔顺动画：</td> 
+        <td>
+          <span id="upinfo"></span>
+          <input type="hidden" id="bihuaswf" name="bihuaswf" />
+          <input id="btn_flash" type="button" value="查看动画" class="ext_btn ext_btn_submit" />
+        </td>
+      </tr>
+      <tr>
+        <td class="td_right">&nbsp;</td>
+        <td>
+          <div id="queue"></div>
+          <input id="file_upload" name="file_upload" type="file" multiple="false"> 
+        </td>
+      </tr>
+      <tr>
+        <td class="td_right">&nbsp;</td>
+        <td>
+          <input type="button" id="btn_save" class="btn btn82 btn_save2" value="保存" /> 
+          <input type="hidden" id="id" name="id" />
+        </td>
+      </tr>
+    </table>
+    </td> 
+  </tr> 
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border" style="display:none" id="table_add">
+  <tr>
+    <td class="box_top pl_10 f14">
+      <strong>生字拼音信息</strong>&nbsp;&nbsp;
+      <input type="submit" id="btn_addpinyin" value="添加拼音" class="ext_btn ext_btn_submit" />
+    </td> 
+  </tr>
+</table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" style="display:none" id="table_data">
+  <tr>
+    <th width="20" align="center">&nbsp;</th> 
+    <th width="80">拼音</th>  
+    <th width="40">WAV</th>    
+    <th width="60">组词1</th>
+    <th width="60">组词2</th>
+    <th width="60">组词3</th>
+    <th width="150">字义1</th>
+    <th width="150">字义2</th>
+    <th width="150">字义3</th>
+    <th width="150">造句1</th>
+    <th width="150">造句2</th>
+    <th width="150">造句3</th>
+    <th width="120">操作</th> 
+    <th width=""></th> 
+  </tr>
+</table> 
+<table style="display:none" id="table_demo"> 
+  <tr class="tr">
+    <td align="center">1</td>
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td> 
+    <td align="center">1</td>
+    <td align="center">1</td> 
+    <td align="center">
+    <input type="button" class="ext_btn ext_btn_success btn_edit" value="编辑" /> 
+	<input type="button" class="ext_btn" name="mp3"  value="试听" />
+
+  <!--   <input type="button" class="ext_btn ext_btn_error btn_del" value="删除" />    --> 
+    </td>    
+    <td align="center"></td> 
+  </tr>
+</table> 
+</div>
+<div id="jplayer"></div>
+
+<script type="text/javascript">
+$(function(){
+  $.ajaxSetup({async:false}); 
+});
+
+$(function(){
+  $("#dataedit").hide();
+  $("#msginfo").show();
+  $("#msginfo").html("请搜索你要编辑的生字或者添加新的生字！"); 
+});
+
+ $('input[name="mp3"]').live('click',function(){
+ 		var mp3="../"+$(this).attr('url');
+		if(!mp3){
+			alert('暂无音频!')
+		}else{
+		    $(this).toggle(function(i){
+				   	$(this).val('停止');
+					jpstart(mp3);
+	            },
+	            function(i){
+	               $(this).val('试听');
+				   jpclear();
+	            }
+	        );
+	        $(this).trigger('click');
+		}
+ });
+
+
+
+
+$(function(){
+  /*添加按钮事件*/
+  $("#btn_addnew").click(function(){
+    $("#dataedit").show();
+    $("#msginfo").hide();
+    $("#id").val("");
+    $("#zi").val($("#szi").val());
+    $("#pianpang").val("");
+    $("#bihuashu").val("");
+	$("#jiegou").val("独体字");
+	$("#bishun").val("");
+    $("#shizi").val("");
+    $("#xiezi").val("");
+    $("#bihuaswf").val(""); 
+    $("#btn_flash").hide();
+    $("#upinfo").html("请笔顺上传SWF文件！");
+    $("#table_add").hide();
+    $("#table_data").hide();
+  });
+
+  /*添加按钮事件*/
+  $("#btn_so").click(function(){
+    var szi = $("#szi").val();
+    if (!szi) {      
+      art.dialog.alert('新输入你要搜索的生字！');      
+      return;
+    };
+     
+    $.getJSON("../hanzi/ziinfo", {szi:szi,random:Math.random()}, function(data){
+      if(data.iserr)
+      {
+         $("#dataedit").hide();
+         $("#msginfo").show();
+         $("#msginfo").html("未找到相关生字的信息！");
+         art.dialog.alert("未找到相关生字的信息！");
+      }
+      else
+      { 
+        $("#dataedit").show();
+        $("#msginfo").hide(); 
+        $("#id").val(data.ziinfo.id);
+        $("#zi").val(data.ziinfo.zi);
+        $("#pianpang").val(data.ziinfo.pianpang);
+        $("#bihuashu").val(data.ziinfo.bihuashu);
+		$("#jiegou").val(data.ziinfo.jiegou);
+		$("#bishun").val(data.ziinfo.bishun);
+        $("#shizi").val(data.ziinfo.shizi);
+        $("#xiezi").val(data.ziinfo.xiezi);
+        $("#bihuaswf").val(data.ziinfo.bihuaswf);
+        $("#upinfo").html(data.ziinfo.zi + ".swf");
+        $("#upinfo").show();
+        $("#btn_flash").show();
+        getZiyin(data.ziinfo.id);
+      }    
+    });
+  });
+
+
+  $('#btn_addall').click(function(){  
+	window.open('../hanzi/downloadZiListJson');
+  })
+
+  /*保存按钮事件*/
+  $("#btn_save").click(function(){
+    var id = $("#id").val();
+    var zi = $("#zi").val();
+    var pianpang = $("#pianpang").val();
+    var bihuashu = $("#bihuashu").val();
+    var shizi = $("#shizi").val();
+    var xiezi = $("#xiezi").val();
+    var bihuaswf = $("#bihuaswf").val();
+	var jiegou = $('#jiegou').val();
+	var bishun = $('#bishun').val();
+    if(!zi)
+    {
+      art.dialog.alert("请填写生字！");
+      return;
+    }
+    if(!pianpang)
+    {
+      art.dialog.alert("请填写偏旁！");
+      return;
+    }
+    if(!isNumber(bihuashu))
+    {
+      art.dialog.alert("请填写正确的笔画数！");
+      return;
+    }
+	if(!jiegou)
+    {
+      art.dialog.alert("请填写结构！");
+      return;
+    }
+    if(!bishun)
+    {
+      art.dialog.alert("请填写笔顺！");
+      return;
+    }
+    if(!bihuaswf)
+    {
+      //art.dialog.alert("请上传笔顺动画！");
+      //return;
+    }
+    var obj = {}; 
+    obj.id = id;
+    obj.zi = zi;
+    obj.pianpang = pianpang;  
+    obj.bihuashu = bihuashu;  
+	obj.jiegou = jiegou;
+	obj.bishun = bishun;
+    obj.shizi = shizi;    
+    obj.xiezi = xiezi;   
+    obj.bihuaswf = bihuaswf;   
+    $.getJSON("../hanzi/zisave",{data:JSON.stringify(obj),random:Math.random()},function(data){
+      if(data.iserr)
+      {
+        art.dialog.alert("保存失败，生字已经存在！ ");
+      }
+      else
+      {
+        $("#id").val(data.data.id);
+        getZiyin();
+        art.dialog.tips('保存成功！', 1);
+      }
+    }); 
+  });
+
+
+  $("#btn_addpinyin").click(function(){
+      var zid = $("#id").val();
+      var zi = $("#zi").val();      
+      if(!zid)
+      {
+        art.dialog.alert("ID错误！");
+        return;
+      }
+      if(!zi)
+      {
+        art.dialog.alert("请填写生字！");
+        return;
+      }
+
+      editZiyin(0); 
+
+  });
+
+  $("#table_data .btn_edit").live("click",function(){ 
+    var id = $(this).attr("BID"); 
+    editZiyin(id);
+  });
+
+  $("#table_data .btn_del").live("click",function(){
+    var id = $(this).attr("BID");  
+    var tr = $(this).parents("tr"); 
+    art.dialog.confirm('是否删除本条数据？', function () {      
+      $.get('../hanzi/ziyindel', {id:id,random:Math.random()}, function (data){});
+      tr.remove();        
+    });
+  });
+
+});
+ 
+
+
+
+
+
+
+function editZiyin(ziyinid){  
+  var zid = $("#id").val();
+  var zi = $("#zi").val();       
+  var dialog = art.dialog.open('../hanzi/ziyinedit?zid=' + zid + '&ziyinid=' + ziyinid, {
+    id:'ziyinedit',
+    title:'【' +　zi + '】拼音信息',
+    window:'top',
+    width:620,
+    height:400,
+    lock:true,
+    opacity:0.3,
+    ok: function () {    
+      var iframe = this.iframe.contentWindow;   
+      var re = iframe.saveZiyin(); 
+      getZiyin();  
+      return re;
+    },
+    cancel: function () {
+      return true;
+    },
+  });
+}
+
+
+function getZiyin()
+{
+  var zid = $("#id").val();
+  $("#table_add").show();
+  $("#table_data").show();
+  $("#table_data td").parents("tr").remove();
+  $.getJSON("../hanzi/ziyininfo", {zid:zid,random:Math.random()}, function(data){
+    $.each(data, function(key,val){ 
+      var tr = $("#table_demo tr").eq(0).clone(); 
+
+      var td = tr.children('td').eq(0);
+      td.html(key + 1);
+
+      td = tr.children('td').eq(1); 
+      td.html(val.pinyin);  
+
+      td = tr.children('td').eq(2); 
+      td.html(val.wav);  
+
+      td = tr.children('td').eq(3); 
+      td.html(val.zuci1);  
+      td = tr.children('td').eq(4); 
+      td.html(val.zuci2);  
+      td = tr.children('td').eq(5); 
+      td.html(val.zuci3);  
+
+      td = tr.children('td').eq(6); 
+      td.html(val.ziyi1);  
+      td = tr.children('td').eq(7); 
+      td.html(val.ziyi2);  
+      td = tr.children('td').eq(8); 
+      td.html(val.ziyi3);
+
+      td = tr.children('td').eq(9); 
+      td.html(val.zaoju1);  
+      td = tr.children('td').eq(10); 
+      td.html(val.zaoju2);  
+      td = tr.children('td').eq(11); 
+      td.html(val.zaoju3);
+      tr.find("input").attr("BID",val.id); 
+	  tr.find("input[name='mp3']").attr("url",val.wav); 
+      tr.appendTo("#table_data");
+      tr.appendTo("#table_data");
+    });
+  });
+}
+
+/**
+ * jPlayer的用法
+ */
+//停止播放
+function jpclear() {
+  $("#jplayer").jPlayer("clearMedia");
+  $("#jplayer").jPlayer("stop");
+  $("#jplayer").unbind($.jPlayer.event.ended);
+  $("#jplayer").unbind($.jPlayer.event.progress);
+}
+//开始播放
+function jpstart(mp3){
+	$("#jplayer").jPlayer({
+    swfPath: "js",
+    wmode: "window",
+    supplied: "mp3",
+    preload: "none",
+    volume: "1"
+  });
+	$("#jplayer").jPlayer("setMedia", {
+	    mp3: mp3
+	}).jPlayer("play");
+}
+
+
+
+
+
+
+
+
+/*文件上传*/
+$(function() {
+  $('#file_upload').uploadify({
+    'height'    :30,
+    'width'     :120,
+    'buttonText': '上传笔顺SWF',  //选择按钮显示的字符
+    'multi'     : false,   //是否允许同时选择多个(false一次只允许选中一张图片)
+    'method'    : 'post',
+    'formData'  : {
+      'folder'  : './uploads',
+      'fileext': 'png'
+    },
+    'swf'       : '__PUBLIC__/js/uploadify/uploadify.swf?ver=' + Math.random(),
+    'uploader'  : '../upload',
+    'fileTypeExts': '*.swf', //允许的后缀
+    'fileTypeDesc': 'Flash Files', //允许的格式，详见文档
+    'onUploadSuccess' : function(file, data, response) 
+    {
+      //上传成功后的触发事件  
+      var obj=eval("("+data+")");
+      if (obj.issuc == 1) 
+      {
+        $('#' + file.id).find('.data').html(' 上传完毕');   
+        $("#upinfo").html("【" + obj.msg.name + '】文件已上传，请点击导入EXCEL数据');  
+        $("#bihuaswf").val('uploads/'+obj.msg.savename);
+      }
+      else
+      {
+        $("#tdinfo").html("【" + obj.msg + '】');   
+      };
+    }
+  });
+});
+</script> 
+</body>
+</html>

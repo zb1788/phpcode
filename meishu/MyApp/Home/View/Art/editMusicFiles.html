@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>背景分类管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td align="left" width="75">
+				分组名称：
+			</td>
+			<td align="left">
+			  <select id="groupid" class="select">
+			   <volist name="music_type" id="vo">
+			   	<if condition="$vo.id eq $music_info.groupid ">
+			   		<option value="{$vo.id}" selected>{$vo.title}</option>
+			   	<else />
+					<option value="{$vo.id}">{$vo.title}</option>
+			   	</if>			   </volist>
+	          </select>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				音乐名称：
+			</td>
+			<td align="left">
+				<input type="text" id="musicname" value="{$music_info.music_name}" class="input-text" size="10" />
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				mp3:
+			</td>
+			<td align="left">
+				<input type="file" id="file_upload"  multiple="false" >
+				<input type="hidden" name="filepath" id="filepath" value="" />
+				<input type="hidden" name="filename" id="filename" value="" />
+				<input type="hidden" name="issuc" id="issuc" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td align="left">当前音频：</td>
+			<td colspan="2">{$music_info.music_filename}</td>
+		</tr>
+</table>
+<div class="h5"></div>
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+function savedata(){
+		var id={$id};
+		var groupid=$('#groupid').val();
+		var musicname=$('#musicname').val();
+		var issuc=$('#issuc').val();
+		var filename=$("#filename").val();
+		var filepath=$('#filepath').val();
+		var flag=false;
+		//alert(groupid+groupname+issuc+filename+filepath);
+		if(musicname==''){
+			art.dialog.alert('音乐名称不能为空！');
+			return false;
+		}else{
+		$.get('../Art/editFile',
+			{ran:Math.random(),
+			 id:id,
+			 groupid:groupid,
+			 musicname:musicname,
+			 filename:filename,
+			 filepath:filepath
+			},
+			function(data){
+				flag=true;
+			});
+			return flag;
+		}
+
+}
+
+
+
+
+
+/**
+ * 文件上传
+ */
+ $(function() {
+		$("#file_upload").uploadify(
+				{
+					'debug' : false,
+ 					'buttonText' : '选择文件',
+ 					'height' : 30,
+ 					'removeCompleted' : false,
+ 					'auto' : true,
+ 					'swf' : '__PUBLIC__/js/uploadify/uploadify.swf?ran='+Math.random(),
+					'uploader' : '../Upload/uploadfiles',
+					'width' : 70,
+					'fileSizeLimit' : '100MB',
+					'fileTypeExts' : '*.mp3',
+					'fileTypeDesc' : '请选择mp3文件',
+					'multi' : false,
+					'removeCompleted':true,
+					'removeTimeout':0.5,
+					'onUploadSuccess' : function(file, data, response) {
+						if (response) {
+							$('#' + file.id).find('.data').html(' 上传完毕');
+							$('.uploadify-button-text').empty();
+							$('.uploadify-button-text').append('上传完毕');
+							/**
+							issuc:1成功；2失败;
+							name:文件原名称；
+							size：文件大小；
+							ext：文件后缀名；
+							savename：上传后文件名
+							savepath：保存路径（201504/）
+							 **/
+							 //alert(data);
+							var obj = eval("(" + data + ")");
+							if (obj.issuc == 1) {
+								//alert(obj.msg.savepath+obj.msg.savename);
+								$("#filepath").attr("value",obj.msg.savepath + obj.msg.savename);
+								$("#filename").attr("value", obj.msg.name);
+								$("#issuc").attr("value", obj.issuc);
+							}
+						}
+
+					}
+				});
+	});
+
+</script>

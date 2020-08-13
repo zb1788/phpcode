@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户管理</title>
+<style>
+ .page{width:auto;height:25px; margin:auto; line-height:25px;}
+ .page a{display:block; height:25px; padding:0px 6px; border:solid 1px #e7e7e7; border-radius:3px; color:#333;
+ font-family:'微软雅黑'; font-size:13px; text-align:center; text-decoration:none;float:left;margin-right:10px;min-width:20px;}
+ .page a:hover, .page a.this{background:#f7f7f7; font-weight:bold}
+</style>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=blue"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script language="javascript">
+$(document).ready(function(){
+	$.ajaxSetup({async:false});
+	$('.demo').hide();
+	//判断当前用户是否为admin，如果是显示添加用户按钮，否则不显示
+	$.getJSON('../User/isshow',{ran:Math.random()},function(data){
+		//alert(data.username);
+		if(data.username=='admin'){
+			var html='<input type="button" id="adduser" class="ext_btn ext_btn_submit" value="添加用户" />';
+			$('#pl_10').html(html);
+			$('#ifadmin').val('1');
+		}else{
+			$('#ifadmin').val('0');
+		}
+	});
+	$("#adduser").click(function(){
+		//alert('ttt');
+		addUserInfo();
+	})
+	//展示所有用户信息
+	$.getJSON('../User/showAll',{ran:Math.random()},function(data){
+		$.each(data,function(key,val){
+			//alert(val.username);
+			var tr = $('.demo tr').eq(0).clone();
+			tr.children('td').eq(0).html(val.username);
+			tr.children('td').eq(1).html(val.ifuse);
+			tr.children('td').eq(2).html(val.ifadmin);
+			tr.children('td').eq(3).find('input').attr('nums',val.id);
+			tr.children('td').eq(3).find('input').attr('ifuse',val.ifuse);
+			if(val.ifuse=='可用'){
+				tr.children('td').eq(3).find('input[name="ifuse"]').attr('value','禁用');///
+			}else{
+				tr.children('td').eq(3).find('input[name="ifuse"]').attr('value','启用');///
+			}
+			if(val.username=='admin'){
+				tr.children('td').eq(3).find('input[name="ifuse"]').hide();
+				tr.children('td').eq(3).find('input[name="del"]').hide();
+			}
+			tr.appendTo('.list_table');
+		})
+	});
+	var ifadmin=$('#ifadmin').val();
+	if(ifadmin!=1){
+		$('input[name="ifuse"]').hide();
+		$('input[name="reset"]').hide();
+		$('input[name="del"]').hide();
+	}
+	//删除用户
+	$('input[name="del"]').live('click',function(){
+		var userid=$(this).attr('nums');
+		delUser(userid);
+	});
+	//重置密码
+	$('input[name="reset"]').live('click',function(){
+		var userid=$(this).attr('nums');
+		reSet(userid);
+	});
+	//禁用用户
+	$('input[name="ifuse"]').live('click',function(){
+		var userid = $(this).attr('nums');
+		var ifuse = $(this).attr('ifuse');
+		userStatus(ifuse,userid);
+	});
+	//修改用户
+	$('input[name="edit"]').live('click',function(){
+		var userid = $(this).attr('nums');
+		editUserInfo(userid);
+	});
+})
+//删除用户
+function delUser(id){
+	if($.dialog.confirm('确定删除？',function(){
+	$.getJSON('../User/del',{ran:Math.random(),id:id},function(result){
+		if(result==1){
+			location.reload();
+			}else{
+					art.dialog.alert('删除失败！');
+				}
+		})
+	})
+	);
+}
+//添加用户
+function addUserInfo(){
+	  var myDialog = $.dialog.open('useradd',{
+	      id:'unit_edit',
+	      title:'用户添加',
+	      window:'top',
+	      width:500,
+	      height:250,
+	      lock:true,
+	      opacity:0.3,
+	      button: [
+	        {
+	          name: '保存',
+	          callback: function () {
+	            var iframe = this.iframe.contentWindow;
+	            var re = iframe.addData();
+	            if(re==true){
+	            	location.reload();
+	            }
+	            return re;
+	          },
+	          focus: true
+	        },
+	        {
+	          name: '关闭',
+	          callback: function () {
+	          },
+	          focus: false
+	        }
+	      ]
+	    });
+	}
+//修改用户
+function editUserInfo(id){
+	  var myDialog = $.dialog.open('userupdate?id='+id,{
+	      id:'unit_edit',
+	      title:'密码修改',
+	      window:'top',
+	      width:500,
+	      height:260,
+	      lock:true,
+	      opacity:0.3,
+	      button: [
+	        {
+	          name: '保存',
+	          callback: function () {
+	            var iframe = this.iframe.contentWindow;
+	            var re = iframe.addData();
+	            if(re==true){
+	            	art.dialog.alert('修改成功！');
+	            	setTimeout('location.reload()',1000);
+	            }
+	            return re;
+	          },
+	          focus: true
+	        },
+	        {
+	          name: '关闭',
+	          callback: function () {
+	          },
+	          focus: false
+	        }
+	      ]
+	    });
+	}
+//分页展示
+function pagelist(pageCurrent,page_size){
+	$.post("paging_user.php",
+		{
+		pageCurrent:pageCurrent,
+		page_size:page_size,
+		},
+		function(data){
+			//alert(data);
+		$("#fenye").html(data);
+		 $("#SelectPages").change(function(){
+			 pagelist($("#SelectPages").val(),page_size);
+			 });
+		})
+}
+//禁用启用用户
+function userStatus(ifuse,id){
+	$.getJSON("../User/userStatus",
+			{
+				ran:Math.random(),
+				ifuse:ifuse,
+				id:id
+			},
+			function(data){
+				location.reload();
+				//pagelist(pageCurrent,page_size);
+				})
+}
+//重置密码为123456
+function reSet(id){
+	$.getJSON("../User/resetPasswd",
+			{
+				ran:Math.random(),
+				id:id
+			},
+			function(data){
+					art.dialog.alert('重置成功！');
+				})
+}
+</script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 用户管理
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="box_border">
+			<tr>
+				<td class="box_top pl_10 f14">用户管理</td>
+				<input type="hidden" id="ifadmin" value="" />
+				<td align="right" class="box_top pl_10 f14">
+					<span id="pl_10" class="pl_10">
+					</span>
+				</td>
+			</tr>
+		</table>
+
+
+
+		<div class="h5"></div>
+		<div id="fenye">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+				<tr>
+					<th>用户名</th>
+					<th>状态</th>
+					<th>级别</th>
+					<th>管理</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="demo">
+	<tr class="tr">
+		<td align="center" nowrap="nowrap">用户名</td>
+		<td align="center" nowrap="nowrap">状态</td>
+		<td align="center" nowrap="nowrap">级别</td>
+		<td align="center" nowrap="nowrap">
+			<input type="button" name="edit"  class="ext_btn btn_edit" value="修改" />&nbsp;&nbsp;
+			<input type="button" name="ifuse"  class="ext_btn btn_edit" value="禁用"  />&nbsp;&nbsp;
+			<input type="button" name="reset" class="ext_btn btn_edit" value="重置密码" />&nbsp;&nbsp;
+			<input type="button" name="del" class="ext_btn btn_edit" value="删除" />&nbsp;&nbsp;
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

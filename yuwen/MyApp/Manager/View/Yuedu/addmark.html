@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加备注</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+	        <td align="right">年级：</td>
+	        <td colspan="2">
+	          <select id="grade" class="select">
+			  	<option value="一年级">一年级</option>
+			  	<option value="二年级">二年级</option>
+			  	<option value="三年级">三年级</option>
+			  	<option value="四年级">四年级</option>
+			  	<option value="五年级">五年级</option>
+			  	<option value="六年级">六年级</option>
+	          </select>
+	        </td>
+		</tr>
+		<tr>
+			<td  align="right">学期：</td>
+			<td colspan="2">
+	          <select id="term" class="select">
+			  	<option value="上学期">上学期</option>
+			  	<option value="下学期">下学期</option>
+	          </select>
+	        </td>
+		</tr>
+		<tr>
+			<td  align="right">版本：</td>
+			<td colspan="2">
+	          <select id="version" class="select">
+	          </select>
+	        </td>
+		</tr>
+		<tr>
+			<td align="right">章节：</td>
+			<td colspan="2">
+				<input type="text" id="chapter" class="input-text" />
+			</td>
+		</tr>
+</table>
+<input type="hidden" id="kid" value="{$kid}" class="input-text" />
+<input type="hidden" id="id" value="{$id}" class="input-text" />
+<div class="h5"></div>
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+$(function(){
+    $.get("{:U('Yuedu/getBanben')}",{ran:Math.random()},function(data){
+    		$('#version').empty();
+            $.each(data,function(k,v){
+            	$('#version').append($("<option>").val(v.banben).text(v.banben));
+            });
+    });
+    if('{$type}' == 'edit'){
+	    $.get("{:U('Yuedu/getNowRemark')}",{ran:Math.random(),id:'{$id}'},function(data){
+	    		$('#grade').val(data.grade);
+	    		$('#term').val(data.term);
+	    		$('#version').val(data.version);
+	    		$('#chapter').val(data.chapter);
+	    });
+    }
+});
+
+
+/**
+ * dialog警告框
+ * @param  {[type]} content [提示内容]
+ * @return {[type]}         [description]
+ */
+function dialogTips(content){
+  art.dialog.tips('<font color="red">' + content + '……</font>', 0.5);
+}
+
+function savedata(){
+		var grade=$('#grade').val();
+		var term=$('#term').val();
+		var version=$('#version').val();
+		var chapter=$('#chapter').val();
+		var kid = $('#kid').val();
+		var id = $('#id').val();
+		var type = '{$type}';
+
+		var flag;
+
+		if(chapter==''){
+			art.dialog.alert('章节不能为空！',function(){
+				$('#chapter').focus();
+			});
+			flag = false;
+			return flag;
+		}else{
+			$.get('../Yuedu/addRemark',
+				{ran:Math.random(),
+				 grade:grade,
+				 term:term,
+				 version:version,
+				 chapter:chapter,
+				 kid:kid,
+				 id:id,
+				 type:type
+				},
+				function(data){
+					if(data=='已存在'){
+						flag = false;//名称已存在
+					}else{
+						flag = true;//Ok
+					}
+				});
+				return flag;
+		}
+}
+
+
+
+
+</script>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<data name="电子课本CION图标">
+
+		<subobj>
+			
+			<name>2002001</name>
+			<iconx>200</iconx>
+			<icony>200</icony>
+			<notes>注释：资料1</notes>
+			<link>jsdata</link>
+			<type>264avi_mc</type>
+			<pagenum>1</pagenum>
+
+		</subobj>
+
+
+</data>

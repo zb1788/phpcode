@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<HEAD>
+    <TITLE> ZTREE DEMO </TITLE>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="__PUBLIC__/dist/js/jquery.min-v1.4.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/dist/js/zTreeStyle/jquery.ztree.core-3.5.js"></script>
+    <link href="__PUBLIC__/dist/css/manage.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/dist/js/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__PUBLIC__/dist/js/jquery.artDialog.js?skin=default"></script>
+    <script type="text/javascript" src="__PUBLIC__/dist/js/iframeTools.js"></script>
+    <SCRIPT type="text/javascript">
+        //异步加载的树
+        var setting = {
+            async: {
+                enable: true,
+                url: "../Index/getResTreeNodes",
+                autoParam: ["id"],
+                //otherParam:{"otherParam":"zTreeAsyncTest"},
+                dataFilter: filter
+            },
+            callback: {
+                beforeClick: function (treeId, treeNode) {
+                    if (treeNode.isParent) {
+
+                        // var level=treeNode.file;//当前目录层级
+                        // var maxLevel = treeNode.maxLevel;//当前目录最大级别
+
+                        // if(level==(maxLevel-1)){
+                        //     var bookid=treeNode.pId;//父id
+                        //     var chapterid=treeNode.id;//id
+                        //     var name=treeNode.name;//章节名称
+                        //     $('.list_table tr:not(:eq(0))').remove();
+                        //     $('#outFile').show();
+                        //     $.get('../Outccm/getLists',{ran:Math.random(),chapterid:chapterid},function(data){
+                        //         if(data=='error'){
+                        //             art.dialog.alert('没有课本相关信息!');
+                        //             $('#outFile').hide();
+                        //             return false;
+                        //         }else{
+                        //             $('#outFile').show();
+                        //             $.each(data,function(k,v){
+                        //                 var tr=$('#demo').children('tbody').children('tr').eq(0).clone();
+                        //                 tr.children('td').eq(0).children('input').val(v.ks_id);
+                        //                 tr.children('td').eq(0).children('input').attr('name','item');
+                        //                 tr.children('td').eq(1).html(v.ks_name);
+                        //                 tr.appendTo('.list_table');
+                        //             });
+                        //             $('.list_table input[type="checkbox"]').attr('checked',false);
+                        //         }
+
+                        //     });
+                        // }
+                    } else {
+                        //alert('孩子：'+treeNode.name);
+                        $('.list_table tr:not(:first)').remove();
+                        $.get('../Index/queryRes', {
+                            ran: Math.random(),
+                            ks_code: treeNode.id
+                        }, function (data) {
+                            $.each(data, function (k, v) {
+                                var tr = $('#demo tr').clone();
+                                tr.children('td').eq(1).html(v.r_title);
+                                tr.children('td').eq(2).html(v.c1);
+                                tr.children('td').eq(3).html(v.r_code);
+                                tr.appendTo('.list_table');
+                            });
+                        });
+                        return true;
+
+
+                    }
+                }
+            }
+        };
+
+        function filter(treeId, parentNode, childNodes) {
+            if (!childNodes) return null;
+            for (var i = 0, l = childNodes.length; i < l; i++) {
+                childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+            }
+            return childNodes;
+        }
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#tree"), setting);
+            //资源勾选
+            // $('input[class="radio"]').live('click', function () {
+            //     var r_code = $(this).parent().parent().children('td').eq(3).html();
+            //     var r_title = $(this).parent().parent().children('td').eq(1).html();
+            //     $.dialog.confirm('确定选择此条资源？',
+            //         function () {
+            //             window.parent.insertFileinfo(r_title, r_code);
+            //             $.dialog.close();
+            //         });
+
+            // });
+        });
+
+        function checkRes(obj) {
+            var r_code = $(obj).parent().parent().children('td').eq(3).html();
+            var r_title = $(obj).parent().parent().children('td').eq(1).html();
+            console.log(window.parent);
+            $.dialog.confirm('确定选择此条资源？',
+                function () {
+                    window.parent.insertFileinfo(r_title, r_code);
+                    // $('#video', window.parent.document).val(r_code);
+                    $.dialog.close();
+                });
+        }
+
+        function video_search() {
+            var search_value = $.trim($('#coursename').val());
+            if (search_value == '') {
+                dialogTips('请输入资源名称');
+                return;
+            }
+            $('.list_table tr:not(:first)').remove();
+            var tr = $('#demo tr').clone();
+            tr.children('td').eq(1).html('正在搜索...');
+            tr.children('td').eq(2).html('');
+            tr.appendTo('.list_table');
+
+            $.get('../Index/queryRes2', {
+                ran: Math.random(),
+                search_value: search_value
+            }, function (data) {
+                $('.list_table tr:not(:first)').remove();
+                $.each(data, function (k, v) {
+                    var tr = $('#demo tr').clone();
+                    tr.children('td').eq(1).html(v.r_title);
+                    tr.children('td').eq(2).html(v.c1);
+                    tr.children('td').eq(3).html(v.r_code);
+                    tr.appendTo('.list_table');
+                });
+            });
+        }
+    </SCRIPT>
+</HEAD>
+
+<BODY>
+
+    <TABLE border=0 height=600px align=left>
+        <TR>
+            <TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+                <ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+            </TD>
+            <TD width=770px align=left valign=top>
+                <table border="0" cellspacing="0" cellpadding="0" class="form_table">
+                    <tr>
+                        <td>
+                            资源名称：<input type="text" id="coursename" name="coursename" class="input-text lh30" size="50"
+                                value="" />
+                        </td>
+                        <td>
+                            &nbsp;
+                            <input type="button" class="btn btn82 btn_search" value="搜索" onclick="video_search();" /></td>
+                        <td>
+                    </tr>
+                </table>
+                <table width="70%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th align="left">资源名称</th>
+                        <th align="left">版本</th>
+                        <th style="display: none"></th>
+                    </tr>
+                </table>
+            </TD>
+
+        </TR>
+    </TABLE>
+
+    <table id="demo" style='display:none'>
+        <tr>
+            <td><input type="radio" name="radio" class="radio" onclick="checkRes(this)" /></td>
+            <td align="left">名称</td>
+            <td align="left"></td>
+            <td style="display: none"></td>
+        </tr>
+    </table>
+</BODY>
+
+</HTML>

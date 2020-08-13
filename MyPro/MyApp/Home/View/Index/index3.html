@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<title>我的项目</title> 
+	<link href="__PUBLIC__/css/style/menu.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script  type="text/javascript">
+$(function(){	
+	//导航切换
+	$(".menuson li").click(function(){
+		$(".menuson li.active").removeClass("active")
+		$(this).addClass("active");
+	});
+	
+	$('.title').click(function(){
+		var $ul = $(this).next('ul');
+		$('dd').find('ul').slideUp();
+		if($ul.is(':visible')){
+			$(this).next('ul').slideUp();
+		}else{
+			$(this).next('ul').slideDown();
+		}
+	});
+})	
+</script>
+</head>
+<style>
+*{margin:0;padding:0;}
+#wrap{
+    margin-left:auto;
+    margin-right:auto;
+    /*上面这两个属性设置发现可以达到居中的效果*/
+    width:100%;
+}
+#header{
+	background: url(__PUBLIC__/img/topbg.gif) 0 0 repeat-x;
+    color: #FFF;
+    line-height: 74px;
+    font-size: 12px;
+	height:74px;
+	width:100%;
+}
+.logo{
+	float:left;
+	background:url(__PUBLIC__/img/loginlogo.png);
+	height: 70px;
+	width: 280px;
+	margin: 0px 0px 0px 25px;
+	display: inline;
+}
+.topnav{
+	float: right;
+	height: 50px;
+	padding-top: 15px;
+	margin-right: 10px;
+}
+.topnav a {
+	background: url(__PUBLIC__/img/indeximg.png);
+	float: left;
+	text-align: center;
+	padding-top: 10px;
+	height: 21px;
+	cursor: pointer;
+	line-height: 15px;
+	display: block;
+	width: 72px;
+	background-position: -390px -99px;
+	color: #FFFFFF;
+	font-size: 12px;
+}
+.topnav a:hover {
+	background-position: -255px -99px;
+}
+.clear{
+	clear:both;
+}
+
+.innerwrap{
+text-align:left;clear:both;
+min-height:600px;
+}
+
+.left{
+float: left;
+}
+#content{
+margin-left:187px;
+}
+</style>
+<body>
+<div id="wrap">
+	<div id="header">
+		<div class="logo"></div>
+        <div class="topnav">
+            <a href="#">行业新闻</a>
+            <a href="#">关于我们</a>
+            <a href="#">意见反馈</a>
+            <a href="#">退出系统</a>
+        </div>
+		<div class="clear"></div>
+	</div>
+	<div class="innerwrap">
+		<div class="left">
+			<div class="lefttop"><span></span>功能菜单</div>
+		    <dl class="leftmenu">
+		        <dd>
+		            <div class="title"><span></span>js常用</div> 
+		            <ul class="menuson">                 
+		                <li><cite></cite><a href="{:U('Art/index')}" target="mainFrame">artdialog</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Uploadify/index')}" target="mainFrame">文件上传</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Uploadify/index2')}" target="mainFrame">文件上传2</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Photos/photo')}" target="mainFrame">头像上传</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Jsdemo/jslist')}" target="mainFrame">常用js插件</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Jsdemo/dropload')}" target="mainFrame">瀑布流效果</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Jsdemo/piclist')}" target="mainFrame">图片轮播</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Jsdemo/pagelist')}" target="mainFrame">js分页</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Jsdemo/prog')}" target="mainFrame">进度条</a><i></i></li>  
+		            </ul>
+		        </dd>
+		        <dd>
+		            <div class="title"><span></span>php常用</div> 
+		            <ul class="menuson">                 
+		                <li><cite></cite><a href="{:U('Excel/import')}" target="mainFrame">读取excel内容</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Zip/index')}" target="mainFrame">文件打包和下载</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Paging/books')}" target="mainFrame">分页</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Excel/example')}" target="mainFrame">EXCEL功能</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Fun/index')}" target="mainFrame">常用功能</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Code/form')}" target="mainFrame">验证码</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Test/test')}" target="mainFrame">测试页面</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Alipay/index')}" target="mainFrame">支付宝相关</a><i></i></li>  
+		            </ul>
+		        </dd>		
+		        <dd>
+		            <div class="title"><span></span>模版常用</div> 
+		            <ul class="menuson">                 
+		                <li><cite></cite><a href="{:U('Moban/button')}" target="mainFrame">功能按钮模版</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Moban/editWindow')}" target="mainFrame">编辑窗口模版</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('Moban/listWindow')}" target="mainFrame">列表窗口模版</a><i></i></li>  
+		            </ul>
+		        </dd>		
+				<dd>
+					<div class="title"><span></span>用户管理</div> 
+					<ul class="menuson">                 
+		                <li><cite></cite><a href="{:U('User/index')}" target="mainFrame">用户管理</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('User/regist')}" target="mainFrame">用户注册</a><i></i></li>  
+		                <li><cite></cite><a href="{:U('User/login')}" target="mainFrame">用户登录</a><i></i></li>  
+		            </ul>
+				</dd>
+		    </dl>		
+		</div>
+		<!--left end -->
+		<div id="content" style="height:600px;">
+			<iframe src="" id="iframe" style="width:100%;height:100%;"  ></iframe>
+		</div>
+		<!--content end -->
+	</div>
+</div>
+
+</body>
+<script>
+	$('.leftmenu a').click(function(){
+		var url=$(this).attr('href');
+//		$.get(url,function(data){
+//			$('.right').html(data);
+//		});
+		$('#iframe').attr('src',url);
+		return false;
+	});
+</script>
+
+</html>

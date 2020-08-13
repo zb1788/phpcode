@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>页码设置</title>
+<link href="__PUBLIC__/bgcss/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.ztree.core-3.5.js"></script>
+<link href="__PUBLIC__/bgcss/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; excel下载
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="box_border">
+			<tr>
+				<td class="box_top pl_10 f14">excel下载
+			</tr>
+			<tr>
+				<td class="p5">
+					<TABLE border=0 height=600px align=left>
+						<TR>
+							<TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+								<ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+							</TD>
+							<TD width=770px align=left valign=top>
+								<table width="100%"  border="0px" cellspacing="0" cellpadding="0" class="list_table">
+									<tr>
+										<th>章节名称</th>
+										<th>查看</th>
+									</tr>
+									<tr>
+										<td id="chaptername"></td>
+										<td><input type="button" id="down" class="ext_btn ext_btn_error" value="下载" /></td>
+									</tr>
+								</table>
+							</TD>
+							
+						</TR>
+					</TABLE>
+				</td>
+			</tr>
+		</table>
+		<div class="h10"></div>
+		
+	</div>
+
+</body>
+</html>
+<script>
+$.ajaxSetup({async:false});
+	<!--
+	var zTree;
+	var demoIframe;
+
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			showLine: true,
+			selectedMulti: false
+		},
+		data: {
+			simpleData: {
+				enable:true,
+				idKey: "id",
+				pIdKey: "pId",
+				rootPId: ""
+			}
+		},
+		callback: {
+			beforeClick: function(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("tree");
+				if (treeNode.isParent) {
+					//demoIframe.attr("src",treeNode.file + ".jsp");
+					zTree.expandNode(treeNode);
+					//return false;
+				} else {
+					//demoIframe.attr("c1",treeNode.file);
+					var id=treeNode.id;//id
+					var name=treeNode.name;//章节名称
+					$('#chaptername').html(name);
+					$('#down').attr('bid',id);
+//					$.get('../Book/makeExcel',{ran:Math.random(),id:id},function(data){
+//
+//					});
+					return true;
+				}
+			}
+		}
+	};
+	
+	var zNodes=[
+	            {$json}
+	           ];
+// 	var zNodes =[
+//		
+// 			{id:1, pId:0, name:"[core] 基本功能 演示",file:"test"},
+// 			{id:101, pId:1, name:"最简单的树 --  标准 JSON 数据", file:"test"},
+//
+// 			{id:2, pId:0, name:"[excheck] 复/单选框功能 演示",file:"test2"},
+// 			{id:201, pId:2, name:"Checkbox 勾选操作", file:"test2"},
+//		
+//
+// 	];
+		var t = $("#tree");
+		t = $.fn.zTree.init(t, setting, zNodes);
+		demoIframe = $("#testIframe");
+		//demoIframe.bind("load", loadReady);
+
+	
+
+
+	//-->
+	
+
+$('#down').click(function(){
+	var id=$(this).attr('bid');
+	if(id===undefined){
+		art.dialog.alert('请先选择版本，然后再点击下载');
+		return false;
+	}
+	location.href="../Book/makeExcel?ran="+Math.random()+"&id="+id;
+});
+</script>

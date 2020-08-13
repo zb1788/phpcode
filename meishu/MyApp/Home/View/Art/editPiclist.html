@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>栏目管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td align="left">
+				图片描述：
+			</td>
+			<td align="left">
+				<input type="text" id="content" placeholder="有则填，无则不填" class="input-text" size="50" value="{$picinfo}"/>
+				<input type="hidden" id="pid" value="{$id}" />
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				答案：
+			</td>
+			<td align="left">
+				<input type="text" id="answer" placeholder="有则填，无则不填" class="input-text" size="50" value="{$picans}"/>
+				<input type="hidden" id="pid" value="{$id}" />
+			</td>
+		</tr>
+</table>
+<div class="h5"></div>
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+function savedata(){
+		var id=$("#pid").val();//id
+		var content = $('#content').val();
+		var answer = $('#answer').val();
+
+		var flag=false;
+		$.get('../Art/editPic',
+			{ran:Math.random(),
+			 id:id,
+			 content:content,
+			 answer:answer
+			},
+			function(data){
+				if(data=='名称已存在'){
+					art.dialog.alert('添加失败，名称已存在!');
+					flag=false;
+				}else{
+					flag=true;
+				}
+			});
+			return flag;
+
+
+}
+
+
+
+</script>

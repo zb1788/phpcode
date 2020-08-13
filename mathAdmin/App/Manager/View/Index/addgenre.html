@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <link rel="stylesheet" href="__PUBLIC__/dist/webuploader/webuploader.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body>
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- =============================================== -->
+    <!-- Content Wrapper. Contains page content -->
+    <div>
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title"></h3>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form role="form">
+                <div class="box-body">
+                  <div class="form-group">
+                    <label>年级</label>
+                    <select class="form-control" id="gradeForm">
+
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>学期</label>
+                    <select class="form-control" id="termForm">
+
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>学科</label>
+                    <select class="form-control" id="subjectForm">
+
+                    </select>
+                  </div>
+                  <div class="form-group" id="genreNameForm">
+                    <label for="genreName">分类名称</label>
+                    <input type="input" class="form-control" id="genreName" placeholder="分类名称">
+                    <span class="help-block" style="display:none;">
+                      <i class="fa fa-times-circle-o"></i>分类名称不能为空</span>
+                  </div>
+                  <div class="form-group has-error" style="display:none;" id="errMsg">
+                    <label class="control-label"></label>
+                  </div>
+                  <div class="form-group" id="genrePicDiv">
+                    <label>分类图片（
+                      <font style="color:#d33724">建议图片尺寸150x150,大小不超过10K</font>）</label>
+                    <div id="uploader" class="wu-example">
+                      <!--用来存放文件信息-->
+                      <div id="thelist" class="uploader-list"></div>
+                      <div class="btns">
+                        <div id="picker">选择文件</div>
+                      </div>
+                    </div>
+                    <img src="" alt="" id="genrePic">
+                  </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <button type="button" class="btn btn-primary" id="tijiao">提交</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="mymodal" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">
+              <i class="fa fa-exclamation-circle"></i>
+              <span id="mtitle">[Title]</span>
+            </h4>
+          </div>
+          <div class="modal-body">
+            <p id="msg">[Message]</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary ok" data-dismiss="modal" id="BtnOk">[BtnOk]</button>
+            <button type="button" class="btn btn-default cancel" data-dismiss="modal" id="BtnCancel">[BtnCancel]</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <script src="__PUBLIC__/dist/webuploader/webuploader.js"></script>
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script>
+    $.ajaxSetup({
+      async: false
+    }); //异步很重要
+    var type = GetQueryString('type');
+    var id = GetQueryString('id');
+    var grade = GetQueryString('grade');
+    var term = GetQueryString('term');
+    var subject = GetQueryString('subject');
+    var isbase = GetQueryString('isbase');
+    $(document).ajaxStart(function () {
+      Pace.restart()
+    })
+
+    $(function () {
+      getGrades();
+      getTerms();
+      getSubjects();
+	  if(isbase == 1){
+		$('#genrePicDiv').hide();
+	  }else{
+	      if (subject == '0002') {
+			$('#genrePicDiv').hide();
+		  } else {
+			$('#genrePicDiv').show();
+		  }
+	  }
+      if (type == 'add') {
+        var html = '添加分类';
+        $('#gradeForm').val(grade).prop('disabled', true);
+        $('#termForm').val(term).prop('disabled', true);
+        $('#subjectForm').val(subject).prop('disabled', true);
+      } else {
+        var html = '编辑分类';
+        $('#gradeForm').val(grade);
+        $('#termForm').val(term);
+        $('#subjectForm').val(subject);
+        getInfo();
+      }
+      $('.box-title').html(html);
+    })
+
+    $("#genreName").keyup(function () {
+      checkInput();
+      $('#errMsg').hide();
+    });
+    $("#genreName").blur(function () {
+      checkInput();
+      $('#errMsg').hide();
+    });
+
+    $('#subjectForm').change(function () {
+      var val = $(this).val();
+      if (val == '0002') {
+        //数学无图片
+        $('#genrePicDiv').hide();
+      } else {
+        $('#genrePicDiv').show();
+      }
+    })
+    $('#tijiao').click(function () {
+      var genreName = $("#genreName").val();
+      var grade_n = $("#gradeForm").val();
+      var term_n = $("#termForm").val();
+      var subject_n = $("#subjectForm").val();
+      var genrePic = $('#genrePic').attr('src');
+
+	  if(isbase != 1){
+		  if (subject_n == '0002') {
+			//数学没有图片
+		  } else {
+			if (genrePic == '') {
+			  var options = {
+				id: 'mymodal',
+				msg: '分类图片不能为空！'
+			  }
+			  Modal(options).alert();
+			  return false;
+			}
+		  }
+	  }
+      if (checkInput()) {
+        $.ajax({
+          url: '../Index/addGenreDataAll',
+          type: 'post',
+          data: {
+            name: genreName,
+            grade: grade_n,
+            term: term_n,
+            subject: subject_n,
+            type: type,
+            id: id,
+            isbase: isbase,
+            genrePic: genrePic,
+            ran: Math.random()
+          },
+          dataType: 'json',
+          success: function (data) {
+            if (data.status == 'ok') {
+              if (isbase == 1) {
+                window.location.href = 'genrelist_base_tree_frame?grade=' + grade + '&term=' + term +
+                  '&subject=' + subject;
+              } else {
+                window.location.href = 'genrelist_tree_frame?grade=' + grade + '&term=' + term +
+                  '&subject=' + subject;
+              }
+            } else {
+              $('#errMsg').children('label').html('<i class="fa fa-times-circle-o"></i>' + data.msg);
+              $('#errMsg').show();
+            }
+          },
+          error: function (e) {
+            console.log(e);
+          }
+        })
+      }
+    })
+
+    function getInfo() {
+      $.ajax({
+        url: '../Index/getGenreInfo',
+        type: 'get',
+        data: {
+          id: id,
+          isbase: isbase,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $("#genreName").val(data.name);
+          $('#genrePic').attr('src', data.pic);
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    function checkInput() {
+      var genreName = $("#genreName").val();
+      if (genreName == '') {
+        $('#genreNameForm').addClass('has-error');
+        $('#genreNameForm').children('span').show();
+        return false;
+      } else {
+        $('#genreNameForm').removeClass('has-error');
+        $('#genreNameForm').children('span').hide();
+        return true;
+      }
+    }
+  </script>
+  <script>
+    $list = $('#thelist');
+    var uploader = WebUploader.create({
+      auto: true,
+      // swf文件路径
+      swf: '/public/Ywmanager/js/webuploader/Uploader.swf',
+
+      // 文件接收服务端。
+      server: '../Upload/uploadfile',
+
+      // 选择文件的按钮。可选。
+      // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+      pick: '#picker',
+
+      // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+      resize: false
+    });
+    // 当有文件被添加进队列的时候
+    uploader.on('fileQueued', function (file) {
+      // $list.append('<div id="' + file.id + '" class="item">' +
+      //   '<p class="state">等待上传...</p>' +
+      //   '</div>');
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on('uploadProgress', function (file, percentage) {
+      var $li = $('#' + file.id),
+        $percent = $li.find('.progress .progress-bar');
+
+      // 避免重复创建
+      if (!$percent.length) {
+        $percent = $('<div class="progress progress-striped active">' +
+          '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+          '</div>' +
+          '</div>').appendTo($li).find('.progress-bar');
+      }
+
+      $li.find('p.state').text('上传中');
+
+      $percent.css('width', percentage * 100 + '%');
+    });
+
+    uploader.on('uploadSuccess', function (file, response) {
+      // var obj = eval("(" + response + ")");
+      var obj = response;
+
+      // $("#filepath").attr("value", obj.msg.savepath + obj.msg.savename);
+      // $("#filename").attr("value", obj.msg.name);
+      $("#issuc").attr("value", obj.issuc);
+      $('#genrePic').attr('src', obj.msg)
+      // $('#' + file.id).find('p.state').text('上传完成');
+    });
+
+    uploader.on('uploadError', function (file) {
+      // $('#' + file.id).find('p.state').text('上传出错');
+    });
+
+    uploader.on('uploadComplete', function (file) {
+      $('#' + file.id).find('.progress').fadeOut();
+      $('#' + file.id).find('p.state').fadeOut();
+    });
+  </script>
+</body>
+
+</html>

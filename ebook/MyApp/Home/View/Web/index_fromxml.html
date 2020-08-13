@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script type="text/javascript" src="__PUBLIC__/h5/jquery.min.js"></script>
+		<!--
+		<script type="text/javascript" src="__PUBLIC__/h5/jPlayer/dist/jplayer/jquery.jplayer.min.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/h5/soundmanager2.js"></script>
+		-->
+		 <link href="__PUBLIC__/h5/css/yx-dd.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<header class="edi-bar">
+	    <a class="edi-bar-left edi-back"><img src="__PUBLIC__/h5/images/backIco.png" width="20" height="20" />返回</a>
+	    <h1 class="edi-title"><a id="btn-fd"><b><img src="__PUBLIC__/h5/images/ico/ico_fd.svg" /></b><span>复读</span></a><a id="btn-dd"><b><img src="__PUBLIC__/h5/images/ico/ico_dd.svg" /></b><span>点读</span></a></h1>
+	</header>
+	<section>
+		<div class="por dd-bg">
+			<!--
+			<img style="position:absolute;" class="bg" id="img" src=""/>
+			-->
+			<!--<a class="dd-dian"><img src="images/ico/ico_dd.svg" /></a>-->
+			<!--
+			<svg style="position:absolute;" id="svg"  xmlns="http://www.w3.org/2000/svg">
+			</svg>
+			-->
+		</div>
+		<div class="edi-bottom-bar">
+			<a class="btn-left on" id="prev"><img src="__PUBLIC__/h5/images/ico/ico_left.svg" /></a><span class="page"></span><a class="btn-left" id="next"><img src="__PUBLIC__/h5/images/ico/ico_right.svg" /></a>
+		</div>
+	</section>
+
+
+  <audio controls="controls" id="auplayer" style="display:none;">
+
+    </audio>
+
+
+<input type="hidden" value="no" id="flag"/>
+
+	</body>
+
+<script>
+$.ajaxSetup({async:false});
+
+//纳米 英语章节http://192.168.133.11/ebook/web/index?chapterid=00010503043101
+//纳米 语文章节http://192.168.133.11/ebook/web/index?chapterid=00010503043101
+
+//D:\wwwroot\ebook\Uploads\audio\xunfeimp3\000105030204\2
+//观潮
+
+var audio_player = $('#auplayer')[0];
+
+//纳米
+
+
+//讯飞
+// var bookid = '000102020202';
+// var pagenum = 3;
+var sh;
+var width_canvas;
+var height_canvas;
+var pic_width;
+var pic_height;
+
+var width = document.documentElement.clientWidth;
+var height = document.documentElement.clientHeight;
+
+
+var json;
+var xml = '../ebookres/data.xml';
+
+var pagebeg =0;
+var pageend;
+var pagenum =0;
+
+
+
+$(function(){
+	// $.get('../Web/getXml',{ran:Math.random(),xml:xml},function(data){
+	//     // json = JSON.stringify(data);
+	//     json = data;
+
+	//     pageend = data.num;
+	//     console.log(data.info);
+	// });
+	json = getXml(xml);
+	console.log(json);
+	showPic(pagebeg);
+});
+
+function showPic(pagenum){
+	$('.por').empty();
+
+
+
+	//创建img对象
+	 var img = new Image();
+	 img.src = '../ebookres/'+json[pagenum].pic;
+	 img.style.position = 'absolute';
+	 img.setAttribute('class','bg');
+	 $('.por').append(img);
+
+     pic_width = img.naturalWidth
+     pic_height = img.naturalHeight
+
+
+     img.onload = function(){
+     	pic_width = this.width;
+     	pic_height = this.height;
+     }
+     // console.log(pic_width+'/'+pic_height);return false;
+     	var nowHeight = $(window).height()-90;
+     	var wFlag,hFlag;
+
+		if(nowHeight<=pic_height){
+			//屏幕高小于图片高,根据高度等比例缩放
+			wFlag = nowHeight/pic_height*pic_width;
+			hFlag = nowHeight;
+		}else{
+			//屏幕高大于图片高，根据宽度等比例缩放
+			wFlag = $(window).width()-2;
+			hFlag = wFlag/pic_width*pic_height;
+		}
+
+
+		//左偏移量
+		var leftFlag = ($(window).width()-wFlag)/2;
+
+		$('img.bg').width(wFlag);
+		$('img.bg').height(hFlag);
+		$('img.bg').css('left',leftFlag);
+
+		 //创建svg对象
+		 var svghtml = '<svg style="position:absolute;" id="svg"  xmlns="http://www.w3.org/2000/svg"></svg';
+		 $('.por').append(svghtml);
+
+		 document.getElementById('svg').style.width = $(window).width();
+		 document.getElementById('svg').style.height = hFlag;
+
+		if(typeof(json[pagenum]['hot']) !== "undefined"){
+			console.log(json[pagenum]['hot']);
+			$.each(json[pagenum]['hot'],function(k,v){
+				getPoint(v.plist,wFlag,hFlag,pic_width,pic_height,v.vbeg,v.vend,v.urlname,leftFlag);
+			});
+		}
+
+
+
+
+
+
+	 //图片加载完成后添加坐标
+	 // img.onload = function(){
+		// width_canvas = this.width;
+		// height_canvas = this.height;
+
+		// if(typeof(json[pagenum]['hot']) !== "undefined"){
+		// 	console.log(json[pagenum]['hot']);
+		// 	$.each(json[pagenum]['hot'],function(k,v){
+		// 		getPoint(v.plist,width_canvas,height_canvas,pic_width,pic_height,v.vbeg,v.vend,v.urlname,leftFlag);
+		// 	});
+		// }
+	 // }
+
+
+}
+
+
+
+
+
+//复读
+$('#btn-fd').click(function(){
+	clearInterval(sh);
+	audio_player.pause();
+	if($('#btn-fd').hasClass('on')){
+		$('#btn-fd').removeClass('on');
+	}else{
+		$('#btn-fd').addClass('on');
+	}
+
+
+});
+//点读
+$('#btn-dd').click(function(){
+	if($('#btn-dd').hasClass('on')){
+		$('#btn-dd').removeClass('on');
+	$('polygon[name=mp3]').each(function(){
+		$(this).attr('style','stroke:red;stroke-width:0;fill-opacity:0');
+	});
+	}else{
+		$('#btn-dd').addClass('on');
+		$('polygon[name=mp3]').each(function(){
+			$(this).attr('style','stroke:red;stroke-width:1;fill-opacity:0');
+		});
+	}
+});
+//上一页
+$('#prev').click(function(){
+	$('#flag').val("no");
+	clearInterval(sh);
+	audio_player.pause();
+	if(pagenum>pagebeg){
+		pagenum--;
+		showPic(pagenum);
+		if(pagenum>pagebeg&&pagenum<pageend){
+			$('#prev').removeClass('on');
+			$('#next').removeClass('on');
+		}
+		if(pagenum == pagebeg){
+			$('#prev').addClass('on');
+		}
+	}
+});
+
+
+//下一页
+$('#next').click(function(){
+	$('#flag').val("no");
+	clearInterval(sh);
+	audio_player.pause();
+
+	if(pagenum<pageend){
+		pagenum++;
+		showPic(pagenum);
+		if(pagenum>pagebeg&&pagenum<pageend){
+			$('#prev').removeClass('on');
+			$('#next').removeClass('on');
+		}
+		if(pagenum == pageend){
+			$('#next').addClass('on');
+		}
+	}
+});
+function stopPropagation(e) {
+    e = e || window.event;
+    if(e.stopPropagation) { //W3C阻止冒泡方法
+        e.stopPropagation();
+    } else {
+        e.cancelBubble = true; //IE阻止冒泡方法
+    }
+}
+function getPoint(str,width_canvas,height_canvas,pic_width,pic_height,beg,end,url,leftFlag){
+	var arr = [];
+	arr = str.split('|');
+
+	var pstr = '';
+	// console.log(arr);
+	$.each(arr,function(k,v){
+		var parr = v.split(',');
+		// console.log( parr[1]+'/'+height_canvas+'/'+pic_height);
+			// alert( parr[1]+'/'+height_canvas+'/'+pic_height);
+		x = parr[0]*width_canvas/pic_width+leftFlag;
+		y = parr[1]*height_canvas/pic_height;
+		// alert(y);
+		pstr += x+','+y+' ';
+	})
+	// console.log(pstr);return false;
+	var html = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+	$(html).attr('points',pstr);
+	$(html).attr('name','mp3');
+	$(html).attr('url',url);
+	// $(html).attr('beg',timeFormat(beg,'beg'));
+	// $(html).attr('end',timeFormat(end,'end'));
+	$(html).attr('beg',beg);
+	$(html).attr('end',end);
+	$(html).attr('onclick','').click( eval(function(){play(this)}));
+	if($('#btn-dd').hasClass('on')){
+		$(html).attr('style','stroke:red;stroke-width:1;fill-opacity:0');
+	}else{
+		$(html).attr('style','stroke:red;stroke-width:0;fill-opacity:0');
+	}
+
+	$('#svg').append(html);
+
+}
+// timeFormat('02:27:491');
+//格式化时间
+function timeFormat(times,flag){
+	var min = parseInt(times.slice(0,2));
+	var sec = parseInt(times.slice(3,5));
+	var lastIndex = parseInt(times.slice(8,9));
+	var ms;
+	if(lastIndex == 0){
+		ms = times.slice(6,8);
+	}else{
+		ms = times.slice(6,9);
+	}
+
+	// if(flag=='beg'){
+	// 	return min*60+sec;
+	// }else{
+	// 	return min*60+sec+1;
+	// }
+	return parseFloat(min*60+sec+'.'+ms);
+}
+
+function timeFormat2(times){
+	var min = parseInt(times.slice(0,2));
+	var sec = parseInt(times.slice(3,5));
+	var ms = parseInt(times.slice(6,9));
+
+	return (min*60+sec)*1000+ms;
+}
+
+
+function audioFormat(beg,end){
+		setTimeout(function() {
+	            audio_player.play();
+				audio_player.pause();
+
+	        },
+	        200);
+
+		setTimeout(function(){
+			playAudo(beg,end);
+		},800);
+
+}
+
+
+
+// $('polygon[name="mp3"]').live('click',function(){
+// 	alert('aa');
+// 	play(this);
+// });
+
+//播放mp3
+
+
+function play(obj){
+	clearInterval(sh);
+	// var url = 'http://192.168.151.126:8051/Uploads/audio/'+$(obj).attr('url')+'?ran='+parseInt(Math.random()*1048576);
+	var url = '../ebookres/'+$(obj).attr('url');
+	var beg = $(obj).attr('beg');
+	var end = $(obj).attr('end');
+
+	beg = timeFormat(beg,'beg');
+	end = timeFormat(end,'end');
+
+	// beg = beg-2;
+	// end = end-2;
+
+	// alert(beg+'|'+end);
+	//audio播放
+	$("#auplayer").attr("austart",beg);
+	$("#auplayer").attr("auend",end);
+	if(url !==$('#auplayer').attr('src')){
+		$('#auplayer').attr('src',url);
+	}
+
+
+	// playAudo(beg,end);
+
+/*
+
+	setTimeout(function() {
+            audio_player.play();
+			audio_player.pause();
+        },
+        100);
+
+
+	if($('#btn-fd').hasClass('on')){
+		//复读
+		setTimeout(function(){
+			playAudo(beg,end);
+			sh = setInterval(function(){playAudo(beg,end);},(end-beg)*1000);
+		},800);
+	}else{
+		setTimeout(function(){
+			playAudo(beg,end);
+		},800);
+	}
+
+
+	if (/i(Phone|P(o|a)d)/.test(navigator.userAgent)) {
+
+	}else{
+		setTimeout(function(){
+			audio_player.pause();
+		},800+(end-beg)*1000+100);
+	}
+
+
+*/
+
+
+	var flag = $('#flag').val();
+
+	if(flag=='no'){
+		//每页第一次点击需要初始化
+		setTimeout(function() {
+	            audio_player.play();
+				audio_player.pause();
+	        },
+	        100);
+
+
+		if($('#btn-fd').hasClass('on')){
+			//复读
+			setTimeout(function(){
+				playAudo(beg,end);
+				sh = setInterval(function(){playAudo(beg,end);},(end-beg)*1000);
+			},800);
+		}else{
+			setTimeout(function(){
+				playAudo(beg,end);
+			},800);
+		}
+
+		// setTimeout(function(){
+		// 	audio_player.pause();
+		// },800+(end-beg)*1000+100);
+
+		$('#flag').val("yes");
+	}else{
+		//非第一次不需要初始化
+		if($('#btn-fd').hasClass('on')){
+			//复读
+				playAudo(beg,end);
+				sh = setInterval(function(){playAudo(beg,end);},(end-beg)*1000);
+		}else{
+			playAudo(beg,end);
+		}
+
+		// setTimeout(function(){
+		// 	audio_player.pause();
+		// },(end-beg)*1000);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//audio
+
+	//jPlayer播放
+	// playJplayer(url,beg,end);
+
+	// alert(beg);
+
+	//soundmanager2播放
+	// beg = timeFormat2(beg);
+	// end = timeFormat2(end);
+
+	// playFromTo(url,beg,end);
+}
+
+
+
+
+
+// $('polygon[name="mp3"]').live('click',function(){
+// 	var url = 'http://192.168.151.126:8051/Uploads/audio/'+$(this).attr('url');
+// 	var beg = $(this).attr('beg');
+// 	var end = $(this).attr('end');
+// 	$("#auplayer").attr("austart",beg);
+// 	$("#auplayer").attr("auend",end);
+// 	$('#auplayer').attr('src',url);
+// 	playAudo();
+// });
+
+
+//audio播放方式 beg ---
+
+function playAudo(beg,end){
+    try {
+        audio_player.currentTime = parseFloat($("#auplayer").attr("austart"))
+    } catch(e) {}
+	audio_player.play();
+	$("#auplayer").bind("timeupdate", v_cwr_timeupdate);
+}
+
+//监控播放时间
+function v_cwr_timeupdate(){
+if (audio_player.currentTime >=parseFloat($("#auplayer").attr("auend"))) {
+        audio_player.pause();
+    }
+}
+
+//audio播放方式 end ---
+
+
+//jplayer播放 beg ---
+function playJplayer(url,beg,end){
+	jpstart(url,parseInt(beg));
+	var jp = $('#jplayer'), jpData = jp.data('jPlayer');
+	setInterval(function() {
+	   // Restrict playback to first 60 seconds.
+	    // alert(jpData.status.currentTime);
+	   if (jpData.status.currentTime > parseInt(end)) {
+	      jp.jPlayer('stop');
+	   }
+	},100); // 10Hz
+}
+
+
+
+
+
+
+//停止播放
+function jpclear() {
+  $("#jplayer").jPlayer("clearMedia");
+  $("#jplayer").jPlayer("stop");
+  $("#jplayer").unbind($.jPlayer.event.ended);
+  $("#jplayer").unbind($.jPlayer.event.progress);
+}
+//开始播放
+function jpstart(mp3,beg){
+	$("#jplayer").jPlayer({
+    swfPath: "js",
+    wmode: "window",
+    supplied: "mp3",
+    preload: "none",
+    volume: "1"
+  });
+	$("#jplayer").jPlayer("setMedia", {
+	    mp3: mp3
+	}).jPlayer("play",beg);
+}
+//jplayer播放 end ---
+
+
+//soundmanager2 beg ---
+
+function playFromTo(mp3,nFrom, nTo) {
+	var mySound = soundManager.createSound({
+    url: mp3
+  });
+  mySound.play();
+  mySound.stop();
+  mySound.play({
+    from: nFrom,
+    to: nTo,
+    onstop: function() {
+    }
+  });
+}
+
+
+
+function getXml(xml){
+
+
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET",xml,false);
+	xmlhttp.send();
+	xmlDoc=xmlhttp.responseXML;
+
+	var infoArray =  new Array();
+	var pageArray =  new Array();
+
+	// var infoArray = {};
+	//获取图片
+	var pages = xmlDoc.getElementsByTagName("page");
+
+
+
+	//获取左边页面
+	var leftpages = xmlDoc.getElementsByTagName("leftpage");
+	$.each(leftpages,function(k,v){
+		var hotmusics = v.getElementsByTagName("hotmusic");
+		$.each(hotmusics,function(kk,vv){
+			var link = vv.getElementsByTagName("link")[0].innerHTML;
+			var plist = vv.getElementsByTagName("plist")[0].innerHTML;
+			var play = vv.getElementsByTagName("play")[0].innerHTML;
+			var stop = vv.getElementsByTagName("stop")[0].innerHTML;
+
+
+			//console.log(k*2+'/'+kk);
+			if( typeof( infoArray[k*2])=="undefined"){
+				infoArray[k*2] = {};
+			}
+
+			if( typeof( infoArray[k*2].hot)=="undefined"){
+				infoArray[k*2].hot = new Array();
+			}
+
+
+			infoArray[k*2].hot[kk] = {};
+
+			infoArray[k*2].hot[kk].urlname = link;
+			infoArray[k*2].hot[kk].plist = plist;
+			infoArray[k*2].hot[kk].vbeg = play;
+			infoArray[k*2].hot[kk].vend = stop;
+
+
+			//console.log(infoArray[k*2]['hot'][kk]);
+		});
+		// console.log(v.innerHTML);
+	})
+
+	//获取右边页面
+	var rightpages = xmlDoc.getElementsByTagName("rightpage");
+	$.each(rightpages,function(k,v){
+		var hotmusics = v.getElementsByTagName("hotmusic");
+		$.each(hotmusics,function(kk,vv){
+			var link = vv.getElementsByTagName("link")[0].innerHTML;
+			var plist = vv.getElementsByTagName("plist")[0].innerHTML;
+			var play = vv.getElementsByTagName("play")[0].innerHTML;
+			var stop = vv.getElementsByTagName("stop")[0].innerHTML;
+
+
+			if( typeof( infoArray[k*2+1])=="undefined"){
+				infoArray[k*2+1] = {};
+			}
+
+			if( typeof( infoArray[k*2+1].hot)=="undefined"){
+				infoArray[k*2+1].hot = new Array();
+			}
+
+
+			infoArray[k*2+1].hot[kk] = {};
+
+			infoArray[k*2+1].hot[kk].urlname = link;
+			infoArray[k*2+1].hot[kk].plist = plist;
+			infoArray[k*2+1].hot[kk].vbeg = play;
+			infoArray[k*2+1].hot[kk].vend = stop;
+
+
+		});
+		// console.log(v.innerHTML);
+	})
+
+
+	$.each(pages,function(k,v){
+		pageArray.push(v.innerHTML);
+		if( typeof( infoArray[k])=="undefined"){
+			infoArray[k] = {};
+		}
+		infoArray[k].pic = v.innerHTML;
+	})
+
+	pageend = infoArray.length;
+	return infoArray;
+}
+
+
+
+</script>
+</html>

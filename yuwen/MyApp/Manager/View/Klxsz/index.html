@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>快乐学生字</title>
+<link href="__PUBLIC__/style/klxsz/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+
+<body>
+    <div class="head"> </div>
+    <div class="center">
+    	<div class="top">
+            <div class="left" id="btn1">
+            	<div id="swfid" style="margin-top:121px;margin-left:0px;">
+				</div>
+            	<div class="left_b" id="btn2" style="display:none;">
+	                	<i class="ico1" title="点赞" style="margin-left:200px;"><span>0</span></i>
+	                    <i class="ico2" title="分享"></i>
+	                    <i class="ico3"></i>
+                </div>
+            </div>
+            <div class="right">
+                    <span id="yinianji"><a name="grade">一年级</a></span>
+                    <span id="ernianji"><a name="grade">二年级</a></span>
+                    <span id="sannianji"><a name="grade">三年级</a></span>
+                    <div class="clearfix"></div>
+                        <select style="width:164px;" id="version">
+							<volist name="banben" id="vo">
+								<option value="{$vo.banben}">{$vo.banben}</option>
+							</volist>
+                        </select>
+                        <select id="term" style="width:70px;">
+                            <option value="上学期">上学期</option>
+                         <!--   <option value="下学期">下学期</option> -->
+                        </select>
+					<div class="clearfix"></div>
+                    <div class="top_b">
+                    	<div class="topp">
+	                    	<ul id="kecheng">
+	                    		<volist name="kecheng" id="vo">
+	                    			<li name="swf"><a  url="{$vo.url}" kid="{$vo.id}" num="{$vo.praise}">{$vo.kecheng}</a></li>
+	                    		</volist>
+	                       </ul>
+					   </div>
+                    </div>
+            </div>
+             <div class="clearfix"></div>
+         </div>
+        <div class="bottom">
+        	<p>其他小朋友都在学</p>
+            <div class="other">
+            	<ul>
+                	<li><a href=""><img src="__PUBLIC__/style/klxsz/images/img08.jpg"></a><span>学拼音</span></li>
+                    <li><a href=""><img src="__PUBLIC__/style/klxsz/images/123.jpg"></a> <span>学拼音</span></li>
+                    <li><a href=""><img src="__PUBLIC__/style/klxsz/images/img08.jpg"></a><span>学拼音</span></li>
+                    <li><a href=""><img src="__PUBLIC__/style/klxsz/images/img08.jpg"></a><span>学拼音</span></li>
+                </ul>
+            </div>
+        	
+        </div>
+    </div>
+    <div class="di">
+    <Div class="clearfix"></Div>
+    	<div class="dibu" >
+        	<div style="float:left;"> <p>关于我们  /  版权声明  /  服务条款  /  隐私保护  /  帮助中心  /  班班通客服</p>
+            <span>2012-2015 优教班班通版权所有  豫ICP备12019223号-1     服务热线：400-637-1319   0371-67679900<br>
+				郑州教育资源中心　 郑州市现代教育信息技术中心   郑州威科姆教育科技有限公司 中国联通河南分公司  联合运营</span></div>
+             <a><img src="__PUBLIC__/style/klxsz/images/weixin.png"></a>
+        </div>
+    </div>
+
+<script>
+	var width=608;
+	var height=480;
+$.ajaxSetup({async:false}); 
+$(function(){
+//	if($.cookie('ut')){
+//		
+//	}else{
+//		art.dialog.alert('请先登录优教通');
+//		setTimeout(function(){location.href="http://zz.zzedu.net.cn"},'1500')
+//	}
+	//初始化时第一章节默认选中
+	if('{$kid}'=='kong'){
+		$('#yinianji').attr('class','cur');
+		default_style();
+	}else{
+		$('#{$nianji}').attr('class','cur');
+		$('#term').val('{$xueqi}');
+		$('#version').val('{$banben_now}');
+		$('a[kid="{$kid}"]').parent('li').attr('class','cur_1');
+		var num=$('a[kid="{$kid}"]').attr('num');
+		$('#btn2').children('i').children('span').html(num);
+		var url=$('a[kid="{$kid}"]').attr('url');
+		var tempHtml='<iframe src="../'+url+'" width="'+width+'" height="'+height+'" style="border:none;" frameboder="0" outline="0" border="0" id="playFlashIframe"></iframe>';
+		$('#swfid').html(tempHtml);
+	}
+	
+});
+
+
+//初始化时第一章节默认选中
+function default_style(){
+	$('.top_b').children('div').children('ul').children('li').eq(0).attr('class','cur_1');
+	//加载点赞数
+	var num=$('.top_b').children('div').children('ul').children('li').eq(0).children('a').attr('num');
+	$('#btn2').children('i').children('span').html(num);
+	//加载选中章节的swf文件
+	var default_url=$('.top_b').children('div').children('ul').children('li').eq(0).children('a').attr('url');
+	var kid=$('.top_b').children('div').children('ul').children('li').eq(0).children('a').attr('kid');
+	//$('embed').attr('src','../'+default_url);
+	//swfobject.embedSWF('../'+default_url, "swfid", width, height, "9.0.0", "expressInstall.swf"); 
+	var tempHtml='<iframe src="../Klxsz/playSwf?type=1&url='+default_url+'" width="'+width+'" height="'+height+'" style="border:none;" frameboder="0"  border="0" id="playFlashIframe" scrolling="no"></iframe>';
+	//var tempHtml='<iframe src="../'+default_url+'" width="'+width+'" height="'+height+'" frameboder="0"  border="0" id="playFlashIframe"></iframe>';
+	$('#swfid').html(tempHtml);
+	$.get('../Klxsz/updateRecord',{ran:Math.random(),kid:kid},function(data){});
+}
+
+
+
+//年级选择
+$('a[name="grade"]').live('click',function(){
+	$(this).parent().siblings('span').removeAttr('class');
+	$(this).parent().attr('class','cur');
+	//$('#term').val('上学期');
+	var nianji=$(this).html();
+	//var xueqi="上学期";
+	var xueqi=$('#term').val();
+	changeGrade(nianji,xueqi,1);
+	default_style();
+});
+//版本选择
+$("#version").change(function(){
+	var banben=$(this).val();
+	var nianji=$('span[class="cur"]').children('a').html();
+	var xueqi=$('#term').val();
+	changeVersion(banben,nianji,xueqi);
+	default_style();
+	
+});
+//学期选择
+$('#term').change(function(){
+	var xueqi=$(this).val();
+	var nianji=$('span[class="cur"]').children('a').html();
+	changeGrade(nianji,xueqi,2);
+	default_style();
+	
+});
+//章节选择
+$('li[name="swf"]').live('click',function(){
+	$(this).siblings().removeAttr('class');
+	$(this).attr('class','cur_1');
+	var url=$(this).children('a').attr('url');
+	var kid=$(this).children('a').attr('kid');
+	var num=$(this).children('a').attr('num');
+	$('#btn2').children('i').children('span').html(num);
+	//$('embed').attr('src','../'+url+'?ran='+Math.random());
+	//swfobject.embedSWF('../'+url, "swfid", width, height, "9.0.0", "expressInstall.swf");
+	var tempHtml='<iframe src="../Klxsz/playSwf?url='+url+'" width="'+width+'" height="'+height+'" style="border:none;" frameboder="0"  border="0" id="playFlashIframe" scrolling="no"></iframe>';
+	//var tempHtml='<iframe src="../'+url+'" width="'+width+'" height="'+height+'" frameboder="0"  border="0" id="playFlashIframe"></iframe>';
+	$('#swfid').html(tempHtml);
+	$.get('../Klxsz/updateRecord',{ran:Math.random(),kid:kid},function(data){});
+});
+
+//点赞
+$('.ico1').click(function(){
+	var num=$(this).children('span').html();
+	$(this).children('span').html(parseInt(num)+1);
+	$('li[class="cur_1"]').children('a').attr('num',parseInt(num)+1);
+	var kid=$('li[class="cur_1"]').children('a').attr('kid');
+	$.get('../Klxsz/updatePraise',{ran:Math.random(),kid:kid},function(data){});
+});
+
+//全屏
+$('.ico3').click(function(){
+	var url=$('li[class="cur_1"]').children('a').attr('url');
+	var title=$('li[class="cur_1"]').children('a').html();
+//	artDialog({width: '100%',height: '100%',left: '0%',top: '0%',padding: 0,title:'动画', content:'<object width=1000 height=800><param name="movie" value="../'+url+'"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><param name="wmode" value="opaque"></param><embed src="../'+url+'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" width="420" height="363"></embed></object>', fixed:true});
+	art.dialog.open('../'+url,{width: '100%',height: '100%',title:title,padding: 0,fixed:true});
+//	return false;
+//		var width=document.documentElement.clientWidth;
+//		var height=document.documentElement.clientHeight;
+//		var myDialog = art.dialog.open('playSwf?type=2&ran='+Math.random()+'&url='+url+'&width='+width+'&height='+height,{
+//			title:'新页面标题',
+//			window:'top',
+//			width:'100%',
+//			height:'100%',
+//			lock:true,
+//			opacity:0.3,
+//		});
+
+
+});
+
+
+
+
+//改变年级或者学期
+//参数，nianji:当前年级;xueqi:当前学期;flag:1为改变年级，2为改变学期
+function changeGrade(nianji,xueqi,flag){
+	$.get('../Klxsz/changeGrade',
+		{
+			ran:Math.random(),
+			nianji:nianji,
+			xueqi:xueqi
+		},
+		function(data){
+			if (data == 'error') {
+				art.dialog.alert('暂无内容！');
+				return false;
+			}
+			else {
+				var banben = '';
+				$.each(data.banben, function(k, v){
+					banben += '<option value="' + v.banben + '">' + v.banben + '</option>';
+				});
+				$('#version').html(banben);
+				if (flag == 1) {
+					var xueqi = '<option value="上学期">上学期</option><option value="下学期">下学期</option>';
+					$('#term').html(xueqi);
+				}
+				var kecheng = '';
+				$.each(data.kecheng, function(k, v){
+					kecheng += '<li name="swf"><a url="' + v.url + '" kid="'+v.id+'" num="'+v.praise+'">' + v.kecheng + '</a></li>';
+				});
+				$('#kecheng').html(kecheng);
+			}
+		});
+}
+
+//改变版本
+function changeVersion(banben,nianji,xueqi){
+	$.get('../Klxsz/changeVersion',
+		{
+			ran:Math.random(),
+			nianji:nianji,
+			banben:banben,
+			xueqi:xueqi
+		},
+		function(data){
+			var kecheng='';
+			$.each(data,function(k,v){
+				kecheng+='<li name="swf"><a url="'+v.url+'" kid="'+v.id+'" num="'+v.praise+'">'+v.kecheng+'</a></li>';
+			});
+			$('#kecheng').html(kecheng);
+		});
+}	
+	
+	
+	
+	
+	
+	
+	$().ready(function(e) {
+       $("#btn1").bind("mouseover", function () {
+       $(this).find("#btn2").show();
+    });
+        $("#btn1").bind("mouseleave", function () {
+        $(this).find("#btn2").hide();
+    });
+  });
+</script>
+</body>
+</html>

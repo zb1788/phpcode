@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/iCheck/all.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body class="hold-transition skin-blue fixed sidebar-mini sidebar-collapse">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+
+    <include file="Common/header" />
+    <include file="Common/left" />
+
+    <!-- =============================================== -->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          试题管理
+          <small></small>
+        </h1>
+        <ol class="breadcrumb">
+          <li>
+            <a href="index">
+              <i class="fa fa-dashboard"></i> 首页</a>
+          </li>
+          <li>
+            <a href="questionlist?questionGenre=0&quesType=0">试题列表</a>
+          </li>
+          <li class="active">试题添加</li>
+        </ol>
+      </section>
+      <!-- /.content -->
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title"></h3>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form role="form" id="form" class="form-horizontal">
+                <div class="box-body">
+                  <div class="form-group">
+                    <div class="col-md-1">
+                      <label>题目类型</label>
+                    </div>
+                    <div class="col-md-11" id="questionType">
+
+                    </div>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>年级</label>
+                    <select class="form-control" id="grade">
+                      <!-- <option value="0">全部</option> -->
+                      <option value="0001">一年级</option>
+                      <option value="0002">二年级</option>
+                      <option value="0003">三年级</option>
+                      <option value="0004">四年级</option>
+                      <option value="0005">五年级</option>
+                      <option value="0006">六年级</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>学期</label>
+                    <select class="form-control" id="term">
+                      <!-- <option value="0">全部</option> -->
+                      <option value="0001">上学期</option>
+                      <option value="0002">下学期</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>分类</label>
+                    <select class="form-control" id="questionGenre">
+                    </select>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>关卡</label>
+                    <select class="form-control" id="stage">
+                    </select>
+                  </div>
+
+                  <!-- <div class="form-group col-md-12">
+                    <label>题目分类</label>
+                    <select class="form-control" id="questionGenre">
+                    </select>
+                  </div> -->
+
+                  <div class="form-group col-md-12" id="questionNameForm">
+                    <label for="questionName">题干</label>
+                    <input type="input" class="form-control" id="questionName" placeholder="题干">
+                    <span class="help-block" style="display:none;">
+                      <i class="fa fa-times-circle-o"></i>题干不能为空</span>
+                  </div>
+                  <div class="form-group" id="contentType">
+                    <div class="col-md-1">
+                      <label>内容类型</label>
+                    </div>
+                    <div class="col-md-11">
+                      <label>
+                        <input type="radio" name="r4" class="flat-red" value="1" checked/>文字
+                      </label>
+                      <label>
+                        <input type="radio" name="r4" class="flat-red" value="2" />图片
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-12" id="content_id">
+                    <label for="contentName">内容 (
+                      <font style="color:#d33724 !important;">可选</font>)
+                    </label>
+                    <input type="input" class="form-control" id="contentName" placeholder="内容">
+                    <span class="help-block" style="display:none;">
+                      <i class="fa fa-times-circle-o"></i>内容不能为空</span>
+                  </div>
+                  <div class="form-group" id="content_pic_id" style="display:none;">
+                    <div class="col-md-3">
+                      <label>
+                        图片上传 (
+                        <font style="color:#d33724 !important;">只能上传一张图片</font>)
+                      </label>
+                      <input type="file" name="file" onchange="checkImage();">
+                    </div>
+                    <div class="col-md-9">
+                      <img src="" alt="" class="img-rounded" width="110" height="70" id="contentPic">
+                    </div>
+                  </div>
+                  <div class="form-group" id="choice_id">
+                    <div class="col-md-1">
+                      <label for="questionName">答案选项</label>
+                    </div>
+                    <div class="col-md-2">
+                      <label>
+                        <input type="radio" name="r5" class="flat-red" value="1" checked/>文字
+                      </label>
+                      <label>
+                        <input type="radio" name="r5" class="flat-red" value="2" />图片
+                      </label>
+                    </div>
+                    <div class="col-md-9">
+                      <button type="button" class="btn btn-xs " onclick="addChoice();">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-12" id="choice_text_id">
+                    <div class="input-group" name="iterm">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-danger" onclick="checkRight(this)">A</button>
+                      </div>
+                      <input type="text" class="form-control" name="choice_text">
+                      <span class="input-group-addon" onclick="delChoice(this)">
+                        <i class="fa fa-close"></i>
+                      </span>
+                    </div>
+                    <br/>
+                    <div class="input-group" name="iterm">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-danger" onclick="checkRight(this)">B</button>
+                      </div>
+                      <input type="text" class="form-control" name="choice_text">
+                      <span class="input-group-addon" onclick="delChoice(this)">
+                        <i class="fa fa-close"></i>
+                      </span>
+                    </div>
+                    <br/>
+                    <div class="input-group" name="iterm">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-danger" onclick="checkRight(this)">C</button>
+                      </div>
+                      <input type="text" class="form-control" name="choice_text">
+                      <span class="input-group-addon" onclick="delChoice(this)">
+                        <i class="fa fa-close"></i>
+                      </span>
+                    </div>
+                    <br/>
+                    <div class="input-group" name="iterm">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-danger" onclick="checkRight(this)">D</button>
+                      </div>
+                      <input type="text" class="form-control" name="choice_text">
+                      <span class="input-group-addon" onclick="delChoice(this)">
+                        <i class="fa fa-close"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group" id="choice_pic_id" style="display:none;">
+                    <div class="col-md-3">
+                      <label>
+                        选项图片上传
+                      </label>
+                      <input type="file" name="fileChoice" onchange="checkChoiceImage();">
+                    </div>
+                    <div class="col-md-9" id="choiceIterm">
+                    </div>
+                  </div>
+                  <div class="form-group has-error col-md-12" style="display:none;" id="errMsg">
+                    <label class="control-label"></label>
+                  </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <button type="button" class="btn btn-primary" id="tijiao">提交</button>
+                  <input type="reset" style="display:none" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="mymodal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                  <i class="fa fa-exclamation-circle"></i>
+                  <span id="mtitle">[Title]</span>
+                </h4>
+              </div>
+              <div class="modal-body">
+                <p id="msg">[Message]</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary ok" data-dismiss="modal" id="BtnOk">[BtnOk]</button>
+                <button type="button" class="btn btn-default cancel" data-dismiss="modal" id="BtnCancel">[BtnCancel]</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <include file="Common/footer" />
+
+
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <script src="__PUBLIC__/dist/js/jquery.form.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- iCheck 1.0.1 -->
+  <script src="__PUBLIC__/dist/js/iCheck/icheck.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script>
+    $.ajaxSetup({
+      async: false
+    }); //异步很重要
+    var arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+    var type = GetQueryString('type');
+    var id = GetQueryString('id');
+    var questiontype = GetQueryString('questiontype');
+
+    var grade = GetQueryString('grade');
+    var term = GetQueryString('term');
+    var genre = GetQueryString('genre');
+    var stage = GetQueryString('stage');
+
+    $(document).ajaxStart(function () {
+      Pace.restart()
+    })
+
+    $(function () {
+      if (type == 'add') {
+        var html = '添加试题';
+      } else {
+        var html = '编辑试题';
+      }
+      $('small').html(html);
+      $('.breadcrumb .active').html(html);
+      $('.box-title').html(html);
+
+      getQuestionType();
+      if (type == 'add') {
+        $('#grade').val(grade);
+        $('#term').val(term);
+        setGenre();
+        $('#questionGenre').val(genre);
+        setStage();
+        $('#stage').val(stage);
+      }
+      if (type == 'edit') {
+        setGenre();
+        setStage();
+        $.each($('input[name="r3"]'), function (k, v) {
+          $(v).prop('disabled', true);
+        })
+        getQuestionInfo();
+      }
+    })
+
+    $('#grade').change(function () {
+      setGenre();
+      $('#questionGenre').change();
+    })
+    $('#term').change(function () {
+      setGenre();
+      $('#questionGenre').change();
+    })
+    $('#questionGenre').change(function () {
+      setStage();
+      $('#stage').change();
+    })
+
+    $("#questionName").keyup(function () {
+      checkInput();
+      $('#errMsg').hide();
+    });
+    $("#questionName").blur(function () {
+      checkInput();
+      $('#errMsg').hide();
+    });
+    $('#tijiao').click(function () {
+      var questionType = $('input[name="r3"]:checked').val(); //题目类型
+      var stage = $('#stage').val(); //题目所属关卡
+      var quesgenre = $('#questionGenre').val();
+      var questionName = $("#questionName").val(); //题干
+      var contentType = $('input[name="r4"]:checked').val(); //内容类型
+      var contentName = $('#contentName').val(); //文字内容类型
+      var contentPic = $('#contentPic').attr('src'); //文字图片base64编码
+      var choiceType = $('input[name="r5"]:checked').val(); //答案类型
+      var answer;
+      var choiceArr = [];
+
+      if (quesgenre == null) {
+        var options = {
+          id: 'mymodal',
+          msg: '分类不能为空！'
+        }
+        Modal(options).alert();
+        return false;
+      }
+      if (stage == null) {
+        var options = {
+          id: 'mymodal',
+          msg: '关卡不能为空！'
+        }
+        Modal(options).alert();
+        return false;
+      }
+
+      if (questionName == null) {
+        var options = {
+          id: 'mymodal',
+          msg: '题干不能为空！'
+        }
+        Modal(options).alert();
+        return false;
+      }
+
+      if (contentType == 2) {
+        //图片
+        if (contentPic.length == 0) {
+          var options = {
+            id: 'mymodal',
+            msg: '内容图片不能为空！'
+          }
+          Modal(options).alert();
+        }
+      }
+
+      if (choiceType == 1) {
+        //文字
+        $.each($('input[name="choice_text"]'), function (k, v) {
+          if ($(v).val() != '') {
+            var obj = {};
+            obj.flag = arr[k];
+            obj.content = $(v).val();
+            choiceArr.push(obj);
+          }
+        });
+
+        if (choiceArr.length == 0) {
+          var options = {
+            id: 'mymodal',
+            msg: '答案选项不能为空！'
+          }
+          Modal(options).alert();
+          return false;
+        }
+        answer = $('#choice_text_id button.btn-success').html();
+      } else {
+        //图片
+        $.each($('img[name="iterm"]'), function (k, v) {
+          var obj = {};
+          obj.flag = arr[k];
+          obj.content = $(v).prop('src');
+          choiceArr.push(obj);
+        });
+
+        if (choiceArr.length == 0) {
+          var options = {
+            id: 'mymodal',
+            msg: '答案选项不能为空！'
+          }
+          Modal(options).alert();
+          return false;
+        }
+        answer = $('#choice_pic_id button.btn-success').html();
+      }
+
+      if (typeof (answer) == 'undefined') {
+        var options = {
+          id: 'mymodal',
+          msg: '正确答案不能为空！'
+        }
+        Modal(options).alert();
+        return false;
+      }
+
+      $.ajax({
+        url: '../Index/addquestiondata',
+        type: 'post',
+        data: {
+          type: type,
+          id: id,
+          stage: stage,
+          questionType: questionType,
+          questionName: questionName,
+          contentType: contentType,
+          contentName: contentName,
+          contentPic: contentPic,
+          choiceType: choiceType,
+          answer: answer,
+          choiceArr: JSON.stringify(choiceArr),
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.errcode == 0) {
+            if (type == 'add') {
+              // document.getElementById("form").reset();
+              // $('#contentPic').prop('src', '');
+              // $('#choiceIterm').empty();
+              // window.location.href = 'questionlist';
+            } else {
+              // window.location.href = 'questionlist';
+            }
+            // window.location.href = 'questionlist?questionGenre=' + questionGenre + '&quesType=1';
+            var grade = $('#grade').val();
+            var term = $('#term').val();
+            var genre = $('#questionGenre').val();
+            var stage = $('#stage').val();
+            var url = 'questionlist?grade=' + grade + '&term=' + term + '&genre=' + genre + '&stage=' + stage +
+              '&quesType=1';
+            goRedirect(url);
+          } else {
+            var options = {
+              id: 'mymodal',
+              msg: '题目不能重复！'
+            }
+            Modal(options).alert();
+            return false;
+          }
+
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+
+    })
+    //上传图片
+    function checkImage() {
+      var options = {
+        url: '../Index/uploadimg?ran=' + Math.random(), //后台的处理，也就是form里的action
+        type: "POST",
+        dataType: "json", //数据格式，有XML，html，json，默认为文本
+        beforeSubmit: function () {
+          // 上传中
+        },
+        success: function (msg) {
+          if (msg.issuc) {
+            $('#contentPic').prop('src', msg.msg);
+          } else {
+            var options = {
+              id: 'mymodal',
+              msg: '上传失败'
+            }
+            Modal(options).alert();
+          }
+        }
+      };
+      $("#form").ajaxSubmit(options);
+      return false; //为了防止刷新
+    }
+    //上传选项图片
+    function checkChoiceImage() {
+      var options = {
+        url: '../Index/uploadChoiceimg?ran=' + Math.random(), //后台的处理，也就是form里的action
+        type: "POST",
+        dataType: "json", //数据格式，有XML，html，json，默认为文本
+        beforeSubmit: function () {
+          // 上传中
+        },
+        success: function (msg) {
+          if (msg.issuc) {
+            var total = $('#choiceIterm img').length;
+            var html = '<span><button type="button" class="btn btn-danger" onclick="checkRight(this)">' + arr[total] +
+              '</button><img src="' + msg.msg +
+              '" class="img-rounded" width="110" height="70" name="iterm"><i class="fa fa-close" onclick="delpic(this)"></i>&nbsp;</span>';
+            $('#choiceIterm').append(html);
+          } else {
+            var options = {
+              id: 'mymodal',
+              msg: '上传失败'
+            }
+            Modal(options).alert();
+          }
+        }
+      };
+      $("#form").ajaxSubmit(options);
+      return false; //为了防止刷新
+    }
+
+    //删除图片选项
+    function delpic(obj) {
+      $(obj).parent().remove();
+      $('#choiceIterm font').each(function (k, v) {
+        $(v).html(arr[k]);
+      })
+    }
+
+    //删除文字选项
+    function delChoice(obj) {
+      $(obj).parent().next('br').remove();
+      $(obj).parent().remove();
+      $('#choice_text_id button').each(function (k, v) {
+        $(v).html(arr[k]);
+      })
+    }
+
+    function checkRight(obj) {
+      var choiceType = $('input[name="r5"]:checked').val(); //答案类型
+      if (choiceType == 1) {
+        //文字
+        $('#choice_text_id').find('button').removeClass('btn-success').addClass('btn-danger');
+        $('#choice_text_id').children('div').removeClass('has-success');
+      } else {
+        //图片
+        $('#choice_pic_id').find('button').removeClass('btn-success').addClass('btn-danger');
+      }
+      $(obj).removeClass('btn-danger').addClass('btn-success');
+      $(obj).parent().parent().addClass('has-success');
+    }
+
+    //新增选项
+    function addChoice() {
+      var index = $('#choiceIterm img').length;
+      var arr = ['A', 'B', 'C'];
+      index = 1;
+      alert(arr[index]);
+    }
+    //获取试题类型
+    function getQuestionType() {
+      $.ajax({
+        url: '../Index/getQuestionType',
+        type: 'get',
+        data: {
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          var html = '';
+          $.each(data, function (k, v) {
+            var ischecked = '';
+            k == (questiontype - 1) ? ischecked = 'checked' : ischecked = '';
+            html += '<label>';
+            html += '<input type="radio" name="r3" class="flat-red" value="' + v.id + '" ' + ischecked + '>' +
+              v.name;
+            html += '</label>'
+          })
+          $('#questionType').html(html);
+          //Flat red color scheme for iCheck
+          $('#questionType input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+          }).on('ifChecked', function (event) {
+            var grade = $('#grade').val();
+            var term = $('#term').val();
+            var genre = $('#questionGenre').val();
+            var stage = $('#stage').val();
+            if ($(this).val() == 1) {
+              // window.location.href = 'addquestion?grade=' + grade + '&term=' + term + '&genre=' + genre +
+              //   '&stage=' + stage + '&type=add&id=0&questiontype=1';
+              var url = 'addquestion?grade=' + grade + '&term=' + term + '&genre=' + genre +
+                '&stage=' + stage + '&type=add&id=0&questiontype=1';
+            } else {
+              // window.location.href = 'addquestioninput?grade=' + grade + '&term=' + term + '&genre=' + genre +
+              //   '&stage=' + stage + '&type=add&id=0&questiontype=2';
+              var url = 'addquestioninput?grade=' + grade + '&term=' + term + '&genre=' + genre +
+                '&stage=' + stage + '&type=add&id=0&questiontype=2';
+            }
+            goRedirect(url);
+          });
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+    //获取试题分类
+    function setGenre() {
+      var grade = $('#grade').val();
+      var term = $('#term').val();
+      $.ajax({
+        url: '../Index/getAllGenre',
+        type: 'get',
+        data: {
+          grade: grade,
+          term: term,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $('#questionGenre').empty();
+          $.each(data, function (k, v) {
+            $('#questionGenre').append($('<option>').html(v.name).val(v.id));
+          });
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    //获取关卡
+    function setStage() {
+      var genre = $('#questionGenre').val();
+      $.ajax({
+        url: '../Index/getStage',
+        type: 'get',
+        data: {
+          genre: genre,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $("#stage").empty();
+          $.each(data, function (k, v) {
+            $("#stage").append($('<option>').val(v.id).html(v.stagename));
+          })
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+    //内容类型选择
+    $('#contentType input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass: 'iradio_flat-green'
+    }).on('ifChecked', function (event) {
+      if ($(this).val() == 1) {
+        //文字
+        $('#content_id').show();
+        $('#content_pic_id').hide();
+      } else {
+        //图片
+        $('#content_id').hide();
+        $('#content_pic_id').show();
+      }
+    });
+    //选项内容选择
+    $('#choice_id input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass: 'iradio_flat-green'
+    }).on('ifChecked', function (event) {
+      if ($(this).val() == 1) {
+        //文字
+        $('#choice_text_id').show();
+        $('#choice_pic_id').hide();
+      } else {
+        //图片
+        $('#choice_text_id').hide();
+        $('#choice_pic_id').show();
+      }
+    });
+
+    function getQuestionInfo() {
+      $.ajax({
+        url: '../Index/getQuestionInfo',
+        type: 'get',
+        data: {
+          id: id,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          var ques = eval('(' + data.content + ')');
+          $('#grade').val(data.grade);
+          $('#term').val(data.term);
+          $('#questionGenre').val(data.genreid);
+          $('#stage').val(data.stageid);
+          $('input[name=r3]').each(function () {
+            if (this.value == ques.quesType) {
+              $(this).iCheck('check');
+            }
+          });
+          $('input[name=r4]').each(function () {
+            if (this.value == ques.quesContentType) {
+              $(this).iCheck('check');
+            }
+          });
+          $('input[name=r5]').each(function () {
+            if (this.value == ques.quesChoiceType) {
+              $(this).iCheck('check');
+            }
+          });
+          $('#questionName').val(ques.quesName);
+          if (ques.quesContentType == 1) {
+            //文字
+            $('#contentName').val(ques.quesContent);
+          } else {
+            //图片
+            $('#contentPic').attr('src', ques.quesContent);
+          }
+          if (ques.quesChoiceType == 1) {
+            //文字
+            var html = '';
+            $.each(ques.quesChoice, function (k, v) {
+              if (v.flag == ques.answer) {
+                html += '<div class="input-group has-success" name="iterm">';
+              } else {
+                html += '<div class="input-group" name="iterm">';
+              }
+              html += '<div class="input-group-btn">'
+              if (v.flag == ques.answer) {
+                html += '<button type="button" class="btn btn-success" onclick="checkRight(this)">' + arr[k] +
+                  '</button>';
+              } else {
+                html += '<button type="button" class="btn btn-danger" onclick="checkRight(this)">' + arr[k] +
+                  '</button>';
+              }
+              html += '</div>';
+              html += '<input type="text" class="form-control" name="choice_text" value="' + v.content + '">';
+              html += '<span class="input-group-addon" onclick="delChoice(this)">';
+              html += '<i class="fa fa-close"></i>'
+              html += '</span>';
+              html += '</div>';
+              html += '<br/>';
+              // $('input[name="choice_text"]').eq(k).parent().prev('div').children('button').html(v.flag);
+              // $('input[name="choice_text"]').eq(k).val(v.content);
+              // if (v.flag == ques.answer) {
+              //   $('#choice_text_id button').eq(k).removeClass('btn-danger').addClass('btn-success');
+              //   $('#choice_text_id').children('div').eq(k).addClass('has-success');
+              // }
+            });
+            $('#choice_text_id').html(html);
+          } else {
+            //图片
+            $.each(ques.quesChoice, function (k, v) {
+              if (v.flag == ques.answer) {
+                var bclass = 'btn-success';
+              } else {
+                var bclass = 'btn-danger';
+              }
+              var html = '<span><button type="button" class="btn ' + bclass + '" onclick="checkRight(this)">' +
+                v.flag + '</button><img src="' + v.content +
+                '" class="img-rounded" width="110" height="70" name="iterm"><i class="fa fa-close" onclick="delpic(this)"></i>&nbsp;</span>';
+              $('#choiceIterm').append(html);
+            });
+          }
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    function checkInput() {
+      var questionName = $("#questionName").val();
+      if (questionName == '') {
+        $('#questionNameForm').addClass('has-error');
+        $('#questionNameForm').children('span').show();
+        return false;
+      } else {
+        $('#questionNameForm').removeClass('has-error');
+        $('#questionNameForm').children('span').hide();
+        return true;
+      }
+    }
+  </script>
+</body>
+
+</html>

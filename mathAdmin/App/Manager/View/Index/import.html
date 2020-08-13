@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/webupload/webuploader.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body class="hold-transition skin-blue fixed sidebar-mini sidebar-collapse">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+
+    <include file="Common/header" />
+    <include file="Common/left" />
+
+    <!-- =============================================== -->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          批量导入
+          <small></small>
+        </h1>
+        <ol class="breadcrumb">
+          <li>
+            <a href="index">
+              <i class="fa fa-dashboard"></i> 首页</a>
+          </li>
+          <li class="active">批量导入</li>
+        </ol>
+      </section>
+      <!-- /.content -->
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <button class="btn btn-primary btn-sm" id="download">下载模版</button>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form role="form">
+                <div class="box-body">
+                  <div class="uploader-container">
+                    <div id="filePicker">上传excel</div>
+                  </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <!-- <button type="button" class="btn btn-primary" id="tijiao">导入</button> -->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <include file="Common/footer" />
+
+
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <script src="__PUBLIC__/dist/js/jquery.form.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- iCheck 1.0.1 -->
+  <script src="__PUBLIC__/dist/js/iCheck/icheck.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <script src="__PUBLIC__/dist/js/webupload/webuploader.min.js"></script>
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script>
+    var questionGenre = GetQueryString('questionGenre');
+
+    $(document).ajaxStart(function () {
+      Pace.restart()
+    })
+
+    $(function () {
+      var uploader = WebUploader.create({
+
+        // 选完文件后，是否自动上传。
+        auto: true,
+
+        // swf文件路径
+        swf: '/js/Uploader.swf',
+
+        // 文件接收服务端。
+        server: '../index/uploadExcel',
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#filePicker',
+
+        // 只允许选择图片文件。
+        accept: {
+          title: 'excel',
+          extensions: 'xlsx',
+          mimeTypes: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        }
+      });
+
+      uploader.on('uploadSuccess', function (file) {
+        console.log(file);
+        $('#' + file.id).addClass('upload-state-done');
+      });
+
+      // 文件上传失败，显示上传出错。
+      uploader.on('uploadError', function (file) {
+        var $li = $('#' + file.id),
+          $error = $li.find('div.error');
+
+        // 避免重复创建
+        if (!$error.length) {
+          $error = $('<div class="error"></div>').appendTo($li);
+        }
+
+        $error.text('上传失败');
+      });
+
+    })
+
+    $('#download').click(function () {
+      location.href = "../Index/makeExcel?genreid=" + questionGenre;
+    })
+
+
+    $('#tijiao').click(function () {
+      if (checkInput()) {
+        $.ajax({
+          url: '../Index/addGenreData',
+          type: 'get',
+          data: {
+            name: genreName,
+            type: type,
+            id: id,
+            ran: Math.random()
+          },
+          dataType: 'json',
+          success: function (data) {
+            if (data.status == 'ok') {
+              window.location.href = 'genrelist';
+            } else {
+              $('#errMsg').children('label').html('<i class="fa fa-times-circle-o"></i>' + data.msg);
+              $('#errMsg').show();
+            }
+          },
+          error: function (e) {
+            console.log(e);
+          }
+        })
+      }
+    })
+  </script>
+</body>
+
+</html>

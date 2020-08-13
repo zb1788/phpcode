@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加单词</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td align="left">词语：</td>
+			<td><input type="text" id="word"  class="input-text" size="8"/></td>
+		</tr>
+		<tr>
+			<td align="left">释义：</td>
+			<td><input type="text" id="explain" class="input-text" size="50"/></td>	
+		</tr>
+</table>
+<div class="h5"></div> 
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+$(function(){
+	
+});
+
+
+
+function savedata(){
+	    var kecheng_id={$kecheng_id};
+		var word=$('#word').val();
+		var explain=$('#explain').val();
+		var flag=false;
+		if(word==''){
+			art.dialog.alert('单词不能为空！',function(){
+				$('#word').focus();
+			});
+			return false;
+		}else if(explain==''){
+			art.dialog.alert('释义不能为空！',function(){
+				$('#explain').focus();
+			});
+			return false;			
+		}else{
+		$.get('../kewen/addWord_info',
+			{ran:Math.random(),
+			 kecheng_id:kecheng_id,
+			 word:word,
+			 explain:explain
+			},
+			function(data){
+				if(data=='已存在'){
+					flag=false;
+				}else{
+					flag=true;
+					art.dialog.data('wordid', data);
+				}
+			});
+			return flag;
+		}
+
+}
+
+
+
+</script>

@@ -1,0 +1,597 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>用户注册</title> 
+<link rel="stylesheet" href="__PUBLIC__/css/regist/regist.css" type="text/css" />
+<script language="JavaScript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script language="JavaScript" src="__PUBLIC__/js/birthday.js"></script>
+<script language="JavaScript" src="__PUBLIC__/js/area.js"></script>
+<style type="text/css">
+.cur_nj {overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis; -moz-binding: url('ellipsis.xml#ellipsis');}
+</style>
+</head>
+<body>
+  <div class="place"><strong>位置</strong>： &gt; 用户注册</div>
+  <div class="biaodan" >
+    <form id="registerSave" name="register" action="" method="post">    
+         <input type="hidden" name="portalUrl" value="" />
+           <p>
+            <label>用 户 名</label>
+            <input type="text" name="username" maxlength="32" value="用户名只能以字母和数字组合" id="username" class="textbox_big" style="width:230px;" />&nbsp;&nbsp;*<span id="confirmUser"></span>
+           </p>
+           <p>
+            <label>用户姓名</label>
+            <input type="text" name="truename" maxlength="16" id="truename" class="textbox_big" style="width:230px;" />&nbsp;&nbsp;
+           </p>
+		   <!--
+           <p>
+            <label>用户类型</label>
+            <select class="select" id="right">
+            	<option value="1">1</option>
+            	<option value="2">2</option>
+            	<option value="3">3</option>
+            </select>
+           </p>
+		   -->                                                                  
+           <p>
+            <label>密      码</label>
+            <input type="password" name="pwd"  maxlength="16" id="pwd" class="textbox_big" style="width:230px;"  onblur="pwdBlur();" "/>&nbsp;&nbsp;*<span id="pwdTip">请输入6-16由数字或者字母组成的密码</span>
+          </p>
+           
+           <p>
+            <label>确认密码</label><input type="password" name="password" maxlength="16" id="confirmPwd" class="textbox_big" style="width:230px;"  onblur="confirmPwdBlur();"/>&nbsp;&nbsp;*<span id="confirmPwdTip">请再输入一遍您上面填写的密码</span>
+           </p>
+           <p>
+            <label>性别</label>
+			<div>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;男<input type="radio" name="userSex" maxlength="32" value="男" id="" class="" />&nbsp;&nbsp;&nbsp;&nbsp;
+			女<input type="radio" name="userSex" maxlength="32" value="女" id="" class="" />&nbsp;&nbsp;&nbsp;&nbsp;
+			保密<input type="radio" name="userSex" checked="checked" maxlength="32" value="保密" id="" class="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+            </div>
+		   </p>	
+		   <p>
+		   	<label>生日</label>
+			<select class="sel_year" rel="1970" style="height:28px;padding:0 5px;margin-top:5px;line-height:28px;background:url(__PUBLIC__/css/regist/textboxBg2.jpg) repeat-x;border:1px solid #aeaeae;"></select>年
+	        <select class="sel_month" rel="2" style="height:28px;padding:0 5px;margin-top:5px;line-height:28px;background:url(__PUBLIC__/css/regist/textboxBg2.jpg) repeat-x;border:1px solid #aeaeae;"></select>月
+	        <select class="sel_day" rel="14" style="height:28px;padding:0 5px;margin-top:5px;line-height:28px;background:url(__PUBLIC__/css/regist/textboxBg2.jpg) repeat-x;border:1px solid #aeaeae;"></select>日
+		   </p>	   
+		   <p>
+		   	<label>地区</label>
+				<select id="province" runat="server" name="province" style="height:28px;padding:0 5px;margin-top:5px;line-height:28px;background:url(__PUBLIC__/css/regist/textboxBg2.jpg) repeat-x;border:1px solid #aeaeae;"> 
+				</select> 
+				<select id="city" runat="server" name="city" style="height:28px;padding:0 5px;margin-top:5px;line-height:28px;background:url(__PUBLIC__/css/regist/textboxBg2.jpg) repeat-x;border:1px solid #aeaeae;"> 
+				</select> 
+				<select id="county" runat="server" name="county" style="height:28px;padding:0 5px;margin-top:5px;line-height:28px;background:url(__PUBLIC__/css/regist/textboxBg2.jpg) repeat-x;border:1px solid #aeaeae;"> 
+				</select>
+				&nbsp;&nbsp;*
+		   </p>
+           <p>
+            <label>详细地址</label><input type="text" name="address" maxlength="16" id="address" class="textbox_big" style="width:230px;" />&nbsp;&nbsp;
+          </p>
+		  <p>
+		  	<label>邮箱</label><input type="text" name="email"  id="email" class="textbox_big" style="width:230px;"  />
+		  </p>		
+		  <p>
+            <label>邮编</label><input type="text" name="postcode" maxlength="16" id="postcode" class="textbox_big" style="width:230px;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />&nbsp;&nbsp;
+          </p>	
+		  <!--
+           <p>
+            <label>手机号码</label><input type="text" name="userPhone" maxlength="32" value="" id="userphone" class="textbox_big" style="width:230px;" onblur="phoneBlur();" onfocus="phoneBlur();"/>&nbsp;&nbsp;<span id="phoneTip"></span>
+           </p>
+		   -->
+		   <p>
+		   	<label style="margin-top:10px;">手机号码</label>
+		   </p>
+			<div>
+				<select name="mobile_area" id="J_Area" style="height:28px;padding:0 5px;margin-top:5px;line-height:28px;background:url(__PUBLIC__/css/regist/textboxBg2.jpg) repeat-x;border:1px solid #aeaeae;">
+			    <option value="1" data-pattern="^(86){0,1}1\d{10}$" check-key="^(86){0,1}1\d{10}$"
+			    data-code='86' selected='selected' data-phase-id="r_c_1" data-desp="CN"
+			    data-text="中国大陆">
+			        中国大陆
+			    </option>
+			    <option value="4" data-pattern="^(00){0,1}(886){1}0{0,1}[6,7,9](?:\d{7}|\d{8}|\d{10})$"
+			    check-key="^(00){0,1}(886){1}0{0,1}[6,7,9](?:\d{7}|\d{8}|\d{10})$" data-code='886'
+			    data-phase-id="r_c_2" data-desp="TW" data-text="台湾">
+			        台湾
+			    </option>
+			    <option value="2" data-pattern="^(00){0,1}(852){1}0{0,1}[1,5,6,9](?:\d{7}|\d{8}|\d{12})$"
+			    check-key="^(00){0,1}(852){1}0{0,1}[1,5,6,9](?:\d{7}|\d{8}|\d{12})$" data-code='852'
+			    data-phase-id="r_c_3" data-desp="HK" data-text="香港">
+			        香港
+			    </option>
+			    <option value="12" data-pattern="^(00){0,1}(60){1}1\d{8,9}$" check-key="^(00){0,1}(60){1}1\d{8,9}$"
+			    data-code='60' data-phase-id="r_c_4" data-desp="MY" data-text="马来西亚">
+			        马来西亚
+			    </option>
+			    <option value="11" data-pattern="^(00){0,1}(65){1}[13689]\d{6,7}$" check-key="^(00){0,1}(65){1}[13689]\d{6,7}$"
+			    data-code='65' data-phase-id="r_c_5" data-desp="SG" data-text="新加坡">
+			        新加坡
+			    </option>
+			    <option value="6" data-pattern="^(00){0,1}(81){1}0{0,1}[7,8,9](?:\d{8}|\d{9})$"
+			    check-key="^(00){0,1}(81){1}0{0,1}[7,8,9](?:\d{8}|\d{9})$" data-code='81'
+			    data-phase-id="r_c_6" data-desp="JP" data-text="日本">
+			        日本
+			    </option>
+			    <option value="5" data-pattern="^(00){0,1}(82){1}0{0,1}[7,1](?:\d{8}|\d{9})$"
+			    check-key="^(00){0,1}(82){1}0{0,1}[7,1](?:\d{8}|\d{9})$" data-code='82'
+			    data-phase-id="r_c_7" data-desp="KR" data-text="韩国">
+			        韩国
+			    </option>
+			    <option value="7" data-pattern="^(00){0,1}(1){1}\d{10,12}$" check-key="^(00){0,1}(1){1}\d{10,12}$"
+			    data-code='1' data-phase-id="r_c_8" data-desp="US" data-text="美国">
+			        美国
+			    </option>
+			    <option value="8" data-pattern="^(00){0,1}(1){1}\d{10}$" check-key="^(00){0,1}(1){1}\d{10}$"
+			    data-code='1' data-phase-id="r_c_9" data-desp="CA" data-text="加拿大">
+			        加拿大
+			    </option>
+			    <option value="10" data-pattern="^(00){0,1}(61){1}4\d{8,9}$" check-key="^(00){0,1}(61){1}4\d{8,9}$"
+			    data-code='61' data-phase-id="r_c_10" data-desp="AU" data-text="澳大利亚">
+			        澳大利亚
+			    </option>
+			    <option value="21" data-pattern="^(00){0,1}(64){1}[278]\d{7,9}$" check-key="^(00){0,1}(64){1}[278]\d{7,9}$"
+			    data-code='64' data-phase-id="r_c_11" data-desp="NZ" data-text="新西兰">
+			        新西兰
+			    </option>
+			    <option value="26" data-pattern="^(00){0,1}(54){1}\d{6,12}$" check-key="^(00){0,1}(54){1}\d{6,12}$"
+			    data-code='54' data-phase-id="r_c_12" data-desp="AR" data-text="阿根廷">
+			        阿根廷
+			    </option>
+			    <option value="25" data-pattern="^(00){0,1}(971){1}\d{6,12}$" check-key="^(00){0,1}(971){1}\d{6,12}$"
+			    data-code='971' data-phase-id="r_c_13" data-desp="AE" data-text="阿联酋">
+			        阿联酋
+			    </option>
+			    <option value="44" data-pattern="^(00){0,1}(353){1}\d{6,12}$" check-key="^(00){0,1}(353){1}\d{6,12}$"
+			    data-code='353' data-phase-id="r_c_14" data-desp="IE" data-text="爱尔兰">
+			        爱尔兰
+			    </option>
+			    <option value="39" data-pattern="^(00){0,1}(20){1}\d{6,12}$" check-key="^(00){0,1}(20){1}\d{6,12}$"
+			    data-code='20' data-phase-id="r_c_15" data-desp="EG" data-text="埃及">
+			        埃及
+			    </option>
+			    <option value="38" data-pattern="^(00){0,1}(372){1}\d{6,12}$" check-key="^(00){0,1}(372){1}\d{6,12}$"
+			    data-code='372' data-phase-id="r_c_16" data-desp="EE" data-text="爱沙尼亚">
+			        爱沙尼亚
+			    </option>
+			    <option value="27" data-pattern="^(00){0,1}(43){1}\d{6,12}$" check-key="^(00){0,1}(43){1}\d{6,12}$"
+			    data-code='43' data-phase-id="r_c_17" data-desp="AT" data-text="奥地利">
+			        奥地利
+			    </option>
+			    <option value="3" data-pattern="^(00){0,1}(853){1}6\d{7}$" check-key="^(00){0,1}(853){1}6\d{7}$"
+			    data-code='853' data-phase-id="r_c_18" data-desp="MO" data-text="澳门">
+			        澳门
+			    </option>
+			    <option value="31" data-pattern="^(00){0,1}(1242){1}\d{6,12}$" check-key="^(00){0,1}(1242){1}\d{6,12}$"
+			    data-code='1242' data-phase-id="r_c_19" data-desp="BS" data-text="巴哈马">
+			        巴哈马
+			    </option>
+			    <option value="59" data-pattern="^(00){0,1}(507){1}\d{6,12}$" check-key="^(00){0,1}(507){1}\d{6,12}$"
+			    data-code='507' data-phase-id="r_c_20" data-desp="PA" data-text="巴拿马">
+			        巴拿马
+			    </option>
+			    <option value="30" data-pattern="^(00){0,1}(55){1}\d{6,12}$" check-key="^(00){0,1}(55){1}\d{6,12}$"
+			    data-code='55' data-phase-id="r_c_21" data-desp="BR" data-text="巴西">
+			        巴西
+			    </option>
+			    <option value="32" data-pattern="^(00){0,1}(375){1}\d{6,12}$" check-key="^(00){0,1}(375){1}\d{6,12}$"
+			    data-code='375' data-phase-id="r_c_22" data-desp="BY" data-text="白俄罗斯">
+			        白俄罗斯
+			    </option>
+			    <option value="29" data-pattern="^(00){0,1}(359){1}\d{6,12}$" check-key="^(00){0,1}(359){1}\d{6,12}$"
+			    data-code='359' data-phase-id="r_c_23" data-desp="BG" data-text="保加利亚">
+			        保加利亚
+			    </option>
+			    <option value="28" data-pattern="^(00){0,1}(32){1}\d{6,12}$" check-key="^(00){0,1}(32){1}\d{6,12}$"
+			    data-code='32' data-phase-id="r_c_24" data-desp="BE" data-text="比利时">
+			        比利时
+			    </option>
+			    <option value="61" data-pattern="^(00){0,1}(48){1}\d{6,12}$" check-key="^(00){0,1}(48){1}\d{6,12}$"
+			    data-code='48' data-phase-id="r_c_25" data-desp="PL" data-text="波兰">
+			        波兰
+			    </option>
+			    <option value="33" data-pattern="^(00){0,1}(501){1}\d{6,12}$" check-key="^(00){0,1}(501){1}\d{6,12}$"
+			    data-code='501' data-phase-id="r_c_26" data-desp="BZ" data-text="伯利兹">
+			        伯利兹
+			    </option>
+			    <option value="37" data-pattern="^(00){0,1}(45){1}\d{6,12}$" check-key="^(00){0,1}(45){1}\d{6,12}$"
+			    data-code='45' data-phase-id="r_c_27" data-desp="DK" data-text="丹麦">
+			        丹麦
+			    </option>
+			    <option value="17" data-pattern="^(00){0,1}(49){1}1(\d{5,6}|\d{9,12})$"
+			    check-key="^(00){0,1}(49){1}1(\d{5,6}|\d{9,12})$" data-code='49' data-phase-id="r_c_28"
+			    data-desp="DE" data-text="德国">
+			        德国
+			    </option>
+			    <option value="20" data-pattern="^(00){0,1}(7){1}[13489]\d{9,11}$" check-key="^(00){0,1}(7){1}[13489]\d{9,11}$"
+			    data-code='7' data-phase-id="r_c_29" data-desp="RU" data-text="俄罗斯">
+			        俄罗斯
+			    </option>
+			    <option value="19" data-pattern="^(00){0,1}(33){1}(\d{6}|\d{8,9})$" check-key="^(00){0,1}(33){1}(\d{6}|\d{8,9})$"
+			    data-code='33' data-phase-id="r_c_30" data-desp="FR" data-text="法国">
+			        法国
+			    </option>
+			    <option value="15" data-pattern="^(00){0,1}(63){1}[24579](\d{7,9}|\d{12})$"
+			    check-key="^(00){0,1}(63){1}[24579](\d{7,9}|\d{12})$" data-code='63' data-phase-id="r_c_31"
+			    data-desp="PH" data-text="菲律宾">
+			        菲律宾
+			    </option>
+			    <option value="41" data-pattern="^(00){0,1}(358){1}\d{6,12}$" check-key="^(00){0,1}(358){1}\d{6,12}$"
+			    data-code='358' data-phase-id="r_c_32" data-desp="FI" data-text="芬兰">
+			        芬兰
+			    </option>
+			    <option value="36" data-pattern="^(00){0,1}(57){1}\d{6,12}$" check-key="^(00){0,1}(57){1}\d{6,12}$"
+			    data-code='57' data-phase-id="r_c_33" data-desp="CO" data-text="哥伦比亚">
+			        哥伦比亚
+			    </option>
+			    <option value="22" data-pattern="^(00){0,1}(31){1}6\d{8}$" check-key="^(00){0,1}(31){1}6\d{8}$"
+			    data-code='31' data-phase-id="r_c_34" data-desp="NL" data-text="荷兰">
+			        荷兰
+			    </option>
+			    <option value="48" data-pattern="^(00){0,1}(996){1}\d{6,12}$" check-key="^(00){0,1}(996){1}\d{6,12}$"
+			    data-code='996' data-phase-id="r_c_35" data-desp="KG" data-text="吉尔吉斯斯坦">
+			        吉尔吉斯斯坦
+			    </option>
+			    <option value="49" data-pattern="^(00){0,1}(855){1}\d{6,12}$" check-key="^(00){0,1}(855){1}\d{6,12}$"
+			    data-code='855' data-phase-id="r_c_36" data-desp="KH" data-text="柬埔寨">
+			        柬埔寨
+			    </option>
+			    <option value="63" data-pattern="^(00){0,1}(974){1}\d{6,12}$" check-key="^(00){0,1}(974){1}\d{6,12}$"
+			    data-code='974' data-phase-id="r_c_37" data-desp="QA" data-text="卡塔尔">
+			        卡塔尔
+			    </option>
+			    <option value="51" data-pattern="^(00){0,1}(370){1}\d{6,12}$" check-key="^(00){0,1}(370){1}\d{6,12}$"
+			    data-code='370' data-phase-id="r_c_38" data-desp="LT" data-text="立陶宛">
+			        立陶宛
+			    </option>
+			    <option value="52" data-pattern="^(00){0,1}(352){1}\d{6,12}$" check-key="^(00){0,1}(352){1}\d{6,12}$"
+			    data-code='352' data-phase-id="r_c_39" data-desp="LU" data-text="卢森堡">
+			        卢森堡
+			    </option>
+			    <option value="64" data-pattern="^(00){0,1}(40){1}\d{6,12}$" check-key="^(00){0,1}(40){1}\d{6,12}$"
+			    data-code='40' data-phase-id="r_c_40" data-desp="RO" data-text="罗马尼亚">
+			        罗马尼亚
+			    </option>
+			    <option value="55" data-pattern="^(00){0,1}(960){1}\d{6,12}$" check-key="^(00){0,1}(960){1}\d{6,12}$"
+			    data-code='960' data-phase-id="r_c_41" data-desp="MV" data-text="马尔代夫">
+			        马尔代夫
+			    </option>
+			    <option value="54" data-pattern="^(00){0,1}(976){1}\d{6,12}$" check-key="^(00){0,1}(976){1}\d{6,12}$"
+			    data-code='976' data-phase-id="r_c_42" data-desp="MN" data-text="蒙古">
+			        蒙古
+			    </option>
+			    <option value="60" data-pattern="^(00){0,1}(51){1}\d{6,12}$" check-key="^(00){0,1}(51){1}\d{6,12}$"
+			    data-code='51' data-phase-id="r_c_43" data-desp="PE" data-text="秘鲁">
+			        秘鲁
+			    </option>
+			    <option value="53" data-pattern="^(00){0,1}(212){1}\d{6,12}$" check-key="^(00){0,1}(212){1}\d{6,12}$"
+			    data-code='212' data-phase-id="r_c_44" data-desp="MA" data-text="摩洛哥">
+			        摩洛哥
+			    </option>
+			    <option value="56" data-pattern="^(00){0,1}(52){1}\d{6,12}$" check-key="^(00){0,1}(52){1}\d{6,12}$"
+			    data-code='52' data-phase-id="r_c_45" data-desp="MX" data-text="墨西哥">
+			        墨西哥
+			    </option>
+			    <option value="72" data-pattern="^(00){0,1}(27){1}\d{6,12}$" check-key="^(00){0,1}(27){1}\d{6,12}$"
+			    data-code='27' data-phase-id="r_c_46" data-desp="ZA" data-text="南非">
+			        南非
+			    </option>
+			    <option value="57" data-pattern="^(00){0,1}(234){1}\d{6,12}$" check-key="^(00){0,1}(234){1}\d{6,12}$"
+			    data-code='234' data-phase-id="r_c_47" data-desp="NG" data-text="尼日利亚">
+			        尼日利亚
+			    </option>
+			    <option value="58" data-pattern="^(00){0,1}(47){1}\d{6,12}$" check-key="^(00){0,1}(47){1}\d{6,12}$"
+			    data-code='47' data-phase-id="r_c_48" data-desp="NO" data-text="挪威">
+			        挪威
+			    </option>
+			    <option value="62" data-pattern="^(00){0,1}(351){1}\d{6,12}$" check-key="^(00){0,1}(351){1}\d{6,12}$"
+			    data-code='351' data-phase-id="r_c_49" data-desp="PT" data-text="葡萄牙">
+			        葡萄牙
+			    </option>
+			    <option value="23" data-pattern="^(00){0,1}(46){1}[124-7](\d{8}|\d{10}|\d{12})$"
+			    check-key="^(00){0,1}(46){1}[124-7](\d{8}|\d{10}|\d{12})$" data-code='46'
+			    data-phase-id="r_c_50" data-desp="SE" data-text="瑞典">
+			        瑞典
+			    </option>
+			    <option value="34" data-pattern="^(00){0,1}(41){1}\d{6,12}$" check-key="^(00){0,1}(41){1}\d{6,12}$"
+			    data-code='41' data-phase-id="r_c_51" data-desp="CH" data-text="瑞士">
+			        瑞士
+			    </option>
+			    <option value="65" data-pattern="^(00){0,1}(381){1}\d{6,12}$" check-key="^(00){0,1}(381){1}\d{6,12}$"
+			    data-code='381' data-phase-id="r_c_52" data-desp="RS" data-text="塞尔维亚">
+			        塞尔维亚
+			    </option>
+			    <option value="67" data-pattern="^(00){0,1}(248){1}\d{6,12}$" check-key="^(00){0,1}(248){1}\d{6,12}$"
+			    data-code='248' data-phase-id="r_c_53" data-desp="SC" data-text="塞舌尔">
+			        塞舌尔
+			    </option>
+			    <option value="66" data-pattern="^(00){0,1}(966){1}\d{6,12}$" check-key="^(00){0,1}(966){1}\d{6,12}$"
+			    data-code='966' data-phase-id="r_c_54" data-desp="SA" data-text="沙特阿拉伯">
+			        沙特阿拉伯
+			    </option>
+			    <option value="50" data-pattern="^(00){0,1}(94){1}\d{6,12}$" check-key="^(00){0,1}(94){1}\d{6,12}$"
+			    data-code='94' data-phase-id="r_c_55" data-desp="LK" data-text="斯里兰卡">
+			        斯里兰卡
+			    </option>
+			    <option value="13" data-pattern="^(00){0,1}(66){1}[13456789]\d{7,8}$"
+			    check-key="^(00){0,1}(66){1}[13456789]\d{7,8}$" data-code='66' data-phase-id="r_c_56"
+			    data-desp="TH" data-text="泰国">
+			        泰国
+			    </option>
+			    <option value="69" data-pattern="^(00){0,1}(90){1}\d{6,12}$" check-key="^(00){0,1}(90){1}\d{6,12}$"
+			    data-code='90' data-phase-id="r_c_57" data-desp="TR" data-text="土耳其">
+			        土耳其
+			    </option>
+			    <option value="68" data-pattern="^(00){0,1}(216){1}\d{6,12}$" check-key="^(00){0,1}(216){1}\d{6,12}$"
+			    data-code='216' data-phase-id="r_c_58" data-desp="TN" data-text="突尼斯">
+			        突尼斯
+			    </option>
+			    <option value="70" data-pattern="^(00){0,1}(58){1}\d{6,12}$" check-key="^(00){0,1}(58){1}\d{6,12}$"
+			    data-code='58' data-phase-id="r_c_59" data-desp="VE" data-text="委内瑞拉">
+			        委内瑞拉
+			    </option>
+			    <option value="24" data-pattern="^(00){0,1}(380){1}[3-79]\d{8,9}$" check-key="^(00){0,1}(380){1}[3-79]\d{8,9}$"
+			    data-code='380' data-phase-id="r_c_60" data-desp="UA" data-text="乌克兰">
+			        乌克兰
+			    </option>
+			    <option value="40" data-pattern="^(00){0,1}(34){1}\d{6,12}$" check-key="^(00){0,1}(34){1}\d{6,12}$"
+			    data-code='34' data-phase-id="r_c_61" data-desp="ES" data-text="西班牙">
+			        西班牙
+			    </option>
+			    <option value="42" data-pattern="^(00){0,1}(30){1}\d{6,12}$" check-key="^(00){0,1}(30){1}\d{6,12}$"
+			    data-code='30' data-phase-id="r_c_62" data-desp="GR" data-text="希腊">
+			        希腊
+			    </option>
+			    <option value="43" data-pattern="^(00){0,1}(36){1}\d{6,12}$" check-key="^(00){0,1}(36){1}\d{6,12}$"
+			    data-code='36' data-phase-id="r_c_63" data-desp="HU" data-text="匈牙利">
+			        匈牙利
+			    </option>
+			    <option value="18" data-pattern="^(00){0,1}(39){1}[37]\d{8,11}$" check-key="^(00){0,1}(39){1}[37]\d{8,11}$"
+			    data-code='39' data-phase-id="r_c_64" data-desp="IT" data-text="意大利">
+			        意大利
+			    </option>
+			    <option value="45" data-pattern="^(00){0,1}(972){1}\d{6,12}$" check-key="^(00){0,1}(972){1}\d{6,12}$"
+			    data-code='972' data-phase-id="r_c_65" data-desp="IL" data-text="以色列">
+			        以色列
+			    </option>
+			    <option value="46" data-pattern="^(00){0,1}(91){1}\d{6,12}$" check-key="^(00){0,1}(91){1}\d{6,12}$"
+			    data-code='91' data-phase-id="r_c_66" data-desp="IN" data-text="印度">
+			        印度
+			    </option>
+			    <option value="16" data-pattern="^(00){0,1}(62){1}[2-9]\d{7,11}$" check-key="^(00){0,1}(62){1}[2-9]\d{7,11}$"
+			    data-code='62' data-phase-id="r_c_67" data-desp="ID" data-text="印度尼西亚">
+			        印度尼西亚
+			    </option>
+			    <option value="9" data-pattern="^(00){0,1}(44){1}[347-9](\d{8,9}|\d{11,12})$"
+			    check-key="^(00){0,1}(44){1}[347-9](\d{8,9}|\d{11,12})$" data-code='44'
+			    data-phase-id="r_c_68" data-desp="GB" data-text="英国">
+			        英国
+			    </option>
+			    <option value="71" data-pattern="^(00){0,1}(1284){1}\d{6,12}$" check-key="^(00){0,1}(1284){1}\d{6,12}$"
+			    data-code='1284' data-phase-id="r_c_69" data-desp="VG" data-text="英属维尔京群岛">
+			        英属维尔京群岛
+			    </option>
+			    <option value="47" data-pattern="^(00){0,1}(962){1}\d{6,12}$" check-key="^(00){0,1}(962){1}\d{6,12}$"
+			    data-code='962' data-phase-id="r_c_70" data-desp="JO" data-text="约旦">
+			        约旦
+			    </option>
+			    <option value="14" data-pattern="^(00){0,1}(84){1}[1-9]\d{6,9}$" check-key="^(00){0,1}(84){1}[1-9]\d{6,9}$"
+			    data-code='84' data-phase-id="r_c_71" data-desp="VN" data-text="越南">
+			        越南
+			    </option>
+			    <option value="35" data-pattern="^(00){0,1}(56){1}\d{6,12}$" check-key="^(00){0,1}(56){1}\d{6,12}$"
+			    data-code='56' data-phase-id="r_c_72" data-desp="CL" data-text="智利">
+			        智利
+			    </option>
+			</select>
+			<input autocomplete="off" class="textbox_big" style="width:230px;" name="mobile"
+			id="J_Mobile" type="text" value="" placeholder="请输入你的手机号码" data-inner_placeholder="r_p_input_inner_enterMobile"
+			data-outer_placeholder="r_p_input_enterMobile" onblur="phoneBlur();" />&nbsp;&nbsp;<span id="phoneTip"></span>
+				
+			</div>
+		   
+           <p>
+            <label>固定电话</label><input type="text" name="telephone" maxlength="32" value="" id="telephone" class="textbox_big" style="width:230px;" />&nbsp;&nbsp;
+           </p>		   
+           <p>
+            <label>QQ</label><input type="text" name="qq" maxlength="16" id="qq" class="textbox_big" style="width:230px;"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />&nbsp;&nbsp;
+          </p>
+          <!-- <p>
+            <label>验 证 码</label><input type="password" name="" maxlength="5" class="textbox_big" style="width:100px;" /><img src="{:U('Manager/Public/verify_c')}" title="点击刷新" onclick="re_verifyimg();" id="verifycode">&nbsp;&nbsp;*
+          </p>  -->
+           <p>
+           <label>&nbsp;</label><a id="subRegister" style="margin-left:5%;" href="javascript:void(0);"  class="b_tj">注册</a>
+    </form>
+  </div>
+</body>
+</html>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script language="javascript">
+$(function () {
+	setup();
+	$.ms_DatePicker({
+            YearSelector: ".sel_year",
+            MonthSelector: ".sel_month",
+            DaySelector: ".sel_day"
+    });
+	$.ms_DatePicker();
+}); 
+
+$(function(){
+  $.ajaxSetup({async:false});
+ // $.EBC.getRight($("#right"));
+ 
+$("#subRegister111").click(function(){
+	prompt('ss',$('#registerSave').serialize());
+	//alert($('#registerSave').serialize());
+});
+
+  $("#subRegister").click(function(){
+    var bid=$(this).attr("bid");
+    if(bid=='0'){return false;}
+    var username=$("#username").val();
+    var truename=$("#truename").val();
+	//var usertype=$('#right').val();
+    //var mtype=$("input[name='usertype']:checked").val();
+    var pwd=$("#pwd").val();
+	var usersex=$("input[name='userSex']:checked").val();
+	var year=$('.sel_year').val();
+	var month=$('.sel_month').val();
+	var day=$('.sel_day').val();
+	var birthday=year+'/'+month+'/'+day;
+	var province=$('#province').val();
+	var city=$('#city').val();
+	var county=$('#county').val();
+	var area=province+'.'+city+'.'+county;
+    var address=$("#address").val();
+    var postcode=$("#postcode").val()
+    var userphone=$("#J_Mobile").val();
+	var datacode=$('#J_Area').find("option:selected").attr('data-code');
+    var telephone=$("#telephone").val();
+    var qq=$("#qq").val();
+	var email=$('#email').val();
+	var joinip=returnCitySN["cip"];
+	if (province=='省份'){
+		alert('省份必须选择！');
+		return false;
+	}
+    if(username==""||pwd==""||confirmPwd==""){
+      alert("请将必填项全部填完毕!");
+      return false;
+    }
+	if(userphone!=''){
+		userphone='+'+datacode+userphone;
+	}
+    $.post("../Index/registMember",
+		{
+			username:username,
+			truename:truename,
+			//usertype:usertype,
+			pwd:pwd,
+			usersex:usersex,
+			birthday:birthday,
+			area:area,
+			address:address,
+			postcode:postcode,
+			userphone:userphone,
+			telephone:telephone,
+			qq:qq,
+			email:email,
+			joinip:joinip,
+			ran:Math.random()
+		},function(data){
+        location.href="../Index/index";
+    	});
+  });
+});
+
+$('#username').blur(function(){
+	var username=$("#username").val();
+	if(username=="用户名只能以字母和数字组合"){$("#username").val("");}
+	if(username==""){$("#confirmUser").html("用户名不能为空");$("#confirmUser").css("color","red");$("#username").val("用户名只能以字母和数字组合");return false;}
+	var regUserName = /^[0-9A-Za-z_]{6,15}$/;
+	if(!username.match(regUserName)){
+		$("#confirmUser").html("用户名格式不正确");
+		$("#confirmUser").css("color","red");
+		return false;
+	}else{
+		$("#confirmUser").html("");
+	}
+	
+	$.post("../Index/checkUsername",{ran:Math.random(),username:username},function(data){
+     if(data=='0'){
+        $("#confirmUser").html("用户可以使用");$("#confirmUser").css("color","gray");
+        $("#subRegister").attr("bid","1");
+     }else if(data=='1'){
+        $("#confirmUser").html("用户已经存在");$("#confirmUser").css("color","red");
+        $("#subRegister").attr("bid","0");
+     }
+  });
+}).focus(function(){
+	$(this).triggerHandler('blur');
+}).keyup(function(){
+	$(this).triggerHandler('blur');
+});
+
+
+//用户名验证
+function userNameBlur(){
+  var username=$("#username").val();
+  if(username=="用户名只能以字母和数字组合"){$("#username").val("");return;}
+  if(username==""){$("#confirmUser").html("用户名不能为空");$("#confirmUser").css("color","red");$("#username").val("用户名只能以字母和数字组合");return;}
+  var regUserName = /^[0-9A-Za-z_]{6,15}$/;
+  if(!username.match(regUserName)){$("#confirmUser").html("用户名格式不正确");$("#confirmUser").css("color","red");return;}
+  $.post("../Index/checkUsername",{ran:Math.random(),username:username},function(data){
+     if(data=='0'){
+        $("#confirmUser").html("用户可以使用");$("#confirmUser").css("color","gray");
+        $("#subRegister").attr("bid","1");
+     }else if(data=='1'){
+        $("#confirmUser").html("用户已经存在");$("#confirmUser").css("color","red");
+        $("#subRegister").attr("bid","0");
+     }
+  });
+}
+//密码验证
+function pwdBlur(){
+  var pwd=$("#pwd").val();
+  if(pwd==""){$("#pwdTip").html("密码不能为空");$("#pwdTip").css("color","red");return;}
+  var regUserName = /^[a-zA-Z0-9]+$/;
+  if(!pwd.match(regUserName)){$("#pwdTip").html("用户名格式不正确");$("#pwdTip").css("color","red");$("#subRegister").attr("bid","1");return;}
+  else{
+    $("#pwdTip").html("密码正确");$("#pwdTip").css("color","gray");$("#subRegister").attr("bid","0");
+  }
+  confirmPwdBlur();
+}
+//确认密码验证
+function confirmPwdBlur(){
+  var pwd=$("#pwd").val();
+  var confirmpwd=$("#confirmPwd").val();
+  if(pwd==confirmpwd){
+  	
+    $("#confirmPwdTip").html("密码正确");$("#confirmPwdTip").css("color","gray");
+    $("#subRegister").attr("bid","1");return;
+  }else{
+    $("#confirmPwdTip").html("两次密码不一样");$("#confirmPwdTip").css("color","red");
+    $("#subRegister").attr("bid","0");return;
+  }
+}
+
+//手机号码验证
+//function phoneBlur(){
+//  var tel = $("#userphone").val();
+//  //if(tel==""){$("#phoneTip").html("手机号不能为空");$("#phoneTip").css("color","red");return;}
+//  var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
+//  if (tel.match(reg)) {
+//      $("#phoneTip").html("手机号正确");$("#phoneTip").css("color","gray");
+//     // $("#subRegister").attr("bid","1");return;
+//   }else{
+//      $("#phoneTip").html("手机号格式错误");$("#phoneTip").css("color","red");
+//     // $("#subRegister").attr("bid","0");return;
+//   };
+//}
+
+
+//手机号验证
+function phoneBlur(){
+	var pattern=$('#J_Area').find("option:selected").attr('data-pattern');
+	var phonenum=$('#J_Mobile').val();
+	eval("var reg=/"+pattern+"/;");
+	 if (phonenum.match(reg)) {
+	 	$("#phoneTip").html("手机号正确");$("#phoneTip").css("color","gray");
+	 }else{
+	 	$("#phoneTip").html("手机号格式错误");$("#phoneTip").css("color","red");
+	 }
+}
+
+$('#J_Area').change(function(){
+	var pattern=$(this).find("option:selected").attr('data-pattern');
+	var phonenum=$('#J_Mobile').val();
+	eval("var reg=/"+pattern+"/;");
+	if (phonenum.match(reg)) {
+	 	$("#phoneTip").html("手机号正确");$("#phoneTip").css("color","gray");
+	 }else{
+	 	$("#phoneTip").html("手机号格式错误");$("#phoneTip").css("color","red");
+	 }
+});
+</script>

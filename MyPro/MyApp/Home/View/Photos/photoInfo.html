@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+ 	<title>上传头像</title>
+	<link href="__PUBLIC__/css/touxiang/manage.css" rel="stylesheet" type="text/css" />
+	<link href="__PUBLIC__/css/touxiang/common.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=default"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>	
+	<style type="text/css">
+		.imagefile{ position:absolute; top:80px; left:295px; left:295px \9; height:48px; width:150px ;border:1px solid #000000;font-size:36px;opacity: 0;filter:alpha(opacity:0);}
+	</style>
+	<script type="text/javascript">
+//		$(document).ready(function(){
+//			var tip = "null";
+//			if ( null != tip && "" != tip && "null" != tip ) {
+//				art.dialog.tips(tip, 2);
+//			}
+//		});
+		
+		function getImgName(obj){
+			var imgName = obj.value;
+			imgName = imgName.substr(imgName.lastIndexOf("\\")+1);
+			document.getElementById('textfield').value = imgName;
+			document.getElementById('imageValue').value = imgName;
+		}
+		
+		var clickFlag = true;
+		function formcheck(){
+			if ( clickFlag ) {
+				var headPhotoFile = document.getElementById("imageValue").value;
+				if( headPhotoFile == '' ){
+					art.dialog.tips('请选择您要上传的头像!', 2);
+					return false;
+				}else{
+					var i = headPhotoFile.lastIndexOf(".");
+					if(i < 0){
+					    art.dialog.tips('您选择的头像文件格式不正确!', 2);
+					    return false;
+					}
+					var var1 = headPhotoFile.substring(i+1);
+					var1 = var1.toLowerCase();
+					if(var1 != "jpg" && var1 != "jpeg" && var1 != "png"){
+						art.dialog.tips('只能上传jpg、jpeg、png格式的图片!', 2);
+						return false;
+					}
+				}
+				
+				clickFlag = false;
+				$('#uploadBut').css("color","#CCC");
+		    	$('#uploadBut').unbind("click");
+				
+				document.getElementById("photoForm").submit();
+			}
+		}
+	</script>
+
+  </head>
+  
+  <body>
+  <div id="edit_tx" class="edit_tx2" style="display:block;">
+	    <form name="photoForm" id="photoForm" action="../Upload/uploadImg" method="post" enctype ="multipart/form-data">
+	    	<input type="hidden" id="imageValue" />
+		    
+		    <img src="__PUBLIC__/css/touxiang/sele_pic.png" onclick="document.getElementById('headPhotoFile').click();" class="file1" />
+		    
+		    <input type='text' name='textfield' id='textfield' class='txt' placeholder="点击文件所在的位置" onclick="document.getElementById('headPhotoFile').click();" />
+			  
+		    <input id="headPhotoFile" name="headPhotoFile" type="file" onchange="getImgName(this);" class="imagefile" />
+		    
+	    	<font class="orangeFon2">
+	    		<img src="__PUBLIC__/css/touxiang/tips2.png" width="16" height="16" />&nbsp;请上传jpg、jpeg、png格式的图片！上传5:7比例图片更美观哦！
+			</font>
+	    	
+	    	<div class="btn_3" style="margin-top:50px;">
+	    		<a id="uploadBut" class="okBtn" href="javascript:void(0);" onclick="formcheck();" style="background-image:url(__PUBLIC__/css/touxiang/but_bg.gif); ">上传</a>
+	    	</div>
+	    </form>
+    </div>
+  </body>
+</html>

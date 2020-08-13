@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<title>ebook</title>
+<style>
+
+</style>
+</head>
+<body style="background-color:black;">
+<div  align="center" >
+<embed id="aaa" src="/edit.swf"  wmode="transparent" quality="high" width="886" height="568" align="C" scale="noborder" flashvars="{$url}" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" >
+</embed>
+
+<input type="hidden" id="kid" value="{$kid}" />
+</div>
+
+
+
+ <script language="JavaScript">
+ $.ajaxSetup({async:false});
+     //播放
+     function eTeachingMaterialResPlayer(dataStr){
+         alert("aaa"+dataStr);
+    //Rcode,RFormatMark,RTitle
+     }
+
+     function sayHello(name) {
+         alert("hello, " + name);
+     }
+     function requestVcomDivFullScreen(){
+            $('#aaa').attr('width','100%');
+            $('#aaa').attr('height','800px');
+     }
+
+ function closeETeachingMaterial(){
+    var kid = $('#kid').val();
+    $.get('../Art/isMake',{ran:Math.random(),kid:kid},function(data){
+        //alert(data.err);
+        if(data.err == 0){
+            alert('保存成功！');
+            window.opener=null;
+            window.open('','_self');
+            window.close();
+        }else{
+            alert('保存失败，请重试！');
+        }
+    });
+
+ }
+ </script>
+
+</body>
+</html>

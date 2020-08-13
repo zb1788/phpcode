@@ -1,0 +1,46 @@
+<!DOCTYPE public>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>支付宝支付</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=green"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 支付宝支付
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr>
+				<th width="150px">支付功能</th>
+				<td align="left">
+					订单号：<input type="text" id="WIDout_trade_no" value="201512080001" class="input-text2"/>
+					订单名称：<input type="text" id="WIDsubject" value="这是标题" class="input-text2"/>
+					订单价格：<input type="text" id="WIDprice" value="0.01" class="input-text2" onblur="checkMail(this);"/>
+					<input type="button" id="pay" value="支付" class="ext_btn ext_btn_error"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+<script>
+$('#pay').click(function(){
+	var WIDout_trade_no=$('#WIDout_trade_no').val();//必须参数
+	var WIDsubject=$('#WIDout_trade_no').val();//必须参数
+	var WIDprice=$('#WIDout_trade_no').val();//必须参数
+	//其余参数不是必填
+	var WIDbody=$('#WIDout_trade_no').val();
+	var WIDshow_url='';
+	location.href="../Alipay/pay?ran="+Math.random()+'&WIDout_trade_no='+WIDout_trade_no+'&WIDsubject='+WIDsubject+'&WIDprice='+WIDprice+'&WIDbody='+WIDbody+'&WIDshow_url='+WIDshow_url;
+	
+});
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>分类管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+	<tr>
+		<td>
+			<input type="button" id="add" value="添加内容" class="ext_btn ext_btn_submit"/>
+		</td>
+	</tr>
+</table>
+<div class="h5"></div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" id="table_data">
+  <tr>
+    <th>序号</th>
+    <th width="260">名称</th>
+    <th>操作</th>
+  </tr>
+</table>
+<div class="h5"></div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tbody><tr>
+    <td class="pl_10" height="42">
+        <input id="sort" type="button" class="ext_btn ext_btn_submit" value="保存次序" onclick="sortGenre();">
+    </td>
+  </tr>
+</tbody></table>
+
+<table style="display:none" id="table_demo">
+  <tr class="tr">
+    <td align="center"><input type="text" name="xuhao" style="width:30px;" class="input-text" value="" bid=""></td>
+    <td align="center"></td>
+    <td align="center">
+      <input type="button" name="edit" class="ext_btn ext_btn_error" value="修改" />
+      <input type="button" name="del" class="ext_btn ext_btn_error" value="删除" />
+    </td>
+  </tr>
+</table>
+</div>
+
+
+
+<div id="demo" style="display:none;">
+	<table>
+		<tr>
+            <td></td>
+			<td>
+				名称：
+			</td>
+			<td>
+				<input type="text" id="title" class="input-text" size="10" />
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+    getConts();
+});
+
+//获取体裁信息
+function getConts(){
+    $.get("{:U('Yuedu/getConts')}",{ran:Math.random()},function(data){
+            $('.list_table').children('tbody').children('tr:not(:first)').remove();
+            $.each(data,function(k,v){
+                var tr=$('#table_demo').children('tbody').children('tr').eq(0).clone();
+                tr.children('td').eq(0).find('input').val(k+1);
+                tr.children('td').eq(1).html(v.name);
+                tr.children('td').find('input').attr('bid',v.id);
+                tr.appendTo('.list_table');
+            });
+    });
+}
+
+//添加
+$('#add').click(function(){
+	art.dialog({
+		padding:0,
+		title:'添加',
+		width:300,
+		content: document.getElementById('demo'),
+		lock:true,
+		opacity: 0.2,
+		ok:function(){
+			var title=$('#title').val();
+			if(title==''){
+				art.dialog.alert('名称不能为空！');
+				return false;
+			}
+			$.get('../Yuedu/contManage',{ran:Math.random(),title:title,type:"add"},function(data){
+                console.log(data);
+				if(data.errCode=='0001'){
+					art.dialog.alert('名称已存在！');
+				}else{
+					var tr=$('#table_demo').children('tbody').children('tr').eq(0).clone();
+                    tr.children('td').eq(0).find('input').val(data.sortid);
+					tr.children('td').eq(1).html(title);
+					tr.children('td').find('input').attr('bid',data.id);
+					tr.appendTo('.list_table');
+					$('#title').val('');
+				}
+			});
+		},
+		cancelVal: '关闭',
+   		cancel: true
+
+	});
+});
+//修改
+$('input[name="edit"]').live('click',function(){
+	var id=$(this).attr('bid');
+	var title_old=$(this).parent().prev().html();
+	var cur=$(this).parent().prev();
+		art.dialog({
+		padding:0,
+		title:'修改',
+		width:300,
+		content: '<table><tr><td>背景名称：</td><td><input type="text" id="title_new" value="'+title_old+'" class="input-text" size="10" /></td></tr></table>',
+		lock:true,
+		opacity: 0.2,
+		ok:function(){
+			var title_new=$('#title_new').val();
+			if(title_new==''){
+				art.dialog.alert('名称不能为空！');
+				return false;
+			}else if(title_new==title_old){
+				art.dialog.alert('名称不能与原名称一致！');
+				return false;
+			}
+			$.get("{:U('Yuedu/contManage')}",{ran:Math.random(),bid:id,title:title_new,type:"edit"},function(data){
+				$(cur).html(title_new);
+			});
+		},
+		cancelVal: '关闭',
+   		cancel: true
+
+	});
+});
+//删除
+$('input[name="del"]').live('click',function(){
+	var id=$(this).attr('bid');
+	var aa=$(this).parent().parent();
+	//alert($(this).parent().parent().html());return false;
+	$.get("{:U('Yuedu/delCont')}",{ran:Math.random(),id:id},function(data){
+		if(data.errCode=='1000'){
+			$(aa).remove();
+		}else{
+			art.dialog.alert('删除失败！');
+		}
+
+	});
+});
+
+function sortGenre(){
+    var sortsInfoArray=[];
+    $('.list_table input[name="xuhao"]').each(function(k,v){
+        var obj={};
+        obj.id=$(v).attr('bid');
+        obj.sortid=$(v).val();
+        sortsInfoArray.push(obj);
+    });
+
+    $.post("{:U('Yuedu/updatesort')}",{ran:Math.random(),sortsInfo:JSON.stringify(sortsInfoArray),type:'cont'},function(data){
+         getConts();
+     alert("排序保存成功");
+    });
+
+}
+</script>

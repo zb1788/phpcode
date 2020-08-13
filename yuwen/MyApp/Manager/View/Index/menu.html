@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>菜单</title>
+<script language="JavaScript" src="__PUBLIC__/js/jquery.min.js"></script>
+<link href="__PUBLIC__/style/menu.css" rel="stylesheet" type="text/css" />
+<script  type="text/javascript">
+$(function(){
+	//导航切换
+	$(".menuson li").click(function(){
+		$(".menuson li.active").removeClass("active")
+		$(this).addClass("active");
+	});
+
+	$('.title').click(function(){
+		var $ul = $(this).next('ul');
+		$('dd').find('ul').slideUp();
+		if($ul.is(':visible')){
+			$(this).next('ul').slideUp();
+		}else{
+			$(this).next('ul').slideDown();
+		}
+	});
+})
+</script>
+</head>
+<body>
+    <div class="lefttop"><span></span>功能菜单</div>
+    <dl class="leftmenu">
+		<dd>
+        	<div class="title"><span></span>生字信息管理</div>
+            <ul class="menuson">
+				<li><cite></cite><a href="{:U('Hanzi/zicheck')}" target="mainFrame">生字存在验证</a><i></i></li>
+				<li><cite></cite><a href="{:U('Hanzi/ziimport')}" target="mainFrame">生字基础库导入</a><i></i></li>
+            	<li><cite></cite><a href="{:U('Hanzi/ziedit')}" target="mainFrame">生字信息管理</a><i></i></li>
+            	<li><cite></cite><a href="{:U('Hanzi/ziin')}" target="mainFrame">课程生字导入</a><i></i></li>
+				<li><cite></cite><a href="{:U('Hanzi/zilist')}" target="mainFrame">课程生字管理</a><i></i></li>
+                <li><cite></cite><a href="{:U('Hanzi/ziflash')}" target="mainFrame">生字动画管理</a><i></i></li>
+                <li><cite></cite><a href="{:U('Hanzi/version')}" target="mainFrame">版本信息管理</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title"><span></span>课文信息管理</div>
+            <ul class="menuson">
+                <li><cite></cite><a href="{:U('Kewen/kecheng')}" target="mainFrame">课程信息管理</a><i></i></li>
+                <li><cite></cite><a href="{:U('Kewen/music')}" target="mainFrame">背景音乐管理</a><i></i></li>
+            </ul>
+        </dd>
+        <dd>
+            <div class="title"><span></span>阅读信息管理</div>
+            <ul class="menuson">
+                <li><cite></cite><a href="{:U('Yuedu/index')}" target="mainFrame">阅读课程管理</a><i></i></li>
+            </ul>
+        </dd>
+		<dd>
+        	<div class="title"><span></span>基础信息管理</div>
+            <ul class="menuson">
+                <li><cite></cite><a href="{:U('user/pwdmgr')}" target="mainFrame">登陆密码修改</a><i></i></li>
+                <if condition="$Think.session.ifadmin eq 1">
+                <li><cite></cite><a href="{:U('user/list')}" target="mainFrame">人员信息设置</a><i></i></li>
+                </if>
+            </ul>
+        </dd>
+    </dl>
+</body>
+</html>

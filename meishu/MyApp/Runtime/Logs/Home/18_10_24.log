@@ -1,0 +1,580 @@
+[ 2018-10-24T17:22:42+08:00 ] 192.168.144.107 /Home/Vue/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0140s ]
+SQL: SELECT * FROM db_vue.t_user WHERE ( username="admin" and pwd="e10adc3949ba59abbe56e057f20f883e" ) LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:22:42+08:00 ] 192.168.144.107 /Home/Vue/getUserInfo?token=admin%7C123456
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+
+[ 2018-10-24T17:22:47+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0070s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:22:56+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0140s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 2,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:22:58+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=8
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0050s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 14,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:23:00+08:00 ] 192.168.144.107 /Home/Vue/getUserInfos?id=17
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user WHERE ( id="17" ) LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:23:32+08:00 ] 192.168.144.107 /Home/Vue/addUser?type=edit&id=17&username=2222222&truename=222222222222&password=bbb8aae57c104cda40c93843ad5e6db8&ifadmin=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0150s ]
+SQL: UPDATE db_vue.t_user SET `username`='2222222',`truename`='222222222222',`ifadmin`='1' WHERE ( id="17" ) [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:23:33+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:23:35+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=8
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 14,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:23:37+08:00 ] 192.168.144.107 /Home/Vue/getUserInfos?id=17
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0150s ]
+SQL: SELECT * FROM db_vue.t_user WHERE ( id="17" ) LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:23:42+08:00 ] 192.168.144.107 /Home/Vue/addUser?type=edit&id=17&username=3333333&truename=3333333333&password=bbb8aae57c104cda40c93843ad5e6db8&ifadmin=0
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0060s ]
+SQL: UPDATE db_vue.t_user SET `username`='3333333',`truename`='3333333333',`ifadmin`='0' WHERE ( id="17" ) [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:23:42+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0080s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:23:44+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=8
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 14,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:23:45+08:00 ] 192.168.144.107 /Home/Vue/getUserInfos?id=17
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user WHERE ( id="17" ) LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:23:59+08:00 ] 192.168.144.107 /Home/Vue/addUser?type=edit&id=17&username=44444444&truename=444444444&password=bbb8aae57c104cda40c93843ad5e6db8&ifadmin=0
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0070s ]
+SQL: UPDATE db_vue.t_user SET `username`='44444444',`truename`='444444444',`ifadmin`='0' WHERE ( id="17" ) [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:24:00+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:24:02+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=8
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 14,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:24:03+08:00 ] 192.168.144.107 /Home/Vue/getUserInfos?id=17
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user WHERE ( id="17" ) LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:24:09+08:00 ] 192.168.144.107 /Home/Vue/addUser?type=edit&id=17&username=33333&truename=333333333333&password=bbb8aae57c104cda40c93843ad5e6db8&ifadmin=0
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0060s ]
+SQL: UPDATE db_vue.t_user SET `username`='33333',`truename`='333333333333',`ifadmin`='0' WHERE ( id="17" ) [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:24:10+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0060s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:24:41+08:00 ] 192.168.144.107 /Home/Vue/getUserInfos?id=2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user WHERE ( id="2" ) LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:25+08:00 ] 192.168.144.107 /Home/Vue/addUser?type=edit&id=2&username=editor&truename=editor&password=e10adc3949ba59abbe56e057f20f883e&ifadmin=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0150s ]
+SQL: UPDATE db_vue.t_user SET `username`='editor',`truename`='editor',`ifadmin`='1' WHERE ( id="2" ) [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:25+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:28+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 2,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:29+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 4,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:29+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 10,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:30+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=8
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0060s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 14,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:30+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=7
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0070s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 12,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:31+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=4
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0150s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 6,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:32+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 4,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:32+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=5
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0140s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 8,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:33+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0070s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 10,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:33+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=7
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 12,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:34+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0160s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 4,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:35+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0060s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 2,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:36+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0060s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:37+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0090s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 4,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:37+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=4
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0070s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 6,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:37+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=5
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0060s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 8,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:38+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0070s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 10,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:38+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=7
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 12,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:41+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0140s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 10,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:42+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=7
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0110s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 12,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:47+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=4
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 6,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:25:49+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=5
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 8,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:50+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0120s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 10,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:25:52+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 4,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:32:58+08:00 ] 192.168.144.107 /Home/Vue/tablelist
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.003001s ]
+INFO: [ app_end ] --END-- [ RunTime:0.003001s ]
+
+[ 2018-10-24T17:33:03+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0080s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:33:07+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=2
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 2,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:33:08+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=4
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001001s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0080s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 6,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:33:08+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=6
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.001000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0130s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 10,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+
+[ 2018-10-24T17:33:09+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0140s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0000s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-10-24T17:33:13+08:00 ] 192.168.144.107 /Home/Vue/getUserList?pageSize=2&pageCurrent=1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003000s ]
+SQL: SHOW COLUMNS FROM `db_vue`.`t_user` [ RunTime:0.0140s ]
+SQL: SELECT * FROM db_vue.t_user LIMIT 0,2   [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM db_vue.t_user LIMIT 1   [ RunTime:0.0000s ]
+

@@ -1,0 +1,66 @@
+<!DOCTYPE public>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>常用功能</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 常用功能
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr>
+				<th width="150px">邮箱发送</th>
+				<td align="left">
+					<input type="text" id="title" value="邮件标题" class="input-text2"/>
+					<input type="text" id="content" value="这是正文" class="input-text2"/>
+					<input type="text" id="address" value="justzb@126.com" class="input-text2" onblur="checkMail(this);"/>
+					<input type="button" id="send" value="发送" class="ext_btn ext_btn_error"/>
+				</td>
+			</tr>
+			<tr>
+				<th>分页</th>
+				<td>Excel/makeExcel</td>
+			</tr>
+		</table>
+	</div>
+	
+<script>
+//验证邮箱
+function checkMail(obj){
+	var address=$(obj).val();
+	var reg=  /^(\w-*\.*)+@(\w-?)+(\.\w{2,6})+$/;
+	if (reg.test(address)) {
+		art.dialog.alert('格式正确！');
+	}else{
+		art.dialog.alert('格式错误！');
+	}
+}
+//发动邮件
+$('#send').click(function(){
+	var title=$('#title').val();
+	var content=$('#content').val();
+	var address=$('#address').val();
+	$.get('../Fun/mail',
+		{
+			ran:Math.random(),
+			title:title,
+			content:content,
+			address:address
+		},
+		function(data){
+			art.dialog.alert(data);
+		});
+});	
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ksk</title></head>
+<body style="background-color:black;">
+<div id=app style="margin:0 auto;width:414px;height:736px;">
+<iframe id="iframe" src="" frameborder="0" width="100%" height="736px"></iframe>
+</div>
+<script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+<script>
+function GetQueryString(name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return decodeURI(unescape(r[2]));
+  return null;
+}
+
+var stageid = GetQueryString('stageid');
+var quesid = GetQueryString('quesid');
+var subject = GetQueryString('subject');
+
+if(subject=='0002'){
+	var url = 'quesview_ksk';
+}else{
+	var url = 'quesview';
+}
+
+if(stageid===null){
+	$('#iframe').attr('src',url+'?id='+quesid+'&type=ques');
+}else{
+	$('#iframe').attr('src',url+'?id='+stageid+'&type=stage');
+}
+
+//$('#iframe').attr('onload', 'iframeAutoFit(this)');
+//IFRAME自适应高度
+function iframeAutoFit(iframeObj) {
+	setTimeout(function () {
+		if (!iframeObj) return;
+		iframeObj.height = (iframeObj.Document ? iframeObj.Document.body.scrollHeight : iframeObj.contentDocument
+			.body.offsetHeight);
+	}, 100)
+}
+</script>
+</body>
+</html>

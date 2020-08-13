@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>课程内容管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ue/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ue/ueditor.all.min.js"></script>
+</head>
+<body>
+<div class="container">
+<p>
+	<font size="3">正文:</font>
+</p>
+<p>
+	<script id="editor" type="text/plain" style="width:978px;height:330px;">{$zhengwen}</script>
+</p>
+
+<!-- <p>
+	<textarea id="zhengwen" style="width:978px;height:330px;">{$zhengwen}</textarea>
+</p> -->
+<div class="h5"></div>
+<p>
+	<font size="3">导读:</font>
+</p>
+<div class="h5"></div>
+<p>
+	<textarea id="daodu" style="width:978px;height:70px;">{$daodu}</textarea>
+</p>
+
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+$(function(){
+	var ue = UE.getEditor('editor');//ueditor插件
+
+});
+//保存课文内容
+function savedata(){
+	var ue = UE.getEditor('editor');//ueditor插件
+	var zhengwen=ue.getContent();//获取编辑器内容
+	// var zhengwen=$('#zhengwen').val();
+	var daodu=$('#daodu').val();
+	var kecheng_id={$kecheng_id};
+	//alert(tncontent);
+	if(zhengwen==''){
+		art.dialog.alert('正文不能为空!');
+	}else if(daodu==''){
+		art.dialog.alert('导读不能为空！');
+	}else{
+		$.post('../Yuedu/addKewen',
+		{
+			ran:Math.random(),
+			kecheng_id:kecheng_id,
+			zhengwen:zhengwen,
+			daodu:daodu
+		},
+		function(data){
+
+		});
+	}
+	return true;
+}
+
+
+
+</script>

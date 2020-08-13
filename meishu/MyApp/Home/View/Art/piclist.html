@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>版本列表</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="place"><strong>位置</strong>：首页 &gt; 上传图片</div>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="box_top pl_10 f14"><strong>上传图片</strong></td>
+    <td class="box_top f14" style="float:right;"><a href="javascript:history.go(-1);" style="color: #333;font-weight:bold;font-size: 12px;text-decoration: none;">返回</a></td>
+  </tr>
+</table>
+<div class="h5"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+	<tr>
+		<td>
+			<input type="button" id="addMusic" value="上传图片" class="ext_btn ext_btn_submit" />
+			<input type="hidden" id="cid" value="{$cid}" />
+			<input type="hidden" id="type" value="{$type}" />
+		</td>
+	</tr>
+</table>
+<div class="h10"></div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" id="table_data">
+  <tr>
+  	<th width="50px">序号</th>
+  	<th width="230px">图片</th>
+    <th>描述</th>
+  	<th>答案</th>
+    <th>操作</th>
+  </tr>
+</table>
+<div class="h5"></div>
+		<table id="sorttable" width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border" style="display:none;">
+		  <tr>
+		    <td class="pl_10" height="42" width="100px">
+		    	<input id="sort" type="button" class="ext_btn ext_btn_submit" value="保存次序">
+			</td>
+<!--             <td>
+                <input id="makeThumb" type="button" class="ext_btn ext_btn_success" value="生成缩略图" />
+            </td> -->
+		  </tr>
+		</table>
+<div class="h5"></div>
+
+</div>
+
+
+
+<table style="display:none" id="demo">
+	<tr>
+		<td><input type="text" name="sort" style="width:30px;" value="" class="input-text"/></td>
+		<td><img src="__PUBLIC__/images/nopic.jpg" width="175" height="131"/></td>
+    <td></td>
+		<td></td>
+		<td>
+            <input type="button" name="edit"  value="编辑" class="ext_btn ext_btn_submit"/>
+			<input type="button" name="del"  value="删除" class="ext_btn ext_btn_error"/>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+  $.ajaxSetup({async:false});
+  var id = $('#cid').val();//章节ID
+  var type = $('#type').val();//类型缩略图或者图片
+
+  $.get('../Art/getPiclist',{ran:Math.random(),id:id,type:type},function(data){
+    //var count=0;
+  	$.each(data,function(k,v){
+  		var tr = $('#demo').children('tbody').children('tr').clone();
+  		tr.children('td').eq(0).children('input').val(k+1);
+  		if(v.pic!=''){
+  			tr.children('td').eq(1).children('img').attr('src','../../'+v.pic);
+  		}
+      tr.children('td').eq(2).html(v.content);
+  		tr.children('td').eq(3).html(v.answer);
+  		tr.find('input').attr('bid',v.id);
+  		tr.appendTo('.list_table');
+        //count++;
+  	});
+  	if(data!=''){
+  		$('#sorttable').show();
+        // if(count != 3&&count != 5){
+        //     $('#makeThumb').hide();
+        // }
+  	}
+  });
+});
+
+
+
+
+
+//添加图片
+$('#addMusic').click(function(){
+	var id = $('#cid').val();//章节ID
+	var type = $('#type').val();//类型缩略图或者图片
+	var myDialog = $.dialog.open('addPiclist?type='+type+'&id='+id,{
+		title:'添加图片',
+		window : 'top',
+		width : 540,
+		height: 200,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						if(re){
+                            alert('上传成功！');
+							//location.reload();
+						}
+						return false;
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+                        location.reload();
+						return true;
+					},
+					focus : false
+				} ]
+	});
+});
+
+
+//删除栏目
+$('input[name="del"]').live('click',function(){
+	var id=$(this).attr('bid');//音频id
+	var aa=$(this).parent().parent();
+	$.get('../Art/delPic',{ran:Math.random(),id:id},function(data){
+		$(aa).remove();
+        location.reload();
+	});
+});
+
+
+//编辑栏目
+$('input[name="edit"]').live('click',function(){
+    var id=$(this).attr('bid');//音频id
+    var aa=$(this).parent().parent();
+    var myDialog = $.dialog.open('editPiclist?id='+id,{
+        title:'编辑',
+        window : 'top',
+        width : 540,
+        height: 200,
+        lock : true,
+        opacity : 0.3,
+        button : [
+                 {
+                    name:'保存',
+                    callback:function(){
+                        var iframe = this.iframe.contentWindow;
+                        var re = iframe.savedata();//调用窗口的方法
+                        if(re){
+                            art.dialog.alert('修改成功！',function(){
+                                location.reload();
+                            });
+                        }
+                        return false;
+                    },
+                    focus:true
+                 },
+                 {
+                    name : '关闭',
+                    callback : function() {
+                        // location.reload();
+                        return true;
+                    },
+                    focus : false
+                } ]
+    });
+});
+
+//点击更新排序按钮
+$('#sort').click(function(){
+	var sortsInfoArray=[];
+	$('.list_table input[name="sort"]').each(function(k,v){
+		var obj={};
+		obj.id=$(v).attr('bid');
+		obj.sortid=$(v).val();
+		sortsInfoArray.push(obj);
+	});
+	//alert(JSON.stringify(sortsInfoArray));return false;
+	$.get('../Art/updatePicSort',{ran:Math.random(),sortsInfo:JSON.stringify(sortsInfoArray)},function(data){
+		location.reload();
+	});
+});
+
+//生成缩略图
+// $('#makeThumb').click(function(){
+//     var id = $('#cid').val();//栏目ID
+//     var type = $('#type').val();//类型缩略图或者图片
+//     window.open("online.html?id="+id+"&type="+type);
+// });
+
+
+</script>

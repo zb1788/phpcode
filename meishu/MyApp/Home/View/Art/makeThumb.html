@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ebook</title>
+<script src='jquery.js'></script>
+</head>
+
+<div  align="center" >
+<embed id="aaa" src="book.swf" allowFullScreen="true" allowFullScreenInteractive="true" wmode="transparent" quality="high" width="1024" height="768" align="L" scale="noborder" flashvars="mainXmlUrl=http%3a%2f%2flocalhost%2fdd%2fdata.xml&show=1&preferenceUrl=http%3a%2f%2flocalhost%2fdd%2fyouxuan.xml&shouKeUrl=http%3a%2f%2flocalhost%2fdd%2fyunpan.xml%3fteachernumber%3d000111%26kscode%3d111222&areaid=13&iconUrl=icon.xml&userid=&bookid=&areaid=" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" >
+</embed>
+
+</div>
+
+
+
+ <script language="JavaScript">
+     //播放
+     function eTeachingMaterialResPlayer(dataStr){
+         alert("aaa"+dataStr);
+    //Rcode,RFormatMark,RTitle
+     }
+
+     function sayHello(name) {
+         alert("hello, " + name);
+     }
+     function requestVcomDivFullScreen(){
+            $('#aaa').attr('width','100%');
+            $('#aaa').attr('height','800px');
+     }
+
+ function closeETeachingMaterial(){
+    //alert('sss');
+    window.opener=null;
+window.open('','_self');
+window.close();
+ }
+ </script>
+<body>
+</body>
+</html>

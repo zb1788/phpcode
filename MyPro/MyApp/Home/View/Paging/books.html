@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图片管理</title>
+<style>
+ .page{width:auto;height:25px; margin:auto; line-height:25px;}
+ .page a{display:block; height:25px; padding:0px 6px; border:solid 1px #e7e7e7; border-radius:3px; color:#333; font-family:'微软雅黑'; font-size:13px; text-align:center; text-decoration:none;float:left; margin-right:10px;min-width:20px;}
+ .page a:hover, .page a.this{background:#f7f7f7; font-weight:bold}
+</style>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<!--
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+-->
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 图书管理
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="box_border">
+			<tr>
+				<td class="box_top pl_10 f14">图书管理</td>
+			</tr>
+			<tr>
+				<td class="box_top pl_10 f14">
+					<select id="select">
+
+					</select>
+					<script>
+					$.ajaxSetup({async:false});
+					var obj = $('#select');
+					$.EBC.setCourse(obj);
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="item" value="bc" />奔驰
+					<input type="checkbox" name="item" value="bm" />宝马
+					<input type="checkbox" name="item" value="ad" />奥迪
+					<input type="button" value="获取选中结果" onclick="$.EBC.getCheckBox('item');" class="ext_btn ext_btn_submit" />
+				</td>
+			</tr>
+			  <tr>
+			    <td class="pl_5">
+			    	<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+				      <tr>
+						<td align="left">图书名称：</td>
+						<td><input type="text" id="title" class="input-text" style="width:250px;"/></td>
+						<td>&nbsp;&nbsp;<input type="button" id="chaxun" value="查询" class="btn btn82 btn_search"/></td>
+				      </tr>
+			    	</table>
+				</td>
+			  </tr>
+		</table>
+		<div class="h5"></div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr>
+				<th width="35px">&nbsp;</th>
+				<th width="35px">序号</th>
+				<th width="265px">书籍名称</th>
+				<th width="70px">页数</th>
+				<th width="80px">左右位置</th>
+				<th>管理</th>
+			</tr>
+		</table>
+		<div class="h5"></div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+		  <tr>
+		    <td class="pl_10" height="42">
+		    	<input id="sort" type="button" class="ext_btn ext_btn_submit" value="保存次序">
+			</td>
+		  </tr>
+		</table>
+		<div class="h5"></div>
+		<div class="page"></div>
+	</div>
+
+<table id="demo" style="display:none;">
+	<tr class="tr">
+		<td align="center"></td>
+		<td align="center"><input type="text" style="width:30px;" value="" class="input-text"/></td>
+		<td align="left"></td>
+		<td></td>
+		<td></td>
+		<td align="left">
+			<input type="button" name="del" value="删除" class="ext_btn ext_btn_error" />
+			<input type="button" name="up" value="上传" class="ext_btn ext_btn_success"/>
+		</td>
+	</tr>
+</table>
+</body>
+</html>
+
+<script>
+var pagesize=15;
+$(function(){
+  $.ajaxSetup({async:false});
+
+
+  pagelist(1,pagesize);
+  $('#chaxun').click(function(){
+  	pagelist(1,pagesize);
+  });
+
+});
+
+//删除图书
+$('input[name="del"]').live('click',function(){
+	var id=$(this).attr('bid');//动画id
+	var aa=$(this).parent().parent();
+	if(art.dialog.confirm('确定删除？',function(){
+		$.get('../Paging/delBook',{ran:Math.random(),id:id},function(data){
+			$(aa).remove();
+		});
+	}));
+});
+//点击更新排序按钮
+$('#sort').click(function(){
+	var sortsInfoArray=[];
+	$('.list_table input[name="xuhao"]').each(function(k,v){
+		var obj={};
+		obj.id=$(v).attr('bid');
+		obj.sortid=$(v).val();
+		sortsInfoArray.push(obj);
+	});
+	//alert(JSON.stringify(sortsInfoArray));return false;
+	$.post('../Paging/updateSort',{ran:Math.random(),sortsInfo:JSON.stringify(sortsInfoArray)},function(data){
+		 getKecheng();
+	});
+});
+//点击上传按钮
+$("input[name='up']").live('click',function(){
+	var bid=$(this).attr('bid');
+	var myDialog=art.dialog.open('importFlash?ran='+Math.random()+'&id='+bid,{
+			cancel:false,
+			title:'导入flash',
+			window : 'top',
+			width : 430,
+			height : 160,
+			lock : true,
+			opacity : 0.3,
+			button : [
+				 {
+					name : '关闭',
+					callback:function(){
+					},
+					focus:true
+				} ]
+		});
+});
+
+
+//分页查询
+ function pagelist(pageCurrent,page_size){
+	var title=$('#title').val();//图书名称
+ 	$.get("../Paging/fenye",
+ 			{
+ 			  ran:Math.random(),
+ 			  pageCurrent:pageCurrent,
+ 			  page_size:page_size,
+			  title:title
+ 			},
+ 			function(data){
+			$(".page").empty();
+			$('.list_table tr:not(:first)').remove();
+			$.each(data,function(k,v){
+				$('.page').html(k);
+				$.each(v,function(k,v){
+					//alert(v.nianji);
+					var i=k+1;
+					var tr=$('#demo').children('tbody').children('tr').eq(0).clone();
+					tr.children('td').eq(0).html(i);
+					tr.children('td').eq(1).children('input').val(i);
+					tr.children('td').eq(2).html(v.bookname);
+					tr.children('td').eq(3).html(v.totalpage);
+					tr.children('td').eq(4).html(v.pageflag);
+					tr.find('input').attr('bid',v.bookid);
+					tr.appendTo('.list_table');
+				});
+			});
+ 			$("#SelectPages").change(function(){
+ 				 pagelist($("#SelectPages").val(),page_size);
+ 				 });
+ 		})
+ }
+</script>

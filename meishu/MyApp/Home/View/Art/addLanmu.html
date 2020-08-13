@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>栏目管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td align="left" width="100px">
+				栏目名称：
+			</td>
+			<td align="left">
+				<input type="text" id="title" class="input-text" size="10" value="{$data.name}" />
+				<input type="hidden" id="type" value="{$type}" />
+				<input type="hidden" id="kid" value="{$kid}" />
+				<input type="hidden" id="cid" value="{$cid}" />
+				<input type="hidden" id="mobanid" value="{$mobanid}" />
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				栏目类型：
+			</td>
+			<td align="left">
+				<select id="select">
+					<option value="1">知识窗</option>
+					<option value="2">趣图园</option>
+					<option value="3">小小画展</option>
+					<option value="4">艺术创作</option>
+					<option value="5">拓展</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="left" id="cz">
+				简介：
+			</td>
+			<td align="left">
+				<input type="text" id="remark" class="input-text" size="50" placeholder="有则填，无则不填" value="{$data.remark}"/>
+			</td>
+		</tr>
+		<tr id="chuangzuo" style="display:none;">
+			<td align="left">
+				简介：
+			</td>
+			<td align="left">
+				<input type="text" id="remark2" class="input-text" size="50" placeholder="有则填，无则不填" value="{$data.remark2}"/>
+			</td>
+		</tr>
+</table>
+<div class="h5"></div>
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+
+$(function(){
+	var type = $('#type').val();
+	if(type == 'edit'){
+		$('#select').val('{$data.type}');
+	}else{
+		$('#title').val('知识窗');
+	}
+
+	var select = $('#select').val();
+	if(select==4){
+		$('#chuangzuo').show();
+		$('#cz').html("创作说明：");
+	}
+
+	var mobanid = $('#mobanid').val();
+	if(mobanid == 1 || mobanid == 3){
+		$('#select').children('option').eq(4).remove();
+	}
+});
+
+$('#select').change(function(){
+	var val = $("#select").find("option:selected").text();
+	$('#title').val(val);
+	if(val=="艺术创作"){
+		$('#chuangzuo').show();
+		$('#cz').html("创作说明：");
+	}else{
+		$('#chuangzuo').hide();
+		$('#cz').html("简介：");
+	}
+});
+function savedata(){
+		var type = $('#type').val();
+		var title=$('#title').val();
+		var remark=$('#remark').val();
+		var remark2=$('#remark2').val();
+		var issuc=$('#issuc').val();
+		var kid=$("#kid").val();//课程id
+		var cid=$("#cid").val();//栏目id
+		var select = $('#select').val();//栏目类型
+
+		var flag=false;
+		//alert(groupid+groupname+issuc+filename+filepath);
+		if(title==''){
+			art.dialog.alert('名称不能为空！');
+			return false;
+		}else{
+		$.get('../Art/addColumns',
+			{ran:Math.random(),
+			 type:type,
+			 title:title,
+			 remark:remark,
+			 remark2:remark2,
+			 kid:kid,
+			 cid:cid,
+			 select:select
+			},
+			function(data){
+				if(data=='名称已存在'){
+					art.dialog.alert('添加失败，名称已存在!');
+					flag=false;
+				}else{
+					flag=true;
+				}
+			});
+			return flag;
+		}
+
+}
+
+
+
+
+
+
+
+</script>

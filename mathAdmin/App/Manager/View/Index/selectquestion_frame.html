@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/iCheck/all.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body>
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- =============================================== -->
+    <!-- Content Wrapper. Contains page content -->
+    <div>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">题库试题选择</h3>
+              </div>
+              <div class="box-header">
+                <form class="form-inline">
+                  <div class="form-group">
+                    <label>年级</label>
+                    <select class="form-control" id="gradeForm">
+
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>学期</label>
+                    <select class="form-control" id="termForm">
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>学科</label>
+                    <select class="form-control" id="subjectForm">
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>分类</label>
+                    <select class="form-control" id="questionGenre">
+
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>试题类型</label>
+                    <select class="form-control" id="questionType">
+
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="box-header">
+                <button type="button" class="btn btn-primary btn-sm" onclick="add();">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>加入到关卡
+                </button>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <table id="example" class="table table-bordered table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th width="20">
+                        <input type="checkbox" id="checkAll">
+                      </th>
+                      <th>分类名称</th>
+                      <th width="60">题目类型</th>
+                      <th>题目详情</th>
+                      <th>题目答案</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="mymodal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                  <i class="fa fa-exclamation-circle"></i>
+                  <span id="mtitle">[Title]</span>
+                </h4>
+              </div>
+              <div class="modal-body">
+                <p id="msg">[Message]</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary ok" data-dismiss="modal" id="BtnOk">[BtnOk]</button>
+                <button type="button" class="btn btn-default cancel" data-dismiss="modal" id="BtnCancel">[BtnCancel]</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <script src="__PUBLIC__/dist/js/jquery.form.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- iCheck 1.0.1 -->
+  <script src="__PUBLIC__/dist/js/iCheck/icheck.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <!-- DataTables -->
+  <script src="__PUBLIC__/dist/js/jquery.dataTables.min.js"></script>
+  <script src="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.js"></script>
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script>
+    $.ajaxSetup({
+      async: false
+    }); //异步很重要
+    var arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+    var grade = GetQueryString('grade');
+    var term = GetQueryString('term');
+    var subject = GetQueryString('subject');
+    var stageid = GetQueryString('stageid');
+    var quesType = GetQueryString('quesType');
+
+
+    var datatable;
+    $(document).ajaxStart(function () {
+      Pace.restart()
+    })
+
+    $(function () {
+      getGrades();
+      getTerms();
+      getSubjects();
+      getQuestionType();
+      $('#questionType').val(quesType);
+      $('#gradeForm').val(grade);
+      $('#termForm').val(term);
+      $('#subjectForm').val(subject);
+      setGenre();
+      questionList();
+      showTable();
+    })
+
+    $('#gradeForm').change(function () {
+      setGenre();
+      $('#questionGenre').change();
+    })
+    $('#termForm').change(function () {
+      setGenre();
+      $('#questionGenre').change();
+    })
+    $('#subjectForm').change(function () {
+      setGenre();
+      $('#questionGenre').change();
+    })
+    $('#questionGenre').change(function () {
+      $('#example').DataTable().destroy();
+      questionList();
+      showTable();
+    })
+
+    $('#questionType').change(function () {
+      $('#example').DataTable().destroy();
+      questionList();
+      showTable();
+    })
+
+    function add() {
+      var arr = [];
+      $.each($('input[name="checkList"]'), function (k, v) {
+        if ($(this).prop("checked") === true) {
+          var qid = $(v).attr('qid') * 1;
+          arr.push(qid);
+        }
+      })
+      if (arr.length == 0) {
+        var options = {
+          id: 'mymodal',
+          msg: '至少选择一道试题'
+        }
+        Modal(options).alert();
+        return false;
+      }
+      $.ajax({
+        url: '../Index/addQuestionFromBase',
+        type: 'post',
+        data: {
+          ran: Math.random(),
+          queslist: JSON.stringify(arr),
+          stageid: stageid
+        },
+        dataType: 'json',
+        success: function (data) {
+          //继续加题or回到列表
+          var options = {
+            id: 'mymodal',
+            msg: '添加成功，是否继续添加试题？',
+            btnok: '继续加题',
+            btncl: '回到试题列表'
+          }
+          Modal(options).confirm().on(function (e) {
+            if (e) {
+              //确定按钮
+              $('#example').DataTable().destroy();
+              questionList();
+              showTable();
+            } else {
+              //取消按钮
+              var questionType = $('#questionType').val();
+              var url = 'questionlist_frame?grade=' + grade + '&term=' + term + '&stageid=' +
+                stageid + '&quesType=' + questionType;
+              window.location.href = url;
+            }
+          });
+        },
+        error: function (e) {
+
+        }
+      })
+    }
+
+    function showTable() {
+      datatable = $('#example').DataTable({
+        paging: true,
+        lengthChange: true,
+        searching: true, //开启搜索功能
+        ordering: true,
+        info: true,
+        autoWidth: true, //让Datatables自动计算宽度
+        lengthMenu: [50],
+        columnDefs: [{
+          targets: 0,
+          orderable: false,
+          searchable: false
+        }],
+        language: {
+          lengthMenu: "显示 _MENU_ 条数据",
+          // lengthMenu: '<select class="form-control input-xsmall">' + '<option value="2">2</option>' + '<option value="20">20</option>'  + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
+          search: '<span>搜索：</span>', //右上角的搜索文本，可以写html标签
+          //分页的样式内容。
+          paginate: {
+            previous: "上一页",
+            next: "下一页",
+            first: "第一页",
+            last: "最后"
+          },
+          zeroRecords: "没有内容", //table tbody内容为空时，tbody的内容。
+          //下面三者构成了总体的左下角的内容。
+          info: "总共_PAGES_ 页，显示第_START_ 到第 _END_ ，筛选之后得到 _TOTAL_ 条，初始_MAX_ 条 ", //左下角的信息显示，大写的词为关键字。
+          infoEmpty: "0条记录", //筛选为空时左下角的显示。
+          infoFiltered: "" //筛选之后的左下角筛选提示，
+        }
+      });
+      $("[name=checkList]:checkbox").click(function () {
+        var flag = true;
+        $('[name=checkList]:checkbox').each(function () {
+          if (!this.checked) {
+            flag = false;
+          }
+        });
+        $('#checkAll').prop("checked", flag);
+      });
+    }
+
+
+
+    function questionList() {
+      var genre = $('#questionGenre').val();
+      var questionType = $('#questionType').val();
+      $.ajax({
+        url: '../Index/getQuestionListFromBase',
+        type: 'get',
+        data: {
+          genre: genre,
+          quesType: questionType,
+          stageid: stageid,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $('#example tbody').empty();
+          var html = '';
+          $.each(data, function (k, v) {
+            html += '<tr>';
+            html += '<td><input type="checkbox" name="checkList" qid="' + v.id + '"/></td>';
+            html += '<td>' + v.name + '</td>';
+            var quesinfo = eval('(' + v.content + ')');
+            if (quesinfo.quesType == 1) {
+              html += '<td>选择题</td>';
+              var tds = '';
+              tds += quesinfo.quesName;
+              // if (quesinfo.quesContentType == 1) {
+              //   tds += quesinfo.quesContent;
+              // } else {
+              //   tds += '<img src="' + quesinfo.quesContent +
+              //     '" width="45" height="45"/>';
+              // }
+              if (quesinfo.quesChoiceType == 1) {
+                $.each(quesinfo.quesChoice, function (kk, vv) {
+                  tds += vv.flag + ':' + vv.content + ';';
+                })
+              } else {
+                $.each(quesinfo.quesChoice, function (kk, vv) {
+                  tds += vv.flag + ':' + '<img src="' + vv.content +
+                    '" width="45" height="45"/>'
+                })
+              }
+              html += '<td style="display:inline-flex;">' + tds + '</td>';
+              html += '<td>' + quesinfo.answer + '</td>';
+            } else {
+              html += '<td>填空题</td>';
+              var tds = '';
+              tds += quesinfo.quesName;
+              var keyNum = -1;
+              $.each(quesinfo.quesContent, function (kk, vv) {
+                if (!isArray(vv)) {
+                  //不是分数
+                  if (vv != '#') {
+                    tds += vv;
+                  } else {
+                    keyNum++;
+                    if (quesinfo.answerFlag == 1) {
+                      tds += '{' + quesinfo.answer[keyNum] +
+                        '}';
+                    } else {
+                      tds += '{' + quesinfo.answer[0][keyNum] +
+                        '}';
+                    }
+                  }
+                } else {
+                  $.each(vv, function (kkk, vvv) {
+                    if (vvv != '#') {
+                      tds += vvv.replace(/\|/, '......');
+                    } else {
+                      keyNum++;
+                      if (quesinfo.answerFlag == 1) {
+                        tds += '{' + quesinfo.answer[
+                            keyNum] +
+                          '}';
+                      } else {
+                        tds += '{' + quesinfo.answer[
+                            0]
+                          [
+                            keyNum
+                          ] +
+                          '}';
+                      }
+
+                    }
+                  })
+                }
+
+              });
+
+              html += '<td>' + tds + '</td>';
+              if (quesinfo.answerFlag == 1) {
+                //单选
+                html += '<td>' + quesinfo.answer.join(',') + '</td>';
+              } else {
+                //多选
+                var answerInfo = '';
+                $.each(quesinfo.answer, function (kkkk, vvvv) {
+                  answerInfo = answerInfo + vvvv.join(',') + '|';
+                })
+                html += '<td>' + answerInfo.trimGang() + '</td>';
+              }
+
+            }
+            html += '</tr>';
+          })
+
+          $('#tbody').html(html);
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+
+    //获取试题分类
+    function setGenre() {
+      var grade = $('#gradeForm').val();
+      var term = $('#termForm').val();
+      var subject = $('#subjectForm').val();
+      $.ajax({
+        url: '../Index/getAllGenreBase',
+        type: 'get',
+        data: {
+          grade: grade,
+          term: term,
+          subject: subject,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $('#questionGenre').empty();
+          $.each(data, function (k, v) {
+            $('#questionGenre').append($('<option>').html(v.name).val(v.id));
+          });
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    //获取试题类型
+    function getQuestionType() {
+      $.ajax({
+        url: '../Index/getQuestionType',
+        type: 'get',
+        data: {
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          var html = '';
+          $('#questionType').empty();
+          $('#questionType').append($('<option>').html('全部').val(0));
+          $.each(data, function (k, v) {
+            $('#questionType').append($('<option>').html(v.name).val(v.id));
+          })
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+
+    /*****checkbox全选**************************************************************************************/
+    $("#checkAll").on("click", function () {
+      if ($(this).prop("checked") === true) {
+        $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+        $('#example tbody tr').addClass('selected');
+      } else {
+        $("input[name='checkList']").prop("checked", false);
+        $('#example tbody tr').removeClass('selected');
+      }
+    });
+  </script>
+</body>
+
+</html>

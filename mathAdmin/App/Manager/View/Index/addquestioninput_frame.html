@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/iCheck/all.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body>
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <div>
+      <!-- /.content -->
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title"></h3>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form role="form" id="form" class="form-horizontal">
+                <div class="box-body">
+                  <div class="form-group">
+                    <div class="col-md-12">
+                      <label>题目类型</label>
+                    </div>
+                    <div class="col-md-11" id="questionType">
+
+                    </div>
+                  </div>
+                  <div class="form-group" id="contentType">
+                    <div class="col-md-12">
+                      <label>内容类型</label>
+                    </div>
+                    <div class="col-md-12">
+                      <label>
+                        <input type="radio" name="r4" class="flat-red" value="1" checked/>普通算式
+                      </label>
+                      <label>
+                        <input type="radio" name="r4" class="flat-red" value="2" />分数
+                      </label>
+                      <label>
+                        <input type="radio" name="r4" class="flat-red" value="3" />余数
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-12" id="content_id">
+                    <label for="questionName">题干 (
+                      <font style="color:#d33724 !important;">可选</font>)
+                    </label>
+                    <input type="input" class="form-control" id="questionName" placeholder="例子：除数最大为几并求商">
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="content">算式</label>(
+                    <font style="color:#d33724 !important;">{}大括号内是答案；加：+&nbsp;减-&nbsp;乘×&nbsp;除÷&nbsp;分数4/5&nbsp;余数|</font>)
+                    <button type="button" class="btn btn-xs" onclick="chooseFuhao(1);">
+                      <span class="fa fa-plus"></span>
+                    </button>
+                    <button type="button" class="btn btn-xs" onclick="chooseFuhao(2);">
+                      <span class="fa fa-minus"></span>
+                    </button>
+                    <button type="button" class="btn btn-xs" onclick="chooseFuhao(3);">
+                      <span class="fa fa-remove"></span>
+                    </button>
+                    <button type="button" class="btn btn-xs" onclick="chooseFuhao(4);">
+                      ➗
+                    </button>
+                    <br/> 普通算式：例子:4×{2}×{1}=8；
+                    <br/>分数算式：例子:1/5+{3}/5=4/{5}
+                    <br/>余数算式：例子:11÷9={1}|{2},相当于11÷9={1}...{2}
+                    <input type="input" class="form-control" id="content" placeholder="例子:4×{2}×{1}=8">
+                  </div>
+                  <div class="form-group col-md-12" id="answer_id">
+                    <label for="questionName">答案 (
+                      <font style="color:#d33724 !important;">多个答案点➕号增加</font>)
+                    </label>
+                    <button type="button" class="btn btn-xs" onclick="addAnswer();">
+                      <span class="fa fa-plus"></span>
+                    </button>
+                    <input type="input" class="form-control" name="answerName" placeholder="2|1">
+
+                  </div>
+                  <div class="form-group has-error" style="display:none;" id="errMsg">
+                    <label class="control-label"></label>
+                  </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <button type="button" class="btn btn-primary" id="tijiao">提交</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- alert和confrim警告框 -->
+        <div class="modal fade" tabindex="-1" id="mymodal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                  <i class="fa fa-exclamation-circle"></i>
+                  <span id="mtitle">[Title]</span>
+                </h4>
+              </div>
+              <div class="modal-body">
+                <p id="msg">[Message]</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary ok" data-dismiss="modal" id="BtnOk">[BtnOk]</button>
+                <button type="button" class="btn btn-default cancel" data-dismiss="modal" id="BtnCancel">[BtnCancel]</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- 导入EXCEL弹出层 -->
+        <div class="modal fade" tabindex="-1" id="addExcel" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" i>
+                  <i class="glyphicon glyphicon-plus"></i> 导入填空题</h4>
+              </div>
+              <div class="modal-body">
+                <form role="form" id="excelform">
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label for="genreName">导入位置</label>
+                      <input type="input" class="form-control" value="" id="pathname" readonly>
+                      <input type="hidden" value="" id="genreid" />
+                      <input type="hidden" id="excelpath" />
+                    </div>
+                    <div class="form-group">
+                      <label for="stageName">上传文件</label>
+                      <input type="file" name="file" onchange="uploadExcel();">
+                    </div>
+                    <div class="box-footer">
+                      <button type="button" class="btn btn-primary pull-right" id="import">导入</button>
+                    </div>
+                  </div>
+                  <!-- /.box-body -->
+                </form>
+              </div>
+
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+      </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/dist/js/jquery.form.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- iCheck 1.0.1 -->
+  <script src="__PUBLIC__/dist/js/iCheck/icheck.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script>
+    $.ajaxSetup({
+      async: false
+    }); //异步很重要
+    var arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+    var type = GetQueryString('type');
+    var id = GetQueryString('id');
+    var questiontype = GetQueryString('questiontype');
+
+    var genreid = GetQueryString('genreid');
+
+    $(document).ajaxStart(function () {
+      Pace.restart()
+    })
+
+    $(function () {
+      getUser();
+      getQuestionType();
+
+      if (type == 'add') {
+        var html = '添加试题';
+      } else {
+        var html = '编辑试题';
+        getQuestionInfo();
+        $.each($('input[name="r3"]'), function (k, v) {
+          $(v).prop('disabled', true);
+        })
+      }
+      $('small').html(html);
+      $('.breadcrumb .active').html(html);
+      $('.box-title').html(html);
+
+    })
+
+    //解决多个moadl的层级问题
+    $(document).on('show.bs.modal', '.modal', function (event) {
+      var zIndex = 1040 + (10 * $('.modal:visible').length) + 10;
+      $(this).css('z-index', zIndex);
+    });
+    //上传EXCEL
+    function uploadExcel() {
+      var options = {
+        url: '../Index/uploadexcel?ran=' + Math.random(), //后台的处理，也就是form里的action
+        type: "POST",
+        dataType: "json", //数据格式，有XML，html，json，默认为文本
+        beforeSubmit: function () {
+          // 上传中
+        },
+        success: function (msg) {
+          if (msg.issuc) {
+            var filepath = msg.msg;
+            $('#excelpath').val(filepath);
+            // $('#contentPic').prop('src', msg.msg);
+          } else {
+            var options = {
+              id: 'mymodal',
+              msg: '上传失败'
+            }
+            Modal(options).alert();
+          }
+        }
+      };
+      $("#excelform").ajaxSubmit(options);
+      return false; //为了防止刷新
+    }
+
+    //点击弹出层导入按钮
+    $('#import').click(function () {
+      var filepath = $('#excelpath').val();
+      var stageid = $('#stageid').val();
+      importExcel(filepath, stageid);
+    });
+
+    function importExcel(filepath, stageid) {
+      $.ajax({
+        url: '../Index/importExcelData',
+        type: 'get',
+        data: {
+          filepath: filepath,
+          stageid: stageid
+        },
+        dataType: 'json',
+        success: function (data) {
+
+        },
+        error: function (e) {
+
+        }
+      })
+    }
+    //弹出导入框
+    $('#daoru').click(function () {
+      var grade = $('#grade').find("option:selected").text();
+      var term = $('#term').find("option:selected").text();
+      var questionGenre = $('#questionGenre').find("option:selected").text();
+      var pathname = [grade, term, questionGenre].join('->');
+      $('#pathname').val(pathname);
+      $('#genreid').val($('#questionGenre').val());
+      $('#addExcel').modal('show');
+    })
+
+    $('#tijiao').click(function () {
+      var questionType = $('input[name="r3"]:checked').val(); //题目类型
+      var questionName = $("#questionName").val(); //题干
+      var contentType = $('input[name="r4"]:checked').val(); //算式类型
+      var contentName = $('#content').val(); //算式内容
+
+      contentName = contentName.replace("（", "(");
+      contentName = contentName.replace("）", ")");
+
+      // var patt = /\[(.*?)\]/;
+      var patt = /\{(.*?)\}/;
+      var n = patt.exec(contentName);
+
+      if (contentName == '') {
+        var options = {
+          id: 'mymodal',
+          msg: '算式不能为空！'
+        }
+        Modal(options).alert();
+        return false;
+      }
+      if (n == null) {
+        var options = {
+          id: 'mymodal',
+          msg: '算式格式不对！'
+        }
+        Modal(options).alert();
+        return false;
+      }
+
+      var answerArr = [];
+      var flag = false;
+      $.each($('input[name="answerName"]'), function (k, v) {
+        if ($(v).val() == '') {
+          flag = true;
+          return false;
+        } else {
+          answerArr.push($(v).val().trimStr(' '));
+        }
+      });
+      if (flag) {
+        var options = {
+          id: 'mymodal',
+          msg: '答案不能为空'
+        }
+        Modal(options).alert();
+        return false;
+      }
+
+      $.ajax({
+        url: '../Index/addMathDataBase',
+        type: 'get',
+        data: {
+          type: type,
+          id: id,
+          genreid: genreid,
+          questionType: questionType,
+          questionName: questionName,
+          contentType: contentType,
+          contentName: contentName,
+          answer: JSON.stringify(answerArr),
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          // if (data.status == 'ok') {
+          //   window.location.href = 'genrelist';
+          // } else {
+          //   $('#errMsg').children('label').html('<i class="fa fa-times-circle-o"></i>' + data.msg);
+          //   $('#errMsg').show();
+          // }
+          // var grade = $('#grade').val();
+          // var term = $('#term').val();
+          // var genre = $('#questionGenre').val();
+          // var url = 'questionlist_base?grade=' + grade + '&term=' + term + '&genre=' + genre + '&quesType=2';
+          // goRedirect(url);
+          window.location.href = 'questionlist_base_frame?quesType=' + questionType + '&genreid=' + genreid;
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    })
+
+    //获取试题类型
+    function getQuestionType() {
+      $.ajax({
+        url: '../Index/getQuestionType',
+        type: 'get',
+        data: {
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          var html = '';
+          $.each(data, function (k, v) {
+            var ischecked = '';
+            k == (questiontype - 1) ? ischecked = 'checked' : ischecked = '';
+            html += '<label>';
+            html += '<input type="radio" name="r3" class="flat-red" value="' + v.id + '" ' + ischecked + '>' +
+              v.name;
+            html += '</label>'
+          })
+          $('#questionType').html(html);
+          //Flat red color scheme for iCheck
+          $('#questionType input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+          }).on('ifChecked', function (event) {
+            var grade = $('#grade').val();
+            var term = $('#term').val();
+            var genre = $('#questionGenre').val();
+            if ($(this).val() == 1) {
+              var url = 'addquestion_frame_new?genreid=' + genreid + '&type=add&id=0&questiontype=1';
+            } else {
+              var url = 'addquestioninput_frame?genreid=' + genreid + '&type=add&id=0&questiontype=2';
+            }
+            window.location.href = url;
+          });
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+    //获取试题分类
+    function setGenre() {
+      var grade = $('#grade').val();
+      var term = $('#term').val();
+      $.ajax({
+        url: '../Index/getAllGenreBase',
+        type: 'get',
+        data: {
+          grade: grade,
+          term: term,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $('#questionGenre').empty();
+          $.each(data, function (k, v) {
+            $('#questionGenre').append($('<option>').html(v.name).val(v.id));
+          });
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+
+    //内容类型选择
+    $('#contentType input[type="radio"].flat-red').iCheck({
+      checkboxClass: 'icheckbox_flat-green',
+      radioClass: 'iradio_flat-green'
+    }).on('ifChecked', function (event) {
+      if ($(this).val() == 1) {
+        //普通算式
+        // $('#content').prop('placeholder', '例子:4×{2}×{1}=8');
+        // $('#content').val('');
+      } else if ($(this).val() == 2) {
+        //分数
+        // $('#content').prop('placeholder', '例子:1/5+{3}/5=4/{5}');
+        // $('#content').val('');
+      } else if ($(this).val() == 3) {
+        //余数
+        // $('#content').prop('placeholder', '例子:11÷9={1}|{2},相当于11÷9={1}...{2}');
+        // $('#content').val('');
+      }
+    });
+
+    function getQuestionInfo() {
+      $.ajax({
+        url: '../Index/getQuestionInfoBase',
+        type: 'get',
+        data: {
+          id: id,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $("#grade").val(data.grade);
+          $("#term").val(data.term);
+          $("#questionGenre").val(data.genreid);
+          //题目类型
+          $('input[name=r3]').each(function () {
+            if (this.value == data.quesType) {
+              $(this).iCheck('check');
+            }
+          });
+          //算式类型
+          var quesJson = eval('(' + data.content + ')');
+          console.log(quesJson);
+          $('input[name=r4]').each(function () {
+            if (this.value == quesJson.quesContentType) {
+              $(this).iCheck('check');
+            }
+          });
+          $('#questionName').val(quesJson.quesName);
+          var content = '';
+          var keyNum = -1;
+          console.log(quesJson.quesContent);
+          $.each(quesJson.quesContent, function (k, v) {
+            if (isArray(v)) {
+              //分数
+              $.each(v, function (kk, vv) {
+                if (vv == '#') {
+                  keyNum++;
+                  if (quesJson.answerFlag == 1) {
+                    content += '{' + quesJson.answer[keyNum] + '}';
+                  } else {
+                    content += '{' + quesJson.answer[0][keyNum] + '}';
+                  }
+                } else {
+                  content += vv;
+                }
+              });
+            } else {
+              if (v == '#') {
+                keyNum++;
+                if (quesJson.answerFlag == 1) {
+                  content += '{' + quesJson.answer[keyNum] + '}';
+                } else {
+                  content += '{' + quesJson.answer[0][keyNum] + '}';
+                }
+              } else {
+                content += v;
+              }
+            }
+          });
+          $('#content').val(content);
+          var answer = '';
+          var Arranswer = [];
+          $.each(quesJson.answer, function (k, v) {
+            if (quesJson.answerFlag == 1) {
+              //单个答案
+              answer = answer + v + '|';
+            } else {
+              //多个答案
+              var str = '';
+              $.each(v, function (kk, vv) {
+                str = str + vv + '|';
+              });
+              Arranswer.push(str.trimGang());
+            }
+          });
+          if (quesJson.answerFlag == 1) {
+            $('input[name="answerName"]').eq(0).val(answer.trimGang());
+          } else {
+            var total = quesJson.answer.length;
+            for (var i = 0; i < (total - 1); i++) {
+              addAnswer();
+            }
+            $.each($('input[name="answerName"]'), function (k, v) {
+              $('input[name="answerName"]').eq(k).val(Arranswer[k]);
+            });
+          }
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    //输入算法符号
+    function chooseFuhao(type) {
+      var math = $('#content').val();
+      var fuhao;
+      if (type == 1) {
+        fuhao = '+';
+      } else if (type == 2) {
+        fuhao = '-';
+      } else if (type == 3) {
+        fuhao = '×';
+      } else {
+        fuhao = '÷';
+      }
+      // alert(getCursortPosition($('#content')));
+
+      var pos = getTxt1CursorPosition();
+      s = math;
+      math = s.substring(0, pos) + fuhao + s.substring(pos);
+      $('#content').val(math);
+      $('#content').focus();
+    }
+
+    function getTxt1CursorPosition() {
+      var $input = document.getElementById("content");
+      var cursurPosition = 0;
+      if ($input.selectionStart) { //非IE
+        cursurPosition = $input.selectionStart;
+      } else { //IE
+        try {
+          var range = document.selection.createRange();
+          range.moveStart("character", -$input.value.length);
+          cursurPosition = range.text.length;
+        } catch (e) {
+          cursurPosition = 0;
+        }
+      }
+      return cursurPosition; //打印当前索引
+    }
+
+    // $contentName=preg_replace('/\s+/','',$contentName);
+    // preg_match_all('/\[(.*?)\]/',$contentName, $out, PREG_SET_ORDER);
+    $('#content').blur(function () {
+      var val = $('#content').val();
+      var patt1 = /\s+/;
+      val = val.replace(patt1, '');
+      var patt2 = /\{(.*?)\}/g;
+
+      // var arr = patt2.exec(val);
+      var arr = val.match(patt2);
+
+      if (arr != null) {
+        var content = '';
+        $.each(arr, function (k, v) {
+          content = content + v.substring(1, v.length - 1) + '|';
+        });
+        $('input[name="answerName"]').eq(0).val(content.substring(0, content.length - 1));
+      }
+    })
+
+    //增加答案
+    function addAnswer() {
+      var html = ['<br><div class="input-group" name="iterm">',
+        '<input type="text" class="form-control" name="answerName">',
+        '<span class="input-group-addon" onclick="delChoice(this)">',
+        '<i class="fa fa-close"></i>',
+        '</span>',
+        '</div>'
+      ].join('');
+
+      $('#answer_id').append(html);
+    }
+
+    function delChoice(obj) {
+      $(obj).parent().prev('br').remove();
+      $(obj).parent().remove();
+    }
+  </script>
+</body>
+
+</html>

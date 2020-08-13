@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>版本列表</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div class="place"><strong>位置</strong>：首页 &gt; 课程生字管理</div>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="box_top pl_10 f14"><strong>搜索</strong></td> 
+  </tr>
+  <tr>
+    <td class="pl_5"><table border="0" cellspacing="0" cellpadding="0" class="form_table">
+      <tr>
+        <td width="50" align="right">年级：</td>
+        <td>
+          <select name="nianji" id="nianji" class="select"> 
+          </select>
+        </td>
+        <td width="50" align="right">学期：</td>
+        <td>
+          <select name="xueqi" id="xueqi" class="select"> 
+          </select>
+        </td>
+        <td width="50" align="right">版本：</td>
+        <td>
+          <select name="banben" id="banben" class="select"> 
+          </select>
+        </td>
+        <td width="50" align="right">课程：</td>
+        <td>
+          <select name="kecheng"  id="kecheng" class="select"> 
+          </select>
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;
+          <input type="button" id="btn_so" name="btn_so" class="btn btn82 btn_search" value="查询" />
+        </td>
+        <td>&nbsp;&nbsp;&nbsp;
+          <input type="button" id="btn_out" name="btn_so" class="btn" value="生成kc.json" />
+        </td>
+      </tr>
+    </table></td> 
+  </tr> 
+</table>
+<div class="h10"></div> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="pl_10" height="42"><input name="按钮" type="button" onclick="location.href='../hanzi/ziin'" class="ext_btn ext_btn_submit" value="导入生字" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" id="table_data">
+  <tr>
+    <th width="30" align="center">&nbsp;</th>
+    <th width="60">次序</th>
+    <th width="80">字</th>
+    <th width="120">拼音(声调)</th> 
+    <th width="120">拼音(无声调)</th> 
+    <th width="60">声调</th> 
+    <th>操作</th>
+  </tr> 
+</table>
+<table style="display:none" id="table_demo"> 
+  <tr class="tr">
+    <td align="center">1</td>
+    <td><input name="sortid" type="text" class="input-text lh30" size="3" maxlength="2" /></td>
+    <td align="center">字</td>
+    <td align="center"></td> 
+    <td align="center"></td> 
+    <td align="center"></td> 
+    <td align="left">
+      <input type="button" class="ext_btn ext_btn_error" value="删除" />
+    </td>
+  </tr>
+</table>
+<div class="h5"></div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="pl_10" height="42"><input id="btn_submit" type="button" class="ext_btn ext_btn_submit" value="保存次序" /></td>
+  </tr>
+</table> 
+</div> 
+</body>
+</html>
+<script type="text/javascript">   
+$(function(){
+  $.ajaxSetup({async:false}); 
+});
+
+$(function(){ 
+  getNianji();
+  $("#nianji").change(function(){
+    getXueqi();
+  });
+  $("#xueqi").change(function(){
+    getBanben();
+  });
+  $("#banben").change(function(){
+    getKecheng();
+  });
+
+  $("#btn_so").click(function(){ 
+    getZiList();
+  });
+
+  $('#btn_out').click(function(){
+	window.open('../hanzi/getKsIdAndZi');
+  })
+
+  $("#btn_submit").click(function()
+  { 
+    var dloading = art.dialog({time:30,title:'更新中……',width:130,height:30,opacity:0.3,lock:true});  
+    if($("#table_data tr.tr").length == 0)return;
+    var arrjson =[];  
+    $("#table_data tr.tr").each(function(){
+      var tr =$(this); 
+      var id = tr.find('input[name="sortid"]').attr("BID"); 
+      var sortid = tr.find('input[name="sortid"]').val(); 
+      var obj = {}; 
+      obj.id = id;
+      obj.sortid = sortid;   
+      arrjson.push(obj);       
+    });
+    $.get("../hanzi/upsort",{data:JSON.stringify(arrjson)},function(){
+      sleep(500);
+      getZiList();
+      dloading.close();
+    });
+    
+  });
+});
+
+function getZiList()
+{  
+  var kechengid = $("#kecheng").val(); 
+  if (kechengid > 0) {
+   var dloading = art.dialog({time:30,title:'加载中……',width:130,height:30,opacity:0.3,lock:true});   
+    $("#table_data td").parents("tr").remove();
+    $.getJSON("../hanzi/kczi", {kechengid:kechengid,random:Math.random()}, function(data){
+      var i = 0;
+      $.each(data, function(i,val){
+        i++;
+        var tr = $("#table_demo tr").eq(0).clone(); 
+        var td = tr.children('td').eq(0);
+        td.html(i);
+
+        td = tr.children('td').eq(1);
+        var input = td.children('input');
+        input.val(i);
+
+        td = tr.children('td').eq(2);
+        td.html(val.zi);  
+
+        td = tr.children('td').eq(3);
+        td.html(val.pinyin);  
+
+        td = tr.children('td').eq(4);
+        td.html(val.wupinyin);  
+
+        td = tr.children('td').eq(5);
+        td.html(val.shengdiao);
+
+        tr.find("input").attr("BID",val.id); 
+        $("#table_data .ext_btn_listen").attr("dvideo",val.mp3);
+        tr.appendTo("#table_data");
+      });
+    }); 
+    $(".tr:odd").css("background", "#F5F8FA");
+    sleep(200);
+    dloading.close();    
+  };
+}
+
+function sleep(d){
+  for(var t = Date.now();Date.now() - t <= d;);
+} 
+
+function getNianji()
+{  
+  $("#nianji").empty(); 
+  $.getJSON("../hanzi/kcnianji", {random:Math.random()}, function(data){
+    $("#banben").empty();
+    $("#kecheng").empty();
+    $.each(data, function(key,val){   
+      $('#nianji').append($("<option>").val(key).text(key));  
+    });
+  });
+  getXueqi();
+}
+
+function getXueqi()
+{  
+  $("#xueqi").empty();
+  var nianji = $("#nianji").val(); 
+  $.getJSON("../hanzi/kcxueqi", {random:Math.random()}, function(data){
+    $("#banben").empty();
+    $("#kecheng").empty();
+    $.each(data, function(key,val){   
+      $('#xueqi').append($("<option>").val(val).text(val));  
+    });
+  });
+  getBanben();
+}
+
+function getBanben()
+{  
+  $("#banben").empty();
+  var nianji = $("#nianji").val();
+  var xueqi = $("#xueqi").val(); 
+  $.getJSON("../hanzi/kcbanben", {nianji:nianji,xueqi:xueqi,random:Math.random()}, function(data){  
+    $("#kecheng").empty();
+    $.each(data, function(i,val){   
+      $('#banben').append($("<option>").val(val.id).text(val.banben));  
+    });
+  });
+  getKecheng();
+} 
+ 
+function getKecheng()
+{  
+  $("#kecheng").empty();
+  var nianji = $("#nianji").val();
+  var xueqi = $("#xueqi").val(); 
+  var versionid = $("#banben").val(); 
+  $.getJSON("../hanzi/kckecheng", {nianji:nianji,xueqi:xueqi,versionid:versionid,random:Math.random()}, function(data){   
+    $.each(data, function(i,val){   
+      $('#kecheng').append($("<option>").val(val.id).text(val.kecheng));  
+    });
+  });
+}
+
+</script>

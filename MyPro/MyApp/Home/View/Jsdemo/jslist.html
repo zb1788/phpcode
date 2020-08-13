@@ -1,0 +1,553 @@
+<!DOCTYPE public>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>常用js插件的用法</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ue/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ue/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jPlayer/dist/jplayer/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ckplayer/ckplayer.js"></script>
+<!--播放引用 -->
+<script type="text/javascript" src="__PUBLIC__/js/flowplayer/flowplayer-3.2.11.min.js"></script>
+<!--拖动引用 -->
+<script language="JavaScript" src="__PUBLIC__/js/rangeSlider/ion.rangeSlider.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/rangeSlider/css/ion.rangeSlider.css" />
+<link rel="stylesheet" href="__PUBLIC__/js/rangeSlider/css/ion.rangeSlider.skinFlat.css" />
+
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; js插件的用法
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr align='left'>
+				<td class="box_top pl_10 f14"><strong>DatePicker的用法</strong></td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<span>不带时分秒,可以换皮肤</span>
+ 					<input type="text" id="starttime" value="" class="Wdate input-text2" onclick="WdatePicker({el:'starttime',skin:'whyGreen'});"/>
+				</td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<span>只能选今天以及之前的日期</span>
+ 					<input type="text" id="starttime1" value="" class="input-text2" onclick="WdatePicker({el:'starttime1',maxDate:'%y-%M-%d'});"/>
+                    <img src="__PUBLIC__/js/DatePicker/skin/datePicker.gif" width="16" height="22"  onclick="WdatePicker({el:'starttime1',maxDate:'%y-%M-%d'});"/>
+				</td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<span>只能选今天以及以后的日期</span>
+ 					<input type="text" id="starttime2" value="" class="input-text2" onclick="WdatePicker({el:'starttime2',minDate:'%y-%M-%d'});"/>
+                    <img src="__PUBLIC__/js/DatePicker/skin/datePicker.gif" width="16" height="22"  onclick="WdatePicker({el:'starttime2',minDate:'%y-%M-%d'});"/>
+				</td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<span>带时分秒,时间默认当前时间,从周一开始</span>
+					<input type="text" id="time" value="" class="input-text2" onfocus="WdatePicker({el:'time',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true,firstDayOfWeek:1})"/>
+                    <img src="__PUBLIC__/js/DatePicker/skin/datePicker.gif" width="16" height="22"  onclick="WdatePicker({el:'time',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true,firstDayOfWeek:1})"/>
+				</td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<span>带时分秒,时间默认从0开始，从周日开始</span>
+					<input type="text" id="time1" value="" class="input-text2" onfocus="WdatePicker({el:'time1',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"/>
+                    <img src="__PUBLIC__/js/DatePicker/skin/datePicker.gif" width="16" height="22"  onclick="WdatePicker({el:'time1',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"/>
+				</td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<span>下拉框操作</span>
+					<select id="danxuan" class="select">
+						<option value="bc">奔驰</option>
+						<option value="bm">宝马</option>
+						<option value="ad">奥迪</option>
+					</select>
+					<input type="button" value="选中宝马" onclick="$('#danxuan').val('bm');" class="ext_btn ext_btn_success" />
+					<input type="button" value="获取选中的text" onclick="alert($('#danxuan option:selected').text());" class="ext_btn ext_btn_error"/>
+					<input type="button" value="获取选中的value" onclick="alert($('#danxuan').val());" class="ext_btn ext_btn_submit"/>
+				</td>
+			</tr>
+			<tr align="left">
+				<td>
+					<span>多选框操作</span>
+					<input type="checkbox" id="CheckAll" />全选/全不选
+					<input type="checkbox" name="item"  value="bc" />奔驰<input type="checkbox" name="item" value="bm" />宝马<input type="checkbox" name="item" value="ad" />奥迪
+					<input type="button" value="选中宝马" onclick="$(':checkbox').val(['bm']);" class="ext_btn ext_btn_success" />
+					<input type="button" value="选中宝马奥迪" onclick="$(':checkbox').val(['bm','ad']);" class="ext_btn ext_btn_success" />
+					<input type="button" value="获取选中的value" onclick="$.EBC.getCheckBox('item');" class="ext_btn ext_btn_success" />
+				</td>
+				<script>
+					//全选全不选
+					$("#CheckAll").click(function(){
+						$('[name=item]:checkbox').attr("checked",this.checked);
+					});
+					$("[name=item]:checkbox").click(function(){
+						var flag=true;
+						$('[name=item]:checkbox').each(function(){
+							if(!this.checked){
+								flag=false;
+							}
+						});
+						$('#CheckAll').attr("checked",flag);
+					});
+
+				</script>
+			</tr>
+			<tr align="left">
+				<td>
+					<span>单选框操作</span>
+					<input type="radio" name="radio"  value="bc" />奔驰<input type="radio" name="radio" value="bm" />宝马<input type="radio" name="radio" value="ad" />奥迪
+					<input type="button" value="选中宝马" onclick="$(':radio').val(['bm']);" class="ext_btn ext_btn_success" />
+					<input type="button" value="获取选中的value" onclick="getVal();" class="ext_btn ext_btn_success" />
+					<script>function getVal(){var val=$('input[name="radio"]:checked').val();alert(val);}</script>
+				</td>
+			</tr>
+		</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr align='left'>
+				<td class="box_top pl_10 f14"><strong>拖动的用法</strong></td>
+			</tr>
+			<tr align="left">
+				<td>
+					<span style="width:350px;display:inline-block;float:left;">
+					<input type="hidden" id="range1" value="5" width="350px" />
+					</span>
+					<span style="margin-top:15px;margin-left:10px;float:left;">
+					<input type="text" id="range1_in" value="5" class="input-text2"  onkeyup="checkVal(this,1,100);"/>
+					</span>
+				</td>
+			</tr>
+			<tr align="left">
+				<td>
+					<span style="width:350px;display:inline-block;float:left;">
+					<input type="hidden" id="range2" value="5" width="350px" />
+					</span>
+					<span style="margin-top:15px;margin-left:10px;float:left;">
+					<input type="text" id="range2_in" value="5-15" class="input-text2"  onblur="checkValDb(this,1,100);"/>
+					</span>
+				</td>
+			</tr>
+		</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr align='left'>
+				<td class="box_top pl_10 f14"><strong>JPLAYER的用法</strong></td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<input type="button" class="ext_btn" id="mp3" url='../Uploads/mp3/刀马旦.mp3' value="试听" />
+					<input type="button" class="ext_btn ext_btn_success" name="mp3" filename="刀马旦"  filestore='mp3/刀马旦.mp3' value="圆形试听" />
+					<input type="button" class="ext_btn ext_btn_error" name="movie" filename="世界经济全球化--名师微课堂"  filestore='movie/ZXXKCOM.mp4' value="CuPlayer视频播放" />
+					<input type="button" class="ext_btn ext_btn_submit" name="pic" filename="青春"  filestore='pic/20150930145436327.png' value="图片播放" />
+					<input type="button" class="ext_btn ext_btn_submit" id="movie" filestore='movie/ZXXKCOM.mp4' value="flowplayer视频播放" />
+					<input type="button" class="ext_btn ext_btn_submit" id="movie11" filestore='movie/ZXXKCOM.mp4' value="CKPlayer" />
+				</td>
+			</tr>
+		</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table">
+			<tr align='left'>
+				<td class="box_top pl_10 f14"><strong>UE编辑器的用法</strong></td>
+			</tr>
+			<tr align='left'>
+				<td>
+					<script id="editor" type="text/plain" style="width:978px;height:300px;"></script>
+				</td>
+			</tr>
+		</table>
+		<a href="javascript:void(0);" style="display:block;width:750px;height:416px" id="player"></a>
+		<div id="a1" ></div>
+	</div>
+<div id="jplayer"></div>
+<script>
+//获取ue编辑器的内容
+function getContents(){
+	var ue = UE.getEditor('editor');
+	var tncontent=ue.getContent();//获取编辑器内容
+}
+
+//单拖用法
+$(function(){
+	var $range1 = $("#range1");
+	$range1.ionRangeSlider({
+	    type: "single",
+	    min: '1',
+	    max: '100',
+	    from: '5',
+		step: 1,
+		prefix: "",
+		postfix: "",
+		prettify: true,
+		hasGrid: true,
+		grid: true,
+	    onChange: function(){
+	        var val = $range1.val();
+      		$("#range1_in").val(val);
+	    },
+        onFinish: function(){
+            var val = $range1.val();
+            $("#range1_in").val(val);
+        }
+	});
+
+	$('#range1_in').keyup(function(){
+		var val=$(this).val();
+		var slider = $("#range1").data("ionRangeSlider");
+		slider.update({from: val});
+	});
+
+});
+//单拖输入框验证
+function checkVal(obj,min,max){
+	obj.value=obj.value.replace(/\D/g,'');
+	(obj.value>max)?obj.value=max:obj.value;
+	(obj.value<min)?obj.value=min:obj.value;
+}
+
+
+
+//双拖用法
+$(function(){
+	var $range2 = $("#range2");
+	$range2.ionRangeSlider({
+	    type: "double",
+	    min: '1',
+	    max: '100',
+	    from: '5',
+		to: '15',
+		step: 1,
+		prefix: "",
+		postfix: "",
+		prettify: true,
+		hasGrid: true,
+		grid: true,
+	    onChange: function(){
+	        var val = $range2.val();
+			val=val.replace(/;/g,"-");
+      		$("#range2_in").val(val);
+	    },
+        onFinish: function(){
+            var val = $range2.val();
+			val=val.replace(/;/g,"-");
+            $("#range2_in").val(val);
+        }
+	});
+
+	$('#range2_in').keyup(function(){
+		var val=$(this).val();
+		var slider = $("#range2").data("ionRangeSlider");
+		var arr=val.split("-");
+		slider.update({from: arr[0],to:arr[1]});
+	});
+
+});
+//双拖输入框验证
+function checkValDb(obj,min,max){
+	var val = obj.value;
+	var def_val = min+'-'+max;
+	re=/^[0-9]\d*-\d*[0-9]$/;
+	if(re.test(val)){
+		obj.value = val;
+	}else{
+		obj.value = def_val;
+		var slider = $("#range2").data("ionRangeSlider");
+		slider.update({from: min,to:max});
+	}
+
+	var arr=val.split("-");
+	if(arr[0]<min){
+		obj.value = def_val;
+		var slider = $("#range2").data("ionRangeSlider");
+		slider.update({from: min,to:max});
+	}
+	if(arr[1]>max){
+		obj.value = def_val;
+		var slider = $("#range2").data("ionRangeSlider");
+		slider.update({from: min,to:max});
+	}
+	if(Number(arr[0])>Number(arr[1])){
+		obj.value = def_val;
+		var slider = $("#range2").data("ionRangeSlider");
+		slider.update({from: min,to:max});
+	}
+
+}
+
+
+
+/**
+ * jplayer用法1
+ */
+ $('#mp3').live('click',function(){
+ 		var mp3=$(this).attr('url');
+		if(!mp3){
+			alert('暂无音频!')
+		}else{
+		    $(this).toggle(function(i){
+				   	$(this).val('停止');
+					jpstart(mp3);
+	            },
+	            function(i){
+	               $(this).val('试听');
+				   jpclear();
+	            }
+	        );
+	        $(this).trigger('click');
+		}
+ });
+
+/**
+ * jPlayer的用法
+ */
+//停止播放
+function jpclear() {
+  $("#jplayer").jPlayer("clearMedia");
+  $("#jplayer").jPlayer("stop");
+  $("#jplayer").unbind($.jPlayer.event.ended);
+  $("#jplayer").unbind($.jPlayer.event.progress);
+}
+//开始播放
+function jpstart(mp3){
+	$("#jplayer").jPlayer({
+    swfPath: "js",
+    wmode: "window",
+    supplied: "mp3",
+    preload: "none",
+    volume: "1"
+  });
+	$("#jplayer").jPlayer("setMedia", {
+	    mp3: mp3
+	}).jPlayer("play");
+}
+
+
+/**
+ * jplayer用法2
+ */
+//试听
+$('input[name="mp3"]').live('click',function(){
+		var filename=$(this).attr('filename');
+		var filestore=$(this).attr('filestore');
+		playVideo(filename,filestore,2);
+});
+
+/**
+ * 视频播放
+ */
+$('input[name="movie"]').live('click',function(){
+		var filename=$(this).attr('filename');
+		var filestore=$(this).attr('filestore');
+		playVideo(filename,filestore,1);
+});
+/**
+ * 图片播放
+ */
+$('input[name="pic"]').live('click',function(){
+		var filename=$(this).attr('filename');
+		var filestore=$(this).attr('filestore');
+		playVideo(filename,filestore,3);
+});
+
+
+//播放弹出页面
+function playVideo(filename,filestore,type){
+	var url='';
+	var width='';
+	var height='';
+	if(type=='1'){
+		url='/public/js/CuPlayer/playVideo.php';
+		width=650;
+		height=450;
+		}else if(type=='2'){
+			url='playMp3';
+			width=220;
+			height=220;
+			}else if(type=='3'){
+				url='playPic';
+				width=817;
+				height=479;
+				}else if(type=='4'){
+					window.open('../Uploads/'+filestore);return false;
+				}
+    var myDialog = art.dialog.open(url+'?filename='+filename+'&filepath='+filestore+'&random='+Math.random(),{
+        id:'mate_edit',
+        title:filename,
+        window:'top',
+        width:width,
+        height:height,
+		padding:0,
+        lock:true,
+        opacity:0.3
+      });
+}
+
+//播放视频
+$('#movie').click(function(){
+	var url = $(this).attr('filestore');
+	url ='../Uploads/'+url;
+	loadmp4(url);
+});
+function loadmp4(url){
+	flowplayer("player", "__PUBLIC__/js/flowplayer/flowplayer.commercial-3.2.14-0.swf", {
+		clip: {
+			autoPlay: true,
+			provider: 'pseudostreaming',
+			urlResolvers: 'brselect',
+			bitrates: [{
+				url: encodeURIComponent(url),
+				bitrate: 300,
+				isDefault: true,
+				label: "300 k"
+			}]
+		},
+		screen: {
+			height: 518
+		},
+		plugins: {
+			menu: {
+
+				url: "__PUBLIC__/js/flowplayer/flowplayer.menu-3.2.11.swf",
+				items: [{
+					label: "选择码率:",
+					enabled: true
+				}]
+			},
+			brselect: {
+				url: "__PUBLIC__/js/flowplayer/flowplayer.bitrateselect-3.2.13.swf",
+
+				menu: true,
+
+				onStreamSwitchBegin: function(newItem, currentItem){
+					$f().getPlugin('content').setHtml("Will switch to: " + newItem.streamName +
+					" from " +
+					currentItem.streamName);
+				},
+				onStreamSwitch: function(newItem){
+					$f().getPlugin('content').setHtml("Switched to: " + newItem.streamName);
+				}
+			},
+			pseudostreaming: {
+				url: "__PUBLIC__/js/flowplayer/flowplayer.pseudostreaming-3.2.11.swf"
+			},
+			content: {
+				/*url: "http://releases.flowplayer.org/swf/flowplayer.content-3.2.8.swf",*/
+				url: "__PUBLIC__/js/flowplayer/flowplayer.content-3.2.8.swf",
+				top: 0,
+				left: 0,
+				width: 400,
+				height: 150,
+				backgroundColor: 'transparent',
+				backgroundGradient: 'none',
+				border: 0,
+				textDecoration: 'outline',
+				style: {
+					body: {
+						fontSize: 14,
+						fontFamily: 'Arial',
+						textAlign: 'center',
+						color: '#ffffff'
+					//color: '#000000'
+					}
+				}
+			},
+			controls: {
+				tooltips: {
+					buttons: true,
+					fullscreen: '\u5168\u5C4F',
+					fullscreenExit: '\u9000\u51FA\u5168\u5C4F',
+					mute: '\u9759\u97F3',
+					unmute: '\u53D6\u6D88\u9759\u97F3',
+					stop: '\u505C\u6B62',
+					play: '\u5F00\u59CB',
+					volume: '\u97F3\u91CF',
+					next: '\u4E0B\u4E00\u4E2A',
+					previous: '\u4E0A\u4E00\u4E2A',
+					pause: '\u6682\u505C'
+				}
+			}
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+$(function(){
+	//ueditor插件
+	var ue = UE.getEditor('editor',{
+		 toolbars: [[
+            'fullscreen', 'source', '|',
+            'bold', 'italic', 'underline','|', 'fontfamily', 'fontsize', '|',
+            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase','|',
+            'inserttable', 'deletetable','preview','myblockquote'
+
+        ]]
+	});
+
+
+	//自定义工具栏按钮
+	UE.registerUI('myblockquote',function(editor,uiName){
+	    editor.registerCommand(uiName,{
+	        execCommand:function(){
+	            this.execCommand('inserthtml',"【】");
+	        }
+	    });
+	    var btn = new UE.ui.Button({
+	        name:uiName,
+	        title:'插入中括号',
+	        cssRules :"background-position: -660px -40px;",
+	        onclick:function () {
+	           editor.execCommand(uiName);
+	        }
+	    });
+	    editor.addListener('selectionchange', function () {
+	        var state = editor.queryCommandState('blockquote');
+	        if (state == -1) {
+	            btn.setDisabled(true);
+	            btn.setChecked(false);
+	        } else {
+	            btn.setDisabled(false);
+	            btn.setChecked(state);
+	        }
+	    });
+	    return btn;
+	});
+
+});
+</script>
+
+<script type="text/javascript">
+	$("#movie11").click(function(){
+		load('../Uploads/movie/ZXXKCOM.mp4');
+	});
+</script>
+
+<script type="text/javascript">
+function load(url){
+	var flashvars={        f:url,        c:0   };
+	var params={bgcolor:'#FFF',allowFullScreen:true,allowScriptAccess:'always',wmode:'transparent'};
+	var video=[url];
+ 	CKobject.embed('__PUBLIC__/js/ckplayer/ckplayer.swf','a1','ckplayer_a1','100%','100%',false,flashvars,video,params);
+}
+
+
+</script>
+
+</body>
+</html>

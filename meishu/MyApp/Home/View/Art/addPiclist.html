@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>栏目管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td align="left">
+				图片描述：
+			</td>
+			<td align="left">
+				<input type="text" id="content" placeholder="有则填，无则不填" class="input-text" size="50" />
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				答案：
+			</td>
+			<td align="left">
+				<input type="text" id="answer" placeholder="有则填，无则不填" class="input-text" size="50" />
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				pic:
+			</td>
+			<td align="left" id="inner">
+				<input type="hidden" id="cid" value="{$cid}" />
+				<input type="hidden" id="type" value="{$type}" />
+				<input type="file" id="file_upload"  multiple="false" >
+
+				<input type="hidden" name="filepath" id="filepath" value="" />
+				<input type="hidden" name="filename" id="filename" value="" />
+				<input type="hidden" name="issuc" id="issuc" value="" />
+
+			</td>
+		</tr>
+</table>
+<div class="h5"></div>
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+$.ajaxSetup({async:false});
+function savedata(){
+		var type = $('#type').val();
+		var cid=$("#cid").val();//栏目id
+		var content = $('#content').val();
+		var answer = $('#answer').val();
+		var filepath = $('#filepath').val();
+
+		var issuc = $('#issuc').val();
+		/*
+		var picarr = [];
+		$('input[name="multiFile"]').each(function(k,v){
+			var obj = {};
+			obj.filePath = $(v).val();
+			obj.fileName = $(v).attr('fname');
+			//alert(fileName+'|'+filePath);
+			picarr.push(obj);
+			//取出数据，然后ajax请求写数据库
+		});
+		*/
+
+		if(issuc != 1){
+			art.dialog.alert('上传图片不能为空！');
+			return false;
+		}else{
+			//var picjson = JSON.stringify(picarr);
+			var flag=false;
+			$.get('../Art/addPic',
+				{ran:Math.random(),
+				 type:type,
+				 cid:cid,
+				 content:content,
+				 answer:answer,
+				 filepath:filepath
+				},
+				function(data){
+					if(data=='名称已存在'){
+						art.dialog.alert('添加失败，名称已存在!');
+						flag=false;
+					}else{
+						$('#content').val('');
+						$('#answer').val('');
+						$('#filepath').val('');
+						$('#issuc').val('');
+						flag=true;
+					}
+				});
+				return flag;
+		}
+
+}
+
+
+
+$("#file_upload").uploadify(
+				{
+					'debug' : false,
+ 					'buttonText' : '选择文件',
+ 					'height' : 30,
+ 					'removeCompleted' : false,
+ 					'auto' : true,
+ 					'swf' : '__PUBLIC__/js/uploadify/uploadify.swf?ran='+Math.random(),
+					'uploader' : '../Upload/uploadpic',
+					'width' : 70,
+					'fileSizeLimit' : '100MB',
+					'fileTypeExts' : '*.jpg;*.png',
+					'fileTypeDesc' : '请选择mp3文件',
+					'multi' : false,
+					'removeCompleted':true,
+					'removeTimeout':0.5,
+					'onUploadSuccess' : function(file, data, response) {
+						if (response) {
+							$('#' + file.id).find('.data').html(' 上传完毕');
+							$('.uploadify-button-text').empty();
+							$('.uploadify-button-text').append('上传完毕');
+							/**
+							issuc:1成功；2失败;
+							name:文件原名称；
+							size：文件大小；
+							ext：文件后缀名；
+							savename：上传后文件名
+							savepath：保存路径（201504/）
+							 **/
+							 //alert(data);
+							var obj = eval("(" + data + ")");
+							if (obj.issuc == 1) {
+								//alert(obj.msg.savepath+obj.msg.savename);
+								$("#filepath").attr("value",obj.msg.savepath + obj.msg.savename);
+								$("#filename").attr("value", obj.msg.name);
+								$("#issuc").attr("value", obj.issuc);
+								/**
+								var str = '<input type="hidden" name="multiFile" value="'+obj.msg.savepath + obj.msg.savename+'" fname="'+obj.msg.name+'" />';
+								$('#inner').append(str);
+								*/
+							}
+						}
+
+					}
+		});
+
+
+
+</script>

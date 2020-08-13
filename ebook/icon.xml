@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data name="电子课本CION图标">
+		<subobj>
+			<name>7635691</name>
+			<iconx>78</iconx>
+			<icony>171.1</icony>
+			<notes>资源1</notes>
+			<link>&quot;sdfasgas&quot;</link>
+			<type>264avi_mc</type>
+			<pagenum>0</pagenum>
+		</subobj>
+		<subobj>
+			<name>7238482</name>
+			<iconx>209</iconx>
+			<icony>196.1</icony>
+			<notes>资源2</notes>
+			<link>{restype:1}</link>
+			<type>xls_mc</type>
+			<pagenum>1</pagenum>
+		</subobj>
+</data>

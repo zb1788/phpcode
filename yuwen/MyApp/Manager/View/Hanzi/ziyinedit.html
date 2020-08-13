@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>版本列表</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script> 
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="h10"></div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+  <tr>
+    <td height="30" align="right">拼音(声调)：</td>
+    <td>
+      <input type="text" name="pinyin" id="pinyin" class="input-text" value="{$data.pinyin}" style="font-family:Microsoft YaHei" maxlength="10" size="10" />&nbsp;
+      拼音(无声调)：<input type="text" name="wupinyin" id="wupinyin" class="input-text" value="{$data.wupinyin}" maxlength="10" size="10" />&nbsp;ü&nbsp;&nbsp;
+      声调：<input type="text" name="shengdiao" id="shengdiao" class="input-text" size="10" maxlength="1" value="{$data.shengdiao}" />&nbsp;       
+    </td>
+  </tr>
+  <tr>
+    <td height="30" align="right">组词1：</td>
+    <td>
+      <input type="text" name="zuci1" id="zuci1" class="input-text" value="{$data.zuci1}" maxlength="10" size="10" />&nbsp;
+      组词2：<input type="text" name="zuci1" id="zuci2" class="input-text" value="{$data.zuci2}" maxlength="10" size="10" />&nbsp;
+      组词3：<input type="text" name="zuci1" id="zuci3" class="input-text" value="{$data.zuci3}" maxlength="10" size="10" />&nbsp;
+    </td>
+  </tr>
+  
+  <tr>
+    <td height="30" align="right">字义1：</td>
+    <td><input type="text" name="ziyi1" id="ziyi1" class="input-text" size="60" value="{$data.ziyi1}" /></td>
+  </tr>
+  <tr>
+    <td height="30" align="right">字义2：</td>
+    <td><input type="text" name="ziyi2" id="ziyi2" class="input-text" size="60" value="{$data.ziyi2}" /></td>
+  </tr>
+  <tr>
+    <td height="30" align="right">字义3：</td>
+    <td><input type="text" name="ziyi3" id="ziyi3" class="input-text" size="60" value="{$data.ziyi3}" /></td>
+  </tr>
+  <tr>
+    <td height="30" align="right">造句1：</td>
+    <td><input type="text" name="zaoju1" id="zaoju1" class="input-text" size="60" value="{$data.zaoju1}" /></td>
+  </tr>
+  <tr>
+    <td height="30" align="right">造句2：</td>
+    <td><input type="text" name="zaoju1" id="zaoju2" class="input-text" size="60" value="{$data.zaoju2}" /></td>
+  </tr>
+  <tr>
+    <td height="30" align="right">造句3：</td>
+    <td><input type="text" name="zaoju1" id="zaoju3" class="input-text" size="60" value="{$data.zaoju3}" /></td>
+  </tr>
+  <tr>
+    <td class="td_right">读音wav：</td> 
+    <td>
+      <span id="upinfo">【{$data.2wav}】</span>
+      <input type="hidden" id="wav" name="wav" value="{$data.wav}" />      
+      <input type="hidden" id="id" name="id" value="{$data.id}" />
+      <input type="hidden" id="zid" name="zid" value="{$data.zid}" />
+    </td>
+  </tr>
+  <tr>
+    <td class="td_right">&nbsp;</td>
+    <td>
+      <div id="queue"></div>
+      <input id="file_upload" name="file_upload" type="file" multiple="false"> 
+    </td>
+  </tr> 
+</table> 
+<script type="text/javascript">
+$(function(){
+  $.ajaxSetup({async:false}); 
+}); 
+
+
+function saveZiyin()
+{
+  var id = $("#id").val();
+  var zid = $("#zid").val();
+  var wupinyin = $("#wupinyin").val();
+  var shengdiao = $("#shengdiao").val();
+  var pinyin = $("#pinyin").val();
+  var zuci1 = $("#zuci1").val();
+  var zuci2 = $("#zuci2").val();
+  var zuci3 = $("#zuci3").val();
+  var ziyi1 = $("#ziyi1").val();
+  var ziyi2 = $("#ziyi2").val();
+  var ziyi3 = $("#ziyi3").val();
+  var zaoju1 = $("#zaoju1").val();
+  var zaoju2 = $("#zaoju2").val();
+  var zaoju3 = $("#zaoju3").val();
+  var wav = $("#wav").val(); 
+  var re = false;
+
+  if($.trim(pinyin) == "" )
+  {     
+    art.dialog.alert("请填写带声调的拼音！"); 
+  } 
+  if($.trim(wupinyin) == "" )
+  {
+    art.dialog.alert("请填写无声调的拼音！"); 
+  }
+  if(!isNumber(shengdiao))
+  {
+    art.dialog.alert("请填写正确的声调！"); 
+  }
+  if($.trim(wav) == "" ) 
+  {
+    art.dialog.alert("请上传读音MP3！"); 
+  }
+
+  var obj = {}; 
+  obj.id = id;
+  obj.zid = zid; 
+  obj.wupinyin = wupinyin;  
+  obj.shengdiao = shengdiao;  
+  obj.pinyin = pinyin;    
+  obj.zuci1 = zuci1;   
+  obj.zuci2 = zuci2;
+  obj.zuci3 = zuci3; 
+  obj.ziyi1 = ziyi1;   
+  obj.ziyi2 = ziyi2;
+  obj.ziyi3 = ziyi3;  
+  obj.zaoju1 = zaoju1;  
+  obj.zaoju2 = zaoju2;   
+  obj.zaoju3 = zaoju3;
+  obj.wav = wav;
+
+  $.getJSON("{:U('hanzi/ziyinsave')}",{data:JSON.stringify(obj),random:Math.random()},function(data){
+   
+    if(data.iserr == 1)
+    {
+      art.dialog.alert("保存失败，拼音的声调已经存在！ "); 
+    }
+    else
+    {
+      if (data.data.id == id) 
+      {  
+        art.dialog.alert("保存成功！ ");
+        re = true;
+      }
+      else
+      {
+        art.dialog.confirm('是否继续添加？', function () {
+          $("#id").val("0");  
+          $("#shengdiao").val("");
+          $("#pinyin").val("");
+          $("#zuci1").val("");
+          $("#zuci2").val("");
+          $("#zuci3").val("");
+          $("#ziyi1").val("");
+          $("#ziyi2").val("");
+          $("#ziyi3").val("");
+          $("#zaoju1").val("");
+          $("#zaoju2").val("");
+          $("#zaoju3").val("");
+          $("#wav").val("");  
+        }, function () {
+          re = true;
+        });
+      };     
+    }
+  }); 
+  return re;
+}
+
+/*文件上传*/
+$(function() {
+  $('#file_upload').uploadify({
+    'height'    :30,
+    'width'     :120,
+    'buttonText': '上传读音mp3',  //选择按钮显示的字符
+    'multi'     : false,   //是否允许同时选择多个(false一次只允许选中一张图片)
+    'method'    : 'post',
+    'formData'  : {
+      'folder'  : './uploads',
+      'fileext': 'png'
+    },
+    'swf'       : '__PUBLIC__/js/uploadify/uploadify.swf?ver=' + Math.random(),
+    'uploader'  : '{:U("upload/index")}',
+    'fileTypeExts': '*.mp3', //允许的后缀
+    'fileTypeDesc': 'MP3 Files', //允许的格式，详见文档
+    'onUploadSuccess' : function(file, data, response) 
+    {
+      //上传成功后的触发事件  
+      var obj=eval("("+data+")");
+      if (obj.issuc == 1) 
+      {
+        $('#' + file.id).find('.data').html(' 上传完毕');   
+        $("#upinfo").html("【" + obj.msg.name + '】文件上传成功');  
+        $("#wav").val('uploads/'+obj.msg.savename);
+      }
+      else
+      {
+        $("#upinfo").html("【" + obj.msg + '】');   
+      };
+    }
+  });
+});
+</script> 
+</body>
+</html>

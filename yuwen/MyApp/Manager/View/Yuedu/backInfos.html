@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>背景分类管理</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="/Public/Manager/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="/Public/Manager/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+	<tr>
+		<td>
+			<input type="button" id="add" value="添加背景" class="ext_btn ext_btn_submit"/>
+		</td>
+	</tr>
+</table>
+<div class="h5"></div> 
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" id="table_data">
+  <tr>
+    <th width="260">背景名称</th> 
+    <th>操作</th>
+  </tr> 
+  <volist name="music_type" id="vo">
+  	<tr>
+  		<td align="center">{$vo.title}</td>
+		<td align="center">
+     	 <input type="button" name="edit" bid="{$vo.id}" class="ext_btn ext_btn_error" value="修改" />
+     	 <input type="button" name="del" bid="{$vo.id}" class="ext_btn ext_btn_error" value="删除" />
+   		</td>
+  	</tr>
+  </volist>
+</table>
+
+<table style="display:none" id="table_demo"> 
+  <tr class="tr">
+    <td align="center"></td> 
+    <td align="center">
+      <input type="button" name="edit" class="ext_btn ext_btn_error" value="修改" />
+      <input type="button" name="del" class="ext_btn ext_btn_error" value="删除" />
+    </td>
+  </tr>
+</table>
+</div> 
+
+
+
+<div id="demo" style="display:none;">
+	<table>
+		<tr>
+			<td>
+				背景名称：
+			</td>
+			<td>
+				<input type="text" id="title" class="input-text" size="10" />
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+//添加背景
+$('#add').click(function(){
+	art.dialog({
+		padding:0,
+		title:'添加背景',
+		width:300,
+		content: document.getElementById('demo'),
+		lock:true,
+		opacity: 0.2,
+		ok:function(){
+			var title=$('#title').val();
+			if(title==''){
+				art.dialog.alert('名称不能为空！');
+				return false;
+			}
+			$.get('../kewen/addmusicbg',{ran:Math.random(),title:title},function(data){
+				if(data=='已存在'){
+					art.dialog.alert('背景已存在！');
+				}else{
+					var tr=$('#table_demo').children('tbody').children('tr').eq(0).clone();
+					tr.children('td').eq(0).html(title);
+					tr.children('td').find('input').attr('bid',data);
+					tr.appendTo('.list_table');
+					$('#title').val('');
+				}
+			});
+		},
+		cancelVal: '关闭',
+   		cancel: true
+		
+	});
+});   
+//修改背景
+$('input[name="edit"]').live('click',function(){
+	var id=$(this).attr('bid');
+	var title_old=$(this).parent().prev().html();
+	var cur=$(this).parent().prev();
+		art.dialog({
+		padding:0,
+		title:'修改背景',
+		width:300,
+		content: '<table><tr><td>背景名称：</td><td><input type="text" id="title_new" value="'+title_old+'" class="input-text" size="10" /></td></tr></table>',
+		lock:true,
+		opacity: 0.2,
+		ok:function(){
+			var title_new=$('#title_new').val();
+			if(title_new==''){
+				art.dialog.alert('名称不能为空！');
+				return false;
+			}else if(title_new==title_old){
+				art.dialog.alert('名称不能与原名称一致！');
+				return false;
+			}
+			$.get('../kewen/editmusicbg',{ran:Math.random(),id:id,title_new:title_new},function(data){
+				$(cur).html(title_new);
+			});
+		},
+		cancelVal: '关闭',
+   		cancel: true
+		
+	});
+});
+//删除背景
+$('input[name="del"]').live('click',function(){
+	var id=$(this).attr('bid');
+	var aa=$(this).parent().parent();
+	//alert($(this).parent().parent().html());return false;
+	$.get('../kewen/delmusicbg',{ran:Math.random(),id:id},function(data){
+		if(data==1){
+			$(aa).remove();	
+		}else{
+			art.dialog.alert('删除失败！');
+		}
+		
+	});
+});
+
+</script>

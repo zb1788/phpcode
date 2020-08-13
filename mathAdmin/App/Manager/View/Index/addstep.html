@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>数学后台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body>
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- =============================================== -->
+    <!-- Content Wrapper. Contains page content -->
+    <div>
+      <section class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title"></h3>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form role="form">
+                <div class="box-body">
+                  <div class="form-group" id="stageNameForm">
+                    <label for="stageName">关卡名称</label>
+                    <input type="input" class="form-control" id="stageName" placeholder="关卡名称" value="{$data.stagename}">
+                    <span class="help-block" style="display:none;">
+                      <i class="fa fa-times-circle-o"></i>关卡名称不能为空</span>
+                  </div>
+                  <div class="form-group has-error" style="display:none;">
+                    <label class="control-label"></label>
+                  </div>
+                  <div class="form-group" id="timeForm">
+                    <label for="time">答题时间</label>
+                    <input type="number" class="form-control" id="time" placeholder="答题时间" value="{$data.totaltime}">
+                    <span class="help-block" style="display:none;">
+                      <i class="fa fa-times-circle-o"></i>答题时间不能为空</span>
+                  </div>
+                  <div class="form-group" id="rcodeForm">
+                    <label for="time">关联微课(非必填)
+                      <button id="resView" type="button" class="btn btn-small btn-sm" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-expand glyphicon-align-left" aria-hidden="true"></span>预览
+                      </button>
+                    </label>
+                    <input type="input" class="form-control" id="rtitle" placeholder="微课资源" value="{$data.rtitle}">
+                    <input type="hidden" value="{$data.rcode}" id="rcode" />
+                    <span class="help-block" style="display:none;">
+                      <i class="fa fa-times-circle-o"></i></span>
+                  </div>
+                  <div class="form-group has-error" style="display:none;">
+                    <label class="control-label"></label>
+                  </div>
+                </div>
+                <div class="form-group" id="remark">
+                  <div class="col-md-12">
+                    <label for="editor">闯关说明(<font style="color:#d33724">建议图片尺寸350x350,大小不超过20K</font>)</label>
+                    <script id="editor" type="text/plain" style="width:100%;height:300px;">{$data.remark}</script>
+                  </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <button type="button" class="btn btn-primary" id="tijiao">提交</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="mymodal" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                  <i class="fa fa-exclamation-circle"></i>
+                  <span id="mtitle">[Title]</span>
+                </h4>
+              </div>
+              <div class="modal-body">
+                <p id="msg">[Message]</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary ok" data-dismiss="modal" id="BtnOk">[BtnOk]</button>
+                <button type="button" class="btn btn-default cancel" data-dismiss="modal" id="BtnCancel">[BtnCancel]</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+      </section>
+    </div>
+
+
+  </div>
+  <!-- ./wrapper -->
+  <!-- jQuery 3 -->
+  <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+  <!-- PACE -->
+  <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+  <script src="__PUBLIC__/common.js"></script>
+  <script src="__PUBLIC__/mydialog.js"></script>
+  <script src="__PUBLIC__/dist/ue/ueditor.config.js"></script>
+  <script src="__PUBLIC__/dist/ue/ueditor.all.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/dist/js/jquery.artDialog.js?skin=default"></script>
+  <script type="text/javascript" src="__PUBLIC__/dist/js/iframeTools.js"></script>
+  <script>
+    $.ajaxSetup({
+      async: false
+    }); //异步很重要
+    var type = GetQueryString('type');
+    var genreid = GetQueryString('genreid');
+    var id = GetQueryString('id');
+    var ue;
+
+    $(document).ajaxStart(function () {
+      Pace.restart()
+    })
+
+    $(function () {
+      // window.UEDITOR_HOME_URL = '/mathAdmin/';
+      ue = UE.getEditor('editor', {
+        toolbars: [
+          ['fullscreen', 'simpleupload', 'music', '|',
+            'bold', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript',
+            'pasteplain', '|', 'forecolor', 'backcolor', '|',
+            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+            'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+            'horizontal', 'spechars'
+          ]
+        ],
+        wordCount: false,
+        elementPathEnabled: false,
+        initialFrameHeight: 100
+      }); //ueditor插件
+      if (type == 'add') {
+        var html = '添加关卡';
+      } else {
+        var html = '编辑关卡';
+        // ue.ready(function () { //编辑器初始化完成再赋值  
+        //   getInfo();
+        // });
+      }
+      $('.box-title').html(html);
+    })
+
+    $("#stageName").keyup(function () {
+      var stageName = $("#stageName").val();
+      if (stageName == '') {
+        $('#stageNameForm').addClass('has-error');
+        $('#stageNameForm').children('span').show();
+      } else {
+        $('#stageNameForm').removeClass('has-error');
+      }
+    });
+    $("#stageName").blur(function () {
+      var stageName = $("#stageName").val();
+      if (stageName == '') {
+        $('#stageNameForm').addClass('has-error');
+        $('#stageNameForm').children('span').show();
+      } else {
+        $('#stageNameForm').removeClass('has-error');
+        $('#stageNameForm').children('span').hide();
+      }
+    });
+    $("#time").keyup(function () {
+      var time = $('#time').val();
+      if (time == '') {
+        $('#timeForm').addClass('has-error');
+        $('#timeForm').children('span').show();
+      } else {
+        $('#timeForm').removeClass('has-error');
+        $('#timeForm').children('span').hide();
+      }
+    });
+    $("#time").blur(function () {
+      var time = $('#time').val();
+      if (time == '') {
+        $('#timeForm').addClass('has-error');
+        $('#timeForm').children('span').show();
+      } else {
+        $('#timeForm').removeClass('has-error');
+        $('#timeForm').children('span').hide();
+      }
+    });
+
+    $('#rtitle').focus(function () {
+      var myDialog = $.dialog.open('resSelectFromCCM', {
+        id: 'resSelect',
+        title: '资源选择',
+        window: 'top',
+        width: 927,
+        height: 623,
+        lock: true,
+        opacity: 0.3
+      });
+
+    });
+
+    $('#resView').click(function () {
+      var rcode = $('#rcode').val();
+      if (rcode != '') {
+        var url = '__PUBLIC__/dist/js/CkPlayer/playVideo.php?filepath=' + rcode;
+        var myDialog = $.dialog.open(url, {
+          id: 'resSelect',
+          title: '视频预览',
+          window: 'top',
+          width: 750,
+          height: 480,
+          lock: true,
+          opacity: 0.3
+        });
+      } else {
+        alert('确认此视频是否上线');
+      }
+    });
+
+    function insertFileinfo(title, r_code) {
+      $('#rcode').val(r_code);
+      $('#rtitle').val(title);
+    }
+
+    $('#tijiao').click(function () {
+      var stageName = $("#stageName").val();
+      var time = $('#time').val();
+      var content = ue.getContent();
+      var rcode = $('#rcode').val();
+      var rtitle = $('#rtitle').val();
+      if (checkInput()) {
+        $.ajax({
+          url: '../Index/addStageData',
+          type: 'post',
+          data: {
+            name: stageName,
+            genreid: genreid,
+            remark: content,
+            totaltime: time,
+            type: type,
+            id: id,
+            rcode: rcode,
+            rtitle: rtitle,
+            ran: Math.random()
+          },
+          dataType: 'json',
+          success: function (data) {
+            if (data.status == 'ok') {
+              window.location.href = 'steplist_tree_frame?genreid=' + genreid;
+            } else {
+              var options = {
+                id: 'mymodal',
+                msg: data.msg
+              }
+              Modal(options).alert();
+            }
+          },
+          error: function (e) {
+            console.log(e);
+          }
+        })
+      }
+    })
+
+    function getInfo() {
+      $.ajax({
+        url: '../Index/getStageInfo',
+        type: 'get',
+        data: {
+          id: id,
+          ran: Math.random()
+        },
+        dataType: 'json',
+        success: function (data) {
+          $("#stageName").val(data.stagename);
+          $("#time").val(data.totaltime);
+          $('#content').html(data.remark);
+          //UE.getEditor('editor').setContent('欢迎使用ueditor');
+          ue.setContent(data.remark); //赋值给UEditor 
+          // $("#editor").val(data.remark);
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+
+    function checkInput() {
+      var flag;
+      var stageName = $("#stageName").val();
+      if (stageName == '') {
+        $('#stageNameForm').addClass('has-error');
+        $('#stageNameForm').children('span').show();
+        flag = false;
+      } else {
+        $('#stageNameForm').removeClass('has-error');
+        $('#stageNameForm').children('span').hide();
+        flag = true;
+      }
+
+      var time = $('#time').val();
+      if (time == '') {
+        $('#timeForm').addClass('has-error');
+        $('#timeForm').children('span').show();
+        flag = false;
+      } else {
+        $('#timeForm').removeClass('has-error');
+        $('#timeForm').children('span').hide();
+        flag = true;
+      }
+
+      var content = ue.getContent();
+      // if (content == '') {
+      //   flag = false;
+      // }
+      return flag;
+    }
+  </script>
+</body>
+
+</html>

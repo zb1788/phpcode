@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>页码设置</title>
+<link href="__PUBLIC__/bgcss/style/manage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.ztree.core-3.5.js"></script>
+<link href="__PUBLIC__/bgcss/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; 页码设置
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="box_border">
+			<tr>
+				<td class="box_top pl_10 f14">页码设置
+			</tr>
+			<tr>
+				<td class="p5">
+					<TABLE border=0 height=600px align=left>
+						<TR>
+							<TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+								<ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+							</TD>
+							<TD width=770px align=left valign=top>
+								<table width="100%"  border="0px" cellspacing="0" cellpadding="0" class="list_table">
+									<tr>
+										<th>书籍名称</th>
+										<th>章节名称</th>
+										<th>起始页码</th>
+										<th>结束页码</th>
+								<!--		<th>查看</th> -->
+									</tr>
+									<tr>
+										<td id="jiaocai"></td>
+										<td id="chaptername"></td>
+										<td><input type="text" id="pagebeg" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="input-text" style="width:80px;"/></td>
+										<td><input type="text" id="pageend" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="input-text" style="width:80px;"/></td>
+							<!--		<td><input type="button" id="view" class="ext_btn ext_btn_error" value="预览" /></td> -->
+									</tr>
+									<tr>
+										<td colspan='5' align="left"><input type="button" id="set" class="btn btn82 btn_save2" value="设置"/></td>
+									</tr>
+								</table>
+							</TD>
+							
+						</TR>
+					</TABLE>
+				</td>
+			</tr>
+		</table>
+		<div class="h10"></div>
+		
+	</div>
+
+</body>
+</html>
+<script>
+$.ajaxSetup({async:false});
+	<!--
+	var zTree;
+	var demoIframe;
+
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			showLine: true,
+			selectedMulti: false
+		},
+		data: {
+			simpleData: {
+				enable:true,
+				idKey: "id",
+				pIdKey: "pId",
+				rootPId: ""
+			}
+		},
+		callback: {
+			beforeClick: function(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("tree");
+				if (treeNode.isParent) {
+					//demoIframe.attr("src",treeNode.file + ".jsp");
+					zTree.expandNode(treeNode);
+					//return false;
+				} else {
+					//demoIframe.attr("c1",treeNode.file);
+					var bookid=treeNode.file;//父id
+					var chaperid=treeNode.id;//id
+					var name=treeNode.name;//章节名称
+					$('input').attr('bookid',bookid);
+					$('input').attr('chapterid',chaperid);
+					$.get('../Book/getzhangjie',{ran:Math.random(),bookid:bookid,chaperid:chaperid},function(data){
+						//alert(data);
+						if(data=='error'){
+							art.dialog.alert('没有此书籍信息！');
+							return false;
+						}else{
+							var arr=[];
+							arr=data.split("|");
+							$('#jiaocai').html(arr[0]);
+							$('#pagebeg').val(arr[1]);
+							$('#pageend').val(arr[2]);
+							
+						}
+						$('#chaptername').html(name);
+					});
+					return true;
+				}
+			}
+		}
+	};
+	
+	var zNodes=[
+	            {$json}
+	           ];
+// 	var zNodes =[
+//		
+// 			{id:1, pId:0, name:"[core] 基本功能 演示",file:"test"},
+// 			{id:101, pId:1, name:"最简单的树 --  标准 JSON 数据", file:"test"},
+//
+// 			{id:2, pId:0, name:"[excheck] 复/单选框功能 演示",file:"test2"},
+// 			{id:201, pId:2, name:"Checkbox 勾选操作", file:"test2"},
+//		
+//
+// 	];
+		var t = $("#tree");
+		t = $.fn.zTree.init(t, setting, zNodes);
+		demoIframe = $("#testIframe");
+		//demoIframe.bind("load", loadReady);
+	
+	//-->
+//预览
+$('#view').click(function(){
+	
+});
+//设置
+$('#set').click(function(){
+	var bookid=$(this).attr('bookid');
+	var chapterid=$(this).attr('chapterid');
+	var bookname=$('#jiaocai').html();//书籍名称
+	var chaptername=$('#chaptername').html();//章节名称
+	var pagebeg=$('#pagebeg').val();
+	var pageend=$('#pageend').val();
+	if(bookname==''){
+		art.dialog.alert('书籍名称不能为空');
+		return false;
+	}
+	if(chaptername==''){
+		art.dialog.alert('章节名称不能为空');
+		return false;
+	}		
+	if(pagebeg==''){
+		art.dialog.alert('起始页不能为空',function(){
+			$('#pagebeg').focus();
+		});
+		return false;
+	}
+	if(pageend==''){
+		art.dialog.alert('结束页不能为空',function(){
+			$('#pageend').focus();
+		});
+		return false;
+	}
+		
+	$.get('../Book/resetPage',
+	{
+		ran:Math.random(),
+		bookid:bookid,
+		chapterid:chapterid,
+		chaptername:chaptername,
+		pagebeg:pagebeg,
+		pageend:pageend
+	},function(data){
+		if(data=='error'){
+			art.dialog.alert('设置失败，页码不存在！');
+			return false;
+		}else{
+			art.dialog.alert('设置成功！');
+		}
+		
+	});
+});
+</script>

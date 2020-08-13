@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户添加</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=green"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script> 
+<script type="text/javascript">
+
+
+function addData(){
+	$.ajaxSetup({async:false});
+	var usernameinfo=$("#username").val();
+	var passwd=$("#passwd").val();
+	var passwdNext=$("#passwdNext").val();
+	var flag = false;
+ 	//alert(yearId+'|'+courseId+'|'+versionId+'|'+typeId+'|'+gradeId+'|'+unitName+'|'+sortId+'|'+markId);
+	if (usernameinfo==""){
+		art.dialog.alert('用户名不能为空！');
+		document.baseForm.username.focus();
+		return false;
+		}else if(passwd==""){
+			art.dialog.alert('密码不能为空！');
+			document.baseForm.passwd.focus();
+			return false;
+			}else if(passwdNext==""){
+				art.dialog.alert('确认密码不能为空！');
+				document.baseForm.passwdNext.focus();
+				return false;
+				}else if(passwdNext!=passwd){
+					art.dialog.alert('两次输入密码不一致！');
+					document.baseForm.passwd.focus();
+					return false;
+					}else{
+					$.get('../User/addUserInfo',
+						{
+						ran:Math.random(),
+						usernameinfo:usernameinfo,
+						passwd:passwd,
+						passwdNext:passwdNext
+						},function(data){
+					   // alert(data);return false;
+						  if (data=="ok"){
+							  flag = true;
+							  }else{
+								  art.dialog.alert('用户名已存在！');
+								  flag=false;
+								  }
+						});
+						return flag;
+					}
+	
+}
+</script>
+</head>
+<body>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="p5">
+  <form name="baseForm" action="wordadd_list.html" method="get">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">   
+      <tr>
+        <td class="td_right">用户名：</td>
+        <td>
+	        <input type="text" id="username" name="username" value="" class="input-text lh30" size="10" />
+	        <input type="hidden" name="id" id="id" value="" />
+        </td>
+      </tr>  
+      <tr>
+        <td class="td_right">密码：</td>
+        <td>
+	        <input type="password" id="passwd" name="passwd" value="" class="input-text lh30" size="10" />
+	        <input type="hidden" name="id" id="id" value="" />
+        </td>
+      </tr>
+      <tr>
+        <td class="td_right">确认密码：</td>
+        <td>
+	        <input type="password" id="passwdNext" name="passwdNext" value="" class="input-text lh30" size="10" />
+	        <input type="hidden" name="id" id="id" value="" />
+        </td>
+      </tr>   
+      </table>
+    </form>
+  <div class="h10"></div>
+    </td> 
+  </tr> 
+</table>
+</div>
+
+</body>
+</html>

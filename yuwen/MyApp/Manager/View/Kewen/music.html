@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>版本列表</title>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="/Public/Manager/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="/Public/Manager/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+<div class="place"><strong>位置</strong>：首页 &gt; 背景音乐管理</div>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="box_top pl_10 f14"><strong>背景音乐管理</strong></td> 
+  </tr>
+  <tr>
+    <td class="pl_5">
+    	<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+	      <tr>
+	        <td width="70" align="right">背景音乐：</td>
+	        <td>
+	          <select id="type" class="select">
+	          <option value="0">全部</option>
+			   <volist name="music_type" id="vo">
+			   	<option value="{$vo.id}">{$vo.title}</option>
+			   </volist>
+	          </select>
+	        </td>
+	      </tr>
+    	</table>
+	</td> 
+  </tr> 
+</table>
+<div class="h5"></div> 
+<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+	<tr>
+		<td>
+			<input type="button" id="backManage" value="背景管理" class="ext_btn ext_btn_submit"/>
+			<input type="button" id="addMusic" value="添加音频" class="ext_btn ext_btn_submit" />
+		</td>
+	</tr>
+</table>
+<div class="h10"></div> 
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" id="table_data">
+  <tr>
+  	<th>音乐分类</th>
+    <th>音乐名称</th> 
+    <th>操作</th>
+  </tr> 
+  <volist name="music_info" id="vo">
+  	<tr>
+  		<td>{$vo.title}</td>
+  		<td>{$vo.music_name}</td>
+		<td>
+			<input type="button" name="listen" bid="{$vo.id}" filename="{$vo.music_filename}" filestore="{$vo.music_filepath}" value="试听" class="ext_btn ext_btn_error"/>
+			<input type="button" name="edit" bid="{$vo.id}" filename="{$vo.music_filename}" filestore="{$vo.music_filepath}" value="编辑" class="ext_btn ext_btn_error"/>
+			<input type="button" name="del" bid="{$vo.id}" filename="{$vo.music_filename}" filestore="{$vo.music_filepath}" value="删除" class="ext_btn ext_btn_error"/>
+		</td>
+	</tr>
+  </volist>
+</table>
+
+</div> 
+
+
+
+<table style="display:none" id="demo">
+	<tr>
+		<td>音乐分类</td>
+		<td>音乐名称</td>
+		<td>
+			<input type="button" name="listen"  value="试听" class="ext_btn ext_btn_error"/>
+			<input type="button" name="edit"  value="编辑" class="ext_btn ext_btn_error"/>
+			<input type="button" name="del"  value="删除" class="ext_btn ext_btn_error"/>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>
+<script type="text/javascript">   
+$(function(){
+  $.ajaxSetup({async:false}); 
+  $('#backManage').click(function(){
+  	backs();
+  });
+});
+$('#type').change(function(){
+	$('.list_table').children('tbody').children('tr:not(:first)').remove();
+	var groupid=$(this).val();
+	$.get('../Kewen/changeType',{ran:Math.random(),groupid:groupid},function(data){
+		$.each(data,function(k,v){
+			var tr=$('#demo').children('tbody').children('tr').eq(0).clone();
+			tr.children('td').eq(0).html(v.title);
+			tr.children('td').eq(1).html(v.music_name);
+			tr.find('input').attr('bid',v.id);
+			tr.find('input').attr('filename',v.music_filename);
+			tr.find('input').attr('filestore',v.music_filepath);
+			tr.appendTo('.list_table');
+		});
+	});
+});
+
+
+
+
+//背景分类管理
+function backs(){
+	var myDialog = $.dialog.open('backInfos',{
+		title:'背景分类管理',
+		window : 'top',
+		width : 520,
+		height : 350,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+}
+
+
+//添加音频
+$('#addMusic').click(function(){
+	var myDialog = $.dialog.open('addMusicFiles',{
+		title:'添加音乐',
+		window : 'top',
+		width : 300,
+		height : 250,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						location.reload();
+						return re;
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+});
+//试听
+$('input[name="listen"]').live('click',function(){
+		var filename=$(this).attr('filename');
+		var filestore=$(this).attr('filestore');
+//		var ext=getExt(filename);
+//		var type='';
+//		if(ext=='mp4'||ext=='flv'||ext=='m4v'||ext=='ogv'){
+//			type=1;
+//		}else if(ext=='mp3'){
+//			type=2;
+//		}else if(ext=='jpg'||ext=='jpeg'||ext=='gif'||ext=='png'||ext=='bmp'){
+//			type=3;
+//		}else{
+//			type=4;
+//		}
+		playVideo(filename,filestore,2);
+});
+
+//删除音频
+$('input[name="del"]').live('click',function(){
+	var id=$(this).attr('bid');//音频id
+	var aa=$(this).parent().parent();
+	$.get('../Kewen/delmusicfile',{ran:Math.random(),id:id},function(data){
+		$(aa).remove();
+	});
+});
+//编辑音频
+$('input[name="edit"]').live('click',function(){
+	var id=$(this).attr('bid');//音频id
+	//var aa=$(this).parent().parent();
+		var myDialog = $.dialog.open('editMusicFiles?id='+id,{
+		title:'编辑音乐',
+		window : 'top',
+		width : 300,
+		height : 250,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						location.reload();
+						return re;
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+});
+
+//播放弹出页面
+function playVideo(filename,filestore,type){
+	var url='';
+	var width='';
+	var height='';
+	if(type=='1'){
+		url='__PUBLIC__/CuPlayer/playVideo.php';
+		width=650;
+		height=450;
+		}else if(type=='2'){
+			url='playMp3';
+			width=220;
+			height=220;
+			}else if(type=='3'){
+				url='playPic';
+				width=817;
+				height=479;
+				}else if(type=='4'){
+					window.open('../Uploads/'+filestore);return false;
+				}
+    var myDialog = $.dialog.open(url+'?filename='+filename+'&filepath='+filestore+'&random='+Math.random(),{
+        id:'mate_edit',
+        title:filename,
+        window:'top',
+        width:width,
+        height:height,
+        lock:true,
+        opacity:0.3
+      });
+}
+
+</script>

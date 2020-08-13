@@ -1,0 +1,114 @@
+<!DOCTYPE public>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="artDialog的用法，弹窗">
+<meta name="description" content="artDialog的用法">
+<title>artDialog的用法</title>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/ArtDialog/jquery.artDialog.js?skin=green"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+	<div class="place">
+		<strong>位置</strong>：首页 &gt; EXCEL读取的用法
+	</div>
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+			<tr>
+				<td align="right" width="100px">
+					上传EXCEL:
+				</td>
+				<td align="left">
+					<div id="div1">
+					<input type="file" id="file_upload"  multiple="false" >
+					<input type="hidden" name="filepath" id="filepath" value="" />
+					<input type="hidden" name="filename" id="filename" value="" />
+					<input type="hidden" name="issuc" id="issuc" value="" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td align="right" height="50">
+					<input type="button" id="upload" class="btn btn82 btn_save2" value="上传" />
+				</td>
+			</tr>
+		</table>
+		<div id="info">
+			
+		</div>
+	</div>
+<script>
+$("#div1").css({position: "absolute", border: "0px solid green", left: "120px", top: "52px"}).width(100).height(30);
+$('#upload').click(function(){
+	var filename=$('#filename').val();
+	var filepath=$('#filepath').val();
+	var issuc=$('#issuc').val();
+	filepath='Uploads/'+filepath;
+	if(issuc!=1){
+		art.dialog.alert('上传文件失败，请重新上传！');
+		return false;
+	}else{
+		$.get('../Excel/importData',{
+			ran:Math.random(),
+			filepath:filepath
+		},function(data){
+			$('#info').html(data);
+		});
+	}
+});
+
+
+/**
+ * 文件上传
+ */
+ $(function() {
+		$("#file_upload").uploadify(
+				{
+					'debug' : false,
+ 					'buttonText' : '选择文件',
+ 					'height' : 30,
+ 					'removeCompleted' : false,
+ 					'auto' : true,
+ 					'swf' : '__PUBLIC__/js/uploadify/uploadify.swf?ran='+Math.random(),
+					'uploader' : '../Upload/ExcelImport',
+					'width' : 70,
+					'fileSizeLimit' : '100MB',
+					'fileTypeExts' : '*.xlsx;*.xls',
+					'fileTypeDesc' : '请选择EXCEL文件',
+					'multi' : false,
+					'removeCompleted':true,
+					'removeTimeout':0.5,
+					'onUploadSuccess' : function(file, data, response) {
+						if (response) {
+							$('#' + file.id).find('.data').html(' 上传完毕');
+							$('.uploadify-button-text').empty();
+							$('.uploadify-button-text').append('上传完毕');
+							/**
+							issuc:1成功；2失败;
+							name:文件原名称；
+							size：文件大小；
+							ext：文件后缀名；
+							savename：上传后文件名
+							savepath：保存路径（201504/）
+							 **/
+							 //alert(data);
+							var obj = eval("(" + data + ")");
+							if (obj.issuc == 1) {
+								//alert(obj.msg.savepath+obj.msg.savename);
+								$("#filepath").attr("value",obj.msg.savepath + obj.msg.savename);
+								$("#filename").attr("value", obj.msg.name);
+								$("#issuc").attr("value", obj.issuc);
+							}
+						}
+
+					}
+				});
+	});
+</script>
+</body>
+</html>

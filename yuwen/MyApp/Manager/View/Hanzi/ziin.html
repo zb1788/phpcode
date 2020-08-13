@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>版本列表</title>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script> 
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="place"><strong>位置</strong>：首页 &gt; 批量导入课程生字</div>
+<div class="container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+  <tr>
+    <td class="box_top pl_10 f14">
+      <strong>批量导入课程生字</strong></td> 
+  </tr>
+  <tr>
+    <td class="p5">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table" id="table_excel"> 
+      <tr>
+        <td class="td_right">选择Excel：</td>
+        <td id="tdinfo" class=""></td>
+      </tr>
+      <tr>
+        <td class="td_right">&nbsp;</td>
+        <td>
+          <div id="queue"></div>
+          <input id="file_upload" name="file_upload" type="file" multiple="false">
+           
+        </td>
+      </tr>
+      <tr>
+        <td class="td_right">&nbsp;</td>
+        <td>
+          <input type="submit" name="btn_excel" id="btn_excel" class="btn btn82 btn_save2" value="提交" />
+          <input type="hidden" id="filename" name="filename" /></td>
+      </tr>
+    </table> 
+    <div class="h10"></div>
+    </td> 
+  </tr> 
+</table>
+</div>
+<script type="text/javascript">  
+  
+$(function(){
+  $.ajaxSetup({async:false});
+  $("#btn_excel").hide();  
+
+  $("#btn_excel").click(function()
+  {
+    $("#btn_excel").hide();
+    var excel = $("#filename").val();  
+    var dloading = art.dialog({time:30,title:'导入中……',width:130,height:30,opacity:0.3,lock:true});  
+    $.get("../Hanzi/import", {filename:excel,random:Math.random()}, function(data){
+      dloading.close();
+      if (data.iserr) {
+        art.dialog.alert("2.成功导入<b>" + data.sucnum + "</b>行<br>" +  data.errmsg);
+      }else
+      {
+        art.dialog.alert("1.成功导入<b>" + data.sucnum + "</b>行数据"); 
+      }
+      $("#tdinfo").html("");  
+      $("#filename").val(""); 
+    }); 
+  });
+}); 
+
+
+$(function() {
+  $('#file_upload').uploadify({
+    'height'    :30,
+    'width'     :120,
+    'buttonText': '上传EXCEL',  //选择按钮显示的字符
+    'multi'     : false,   //是否允许同时选择多个(false一次只允许选中一张图片)
+    'method'    : 'post',
+    'formData'  : {
+      'folder'  : './uploads',
+      'fileext': 'png'
+    },
+    'swf'       : '__PUBLIC__/js/uploadify/uploadify.swf',
+    'uploader'  : '../upload',
+    'fileTypeExts': '*.xls;*.xlsx', //允许的后缀
+    'fileTypeDesc': 'Excel Files', //允许的格式，详见文档
+    'onUploadSuccess' : function(file, data, response) 
+    {
+      //上传成功后的触发事件  
+      var obj=eval("("+data+")");
+      if (obj.issuc == 1) 
+      {
+        $('#' + file.id).find('.data').html(' 上传完毕');   
+        $("#tdinfo").html("【" + obj.msg.name + '】文件已上传，请点击导入EXCEL数据');  
+        $("#filename").val('uploads/'+obj.msg.savepath + obj.msg.savename);
+        $("#btn_excel").show(); 
+      }
+      else
+      {
+        $("#tdinfo").html("【" + obj.msg + '】文件已上传，请点击导入EXCEL数据');   
+      };
+    }
+  });
+});
+
+</script> 
+</body>
+</html>

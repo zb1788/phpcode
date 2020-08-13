@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<TITLE> ZTREE DEMO - Async</TITLE>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="__PUBLIC__/js/zTree/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/artDialog/jquery.artDialog.js?skin=default"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/zTree/jquery.ztree.core-3.5.js"></script>
+
+
+	<SCRIPT type="text/javascript">
+		//异步加载的树
+		var setting = {
+			async: {
+				enable: true,
+				url:"../Jsdemo/getTreeNodes",
+				autoParam:["id"],
+				//otherParam:{"otherParam":"zTreeAsyncTest"},
+				dataFilter: filter
+			},
+			callback: {
+				beforeClick: function(treeId, treeNode){
+					if (treeNode.isParent){
+						alert('父亲：'+treeNode.name);
+					}else {
+						alert('孩子：'+treeNode.name);
+					}
+				}
+			}
+		};
+
+		function filter(treeId, parentNode, childNodes) {
+			if (!childNodes) return null;
+			for (var i=0, l=childNodes.length; i<l; i++) {
+				childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+			}
+			return childNodes;
+		}
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#tree"), setting);
+		});
+	</SCRIPT>
+	<script>
+		//一次性加载数
+		var setting1 = {
+			view: {
+				dblClickExpand: true,
+				showLine: true,
+				selectedMulti: false
+			},
+			data: {
+				simpleData: {
+					enable:true,
+					idKey: "id",
+					pIdKey: "pId",
+					rootPId: ""
+				}
+			},
+			callback: {
+				beforeClick: function(treeId, treeNode){
+					if (treeNode.isParent){
+						alert('父亲：'+treeNode.name);
+					}else {
+						alert('孩子：'+treeNode.name);
+					}
+				}
+			}
+		};
+				var zNodes1 =[
+			{ id:1, pId:0, name:"父节点1 - 展开", open:true},
+			{ id:11, pId:1, name:"父节点11 - 折叠"},
+			{ id:111, pId:11, name:"叶子节点111"},
+			{ id:112, pId:11, name:"叶子节点112"},
+			{ id:113, pId:11, name:"叶子节点113"},
+			{ id:114, pId:11, name:"叶子节点114"},
+			{ id:12, pId:1, name:"父节点12 - 折叠"},
+			{ id:121, pId:12, name:"叶子节点121"},
+			{ id:122, pId:12, name:"叶子节点122"},
+			{ id:123, pId:12, name:"叶子节点123"},
+			{ id:124, pId:12, name:"叶子节点124"},
+			{ id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+			{ id:2, pId:0, name:"父节点2 - 折叠"},
+			{ id:21, pId:2, name:"父节点21 - 展开", open:true},
+			{ id:211, pId:21, name:"叶子节点211"},
+			{ id:212, pId:21, name:"叶子节点212"},
+			{ id:213, pId:21, name:"叶子节点213"},
+			{ id:214, pId:21, name:"叶子节点214"},
+			{ id:22, pId:2, name:"父节点22 - 折叠"},
+			{ id:221, pId:22, name:"叶子节点221"},
+			{ id:222, pId:22, name:"叶子节点222"},
+			{ id:223, pId:22, name:"叶子节点223"},
+			{ id:224, pId:22, name:"叶子节点224"},
+			{ id:23, pId:2, name:"父节点23 - 折叠"},
+			{ id:231, pId:23, name:"叶子节点231"},
+			{ id:232, pId:23, name:"叶子节点232"},
+			{ id:233, pId:23, name:"叶子节点233"},
+			{ id:234, pId:23, name:"叶子节点234"},
+			{ id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+		];
+		
+		$(document).ready(function(){
+			$.fn.zTree.init($("#tree2"), setting1, zNodes1);
+		});
+	</script>
+</HEAD>
+
+<BODY>
+<div class="place">
+	<strong>位置</strong>：首页 &gt; zTree
+</div>
+<div class="container">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+		<tr><td class="box_top pl_10 f14">zTree</td></tr>
+		<tr>
+			<td class="p5">
+				<TABLE border=1 height=600px align=left>
+					<tr>
+						<td height="50px" colspan="2" align="center">
+						<h2>open:true|是否展开
+							showLine: true|是否显示连接线
+							dblClickExpand: true|双击是否展开节点</h2>
+						</td>
+					</tr>
+					<tr>
+						<td height="30px" align="center">异步加载节点数据的树</td>
+						<td align="center">一次性加载数据的树</td>
+					</tr>
+					<TR>
+						<TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+							<ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul>
+						</TD>
+						<TD width=770px align=left valign=top>
+							<ul id="tree2" class="ztree" style="width:260px; overflow:auto;"></ul>
+						</TD>
+						
+					</TR>
+				</TABLE>
+			</td>
+		</tr>
+	</table>
+</div>	
+</BODY>
+</HTML>

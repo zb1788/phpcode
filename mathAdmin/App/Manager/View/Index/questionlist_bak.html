@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数学后台</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="__PUBLIC__/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="__PUBLIC__/dist/css/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="__PUBLIC__/dist/css/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="__PUBLIC__/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="__PUBLIC__/dist/css/skins/_all-skins.min.css">
+    <!-- Pace style -->
+    <link rel="stylesheet" href="__PUBLIC__/dist/js/pace/pace.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+    <style>
+        td.highlight {
+            background-color: red !important;
+        }
+
+        tr.am-primary {
+            background-color: yellow !important;
+        }
+    </style>
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+
+<body class="hold-transition skin-blue fixed sidebar-mini">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+
+        <include file="Common/header" />
+        <include file="Common/left" />
+
+        <!-- =============================================== -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    试题
+                    <small>试题列表</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index">
+                            <i class="fa fa-dashboard"></i> 首页</a>
+                    </li>
+
+                    <li class="active">
+                        试题列表
+                    </li>
+
+                </ol>
+            </section>
+            <!-- /.content -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <label>年级</label>
+                                        <select class="form-control" id="grade">
+                                            <!-- <option value="0">全部</option> -->
+                                            <option value="0001">一年级</option>
+                                            <option value="0002">二年级</option>
+                                            <option value="0003">三年级</option>
+                                            <option value="0004">四年级</option>
+                                            <option value="0005">五年级</option>
+                                            <option value="0006">六年级</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>学期</label>
+                                        <select class="form-control" id="term">
+                                            <!-- <option value="0">全部</option> -->
+                                            <option value="0001">上学期</option>
+                                            <option value="0002">下学期</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>分类</label>
+                                        <select class="form-control" id="genre">
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>关卡</label>
+                                        <select class="form-control" id="stage">
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>题目类型</label>
+                                        <select class="form-control" id="quesType">
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="add();">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加题库试题
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="example" class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>关卡</th>
+                                            <th>题目类型</th>
+                                            <th>题目详情</th>
+                                            <th>题目答案</th>
+                                            <th>操作</th>
+                                            <!--  <th>Salary</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
+
+        <include file="Common/footer" />
+        <div class="modal modal-danger fade" tabindex="-1" id="mymodal" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">
+                            <i class="fa fa-exclamation-circle"></i>
+                            <span id="mtitle">[Title]</span>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="msg">[Message]</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline ok" data-dismiss="modal" id="BtnOk">[BtnOk]</button>
+                        <button type="button" class="btn btn-outline cancel" data-dismiss="modal" id="BtnCancel">[BtnCancel]</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery 3 -->
+    <script src="__PUBLIC__/dist/js/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="__PUBLIC__/dist/js/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="__PUBLIC__/dist/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="__PUBLIC__/dist/js/adminlte.min.js"></script>
+    <!-- PACE -->
+    <script src="__PUBLIC__/dist/js/pace/pace.min.js"></script>
+    <!-- DataTables -->
+    <script src="__PUBLIC__/dist/js/jquery.dataTables.min.js"></script>
+    <script src="__PUBLIC__/dist/js/datatables-bootstrap/dataTables.bootstrap.min.js"></script>
+    <script src="__PUBLIC__/common.js"></script>
+    <script src="__PUBLIC__/mydialog.js"></script>
+    <script>
+        $.ajaxSetup({
+            async: false
+        }); //异步很重要
+        var datatable;
+        var quesType = GetQueryString('quesType');
+        var grade = GetQueryString('grade');
+        var term = GetQueryString('term');
+        var genre = GetQueryString('genre');
+        var stage = GetQueryString('stage');
+        $(function () {
+            getUser();
+            if (grade == null) {
+                setGenre();
+                setStage();
+            } else {
+                $('#grade').val(grade);
+                $('#term').val(term);
+                setGenre();
+                $('#genre').val(genre);
+                setStage();
+                $('#stage').val(stage);
+            }
+
+            getQuestionType();
+            questionList();
+            showTable();
+        })
+
+
+        function showTable() {
+            $('#example').DataTable({
+                paging: true,
+                lengthChange: true,
+                searching: true, //开启搜索功能
+                ordering: true,
+                info: true,
+                autoWidth: true, //让Datatables自动计算宽度
+                lengthMenu: [50],
+                language: {
+                    lengthMenu: "显示 _MENU_ 条数据",
+                    // lengthMenu: '<select class="form-control input-xsmall">' + '<option value="2">2</option>' + '<option value="20">20</option>'  + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
+                    search: '<span>搜索：</span>', //右上角的搜索文本，可以写html标签
+                    //分页的样式内容。
+                    paginate: {
+                        previous: "上一页",
+                        next: "下一页",
+                        first: "第一页",
+                        last: "最后"
+                    },
+                    zeroRecords: "没有内容", //table tbody内容为空时，tbody的内容。
+                    //下面三者构成了总体的左下角的内容。
+                    info: "总共_PAGES_ 页，显示第_START_ 到第 _END_ ，筛选之后得到 _TOTAL_ 条，初始_MAX_ 条 ", //左下角的信息显示，大写的词为关键字。
+                    infoEmpty: "0条记录", //筛选为空时左下角的显示。
+                    infoFiltered: "" //筛选之后的左下角筛选提示，
+                }
+            });
+        }
+
+
+
+        //获取分类
+        function setGenre() {
+            var grade = $('#grade').val();
+            var term = $('#term').val();
+            $.ajax({
+                url: '../Index/getAllGenre',
+                type: 'get',
+                data: {
+                    grade: grade,
+                    term: term,
+                    ran: Math.random()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('#genre').empty();
+                    $.each(data, function (k, v) {
+                        $('#genre').append($('<option>').html(v.name).val(v.id));
+                    });
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            })
+        }
+        //获取关卡
+        function setStage() {
+            var genre = $('#genre').val();
+            $.ajax({
+                url: '../Index/getStage',
+                type: 'get',
+                data: {
+                    genre: genre,
+                    ran: Math.random()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#stage").empty();
+                    $.each(data, function (k, v) {
+                        $("#stage").append($('<option>').val(v.id).html(v.stagename));
+                    })
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            })
+        }
+
+        //获取试题类型
+        function getQuestionType() {
+            $.ajax({
+                url: '../Index/getQuestionType',
+                type: 'get',
+                data: {
+                    ran: Math.random()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#quesType").append($('<option>').val(0).html('全部'));
+                    $.each(data, function (k, v) {
+                        $("#quesType").append($('<option>').val(v.id).html(v.name));
+                    })
+                    $('#quesType').val(quesType);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            })
+        }
+        $('#grade').change(function () {
+            setGenre();
+            $('#genre').change();
+        })
+        $('#term').change(function () {
+            setGenre();
+            $('#genre').change();
+        })
+        $('#genre').change(function () {
+            setStage();
+            $('#stage').change();
+        })
+        $('#stage').change(function () {
+            $('#example').DataTable().destroy();
+            questionList();
+            showTable();
+        })
+        $('#quesType').change(function () {
+            $('#example').DataTable().destroy();
+            questionList();
+            showTable();
+        });
+
+
+        function questionList() {
+            var stage = $('#stage').val();
+            var quesType = $('#quesType').val();
+            if (!stage) {
+                var options = {
+                    id: 'mymodal',
+                    msg: '必须选择一个关卡'
+                }
+                Modal(options).alert();
+
+                // return false;
+            }
+            $.ajax({
+                url: '../Index/getQuestionList',
+                type: 'get',
+                data: {
+                    stage: stage,
+                    quesType: quesType,
+                    ran: Math.random()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('#example tbody').empty();
+                    var html = '';
+                    $.each(data, function (k, v) {
+                        html += '<tr>';
+                        html += '<td>' + v.stagename + '</td>';
+                        var quesinfo = eval('(' + v.content + ')');
+                        if (quesinfo.quesType == 1) {
+                            html += '<td>选择题</td>';
+                            var tds = '';
+                            tds += quesinfo.quesName;
+                            if (quesinfo.quesContentType == 1) {
+                                tds += quesinfo.quesContent;
+                            } else {
+                                tds += '<img src="' + quesinfo.quesContent +
+                                    '" width="45" height="45"/>';
+                            }
+                            if (quesinfo.quesChoiceType == 1) {
+                                $.each(quesinfo.quesChoice, function (kk, vv) {
+                                    tds += vv.flag + ':' + vv.content + ';';
+                                })
+                            } else {
+                                $.each(quesinfo.quesChoice, function (kk, vv) {
+                                    tds += vv.flag + ':' + '<img src="' + vv.content +
+                                        '" width="45" height="45"/>'
+                                })
+                            }
+                            html += '<td>' + tds + '</td>';
+                            html += '<td>' + quesinfo.answer + '</td>';
+                        } else {
+                            html += '<td>填空题</td>';
+                            var tds = '';
+                            tds += quesinfo.quesName;
+                            var keyNum = -1;
+                            $.each(quesinfo.quesContent, function (kk, vv) {
+                                if (!isArray(vv)) {
+                                    //不是分数
+                                    if (vv != '#') {
+                                        tds += vv;
+                                    } else {
+                                        keyNum++;
+                                        if (quesinfo.answerFlag == 1) {
+                                            tds += '{' + quesinfo.answer[keyNum] + '}';
+                                        } else {
+                                            tds += '{' + quesinfo.answer[0][keyNum] +
+                                                '}';
+                                        }
+                                    }
+                                } else {
+                                    $.each(vv, function (kkk, vvv) {
+                                        if (vvv != '#') {
+                                            tds += vvv.replace(/\|/, '......');
+                                        } else {
+                                            keyNum++;
+                                            if (quesinfo.answerFlag == 1) {
+                                                tds += '{' + quesinfo.answer[
+                                                        keyNum] +
+                                                    '}';
+                                            } else {
+                                                tds += '{' + quesinfo.answer[0]
+                                                    [
+                                                        keyNum
+                                                    ] +
+                                                    '}';
+                                            }
+
+                                        }
+                                    })
+                                }
+
+                            });
+
+                            html += '<td>' + tds + '</td>';
+                            if (quesinfo.answerFlag == 1) {
+                                //单选
+                                html += '<td>' + quesinfo.answer.join(',') + '</td>';
+                            } else {
+                                //多选
+                                var answerInfo = '';
+                                $.each(quesinfo.answer, function (kkkk, vvvv) {
+                                    answerInfo = answerInfo + vvvv.join(',') + '|';
+                                })
+                                html += '<td>' + answerInfo.trimGang() + '</td>';
+                            }
+
+                        }
+
+                        html +=
+                            '<td><button class="btn btn-danger btn-sm" type="button" onclick="confirmDel(' +
+                            v.id +
+                            ')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除</button></td>';
+                        html += '</tr>';
+                    })
+
+                    $('#example tbody').html(html);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            })
+        }
+
+        //确认是否选择好目标关卡
+        function add() {
+            var options = {
+                id: 'mymodal',
+                msg: '确认是否选择好要添加试题的关卡?'
+            }
+            Modal(options).confirm().on(function (e) {
+                if (e) {
+                    //确定按钮
+                    var grade = $('#grade').val();
+                    var term = $('#term').val();
+                    var genre = $('#genre').val();
+                    var stage = $('#stage').val();
+                    var quesType = $('#quesType').val();
+                    var url = 'selectquestion?grade=' + grade + '&term=' + term + '&genre=' + genre + '&stage=' +
+                        stage + '&quesType=' + quesType;
+                    goRedirect(url);
+                } else {
+                    //取消按钮
+                }
+            });
+        }
+
+        function confirmDel(id) {
+            var options = {
+                id: 'mymodal',
+                msg: '确定要删除？'
+            }
+            Modal(options).confirm().on(function (e) {
+                if (e) {
+                    //确定按钮
+                    del(id);
+                } else {
+                    //取消按钮
+                }
+            });
+        }
+
+        //删除
+        function del(id) {
+            $.ajax({
+                url: '../Index/delQuestionByid',
+                data: {
+                    id: id
+                },
+                type: 'get',
+                success: function (data) {
+                    $('#example').DataTable().destroy();
+                    questionList();
+                    showTable();
+                },
+                error: function (e) {
+
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

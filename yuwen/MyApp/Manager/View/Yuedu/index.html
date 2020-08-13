@@ -1,0 +1,528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>课程列表</title>
+<style>
+ .page{width:auto;height:25px; margin:auto; line-height:25px;}
+ .page a{display:block; height:25px; padding:0px 6px; border:solid 1px #e7e7e7; border-radius:3px; color:#333; font-family:'微软雅黑'; font-size:13px; text-align:center; text-decoration:none;float:left; margin-right:10px;min-width:20px;}
+ .page a:hover, .page a.this{background:#f7f7f7; font-weight:bold}
+</style>
+<link href="__PUBLIC__/style/manage.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/uploadify/jquery.uploadify.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jPlayer/dist/jplayer/jquery.jplayer.min.js"></script>
+</head>
+<body>
+<div class="place"><strong>位置</strong>：首页 &gt; 课程管理</div>
+<div class="container">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="box_border">
+	  <tr>
+	    <td class="box_top pl_10 f14"><strong>课程管理</strong></td>
+	  </tr>
+	  <tr>
+	    <td class="pl_5">
+	    	<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+		      <tr>
+				<td align="left">课程：</td>
+				<td>
+					 <input type="text" id="kecheng" class="input-text" size="10"/>
+					 <!--
+			          <select name="kecheng" id="kecheng" class="select">
+			          </select>
+			          -->
+				</td>
+				<td align="right">作者：</td>
+				<td colspan="2">
+					<input type="text" id="author" class="input-text" size="10"/>
+				</td>
+				<td align="right">关键字：</td>
+				<td colspan="2">
+					<input type="text" id="keywords" class="input-text" size="10"/>
+				</td>
+				<td align="right">体裁：</td>
+				<td width="75px">
+				  <select id="genre" class="select">
+		          </select>
+				</td>
+				<td align="right">内容：</td>
+				<td width="75px">
+				  <select id="cont" class="select">
+		          </select>
+				</td>
+				<td>&nbsp;&nbsp;<input type="button" id="chaxun" value="查询" class="btn btn82 btn_search"/></td>
+		      </tr>
+	    	</table>
+		</td>
+	  </tr>
+	</table>
+	<div class="h5"></div>
+	<table border="0" cellspacing="0" cellpadding="0" class="form_table">
+		<tr>
+			<td>
+				<input type="button" id="addKecheng" value="添加课程" class="ext_btn ext_btn_submit" />
+			</td>
+		</tr>
+	</table>
+	<div class="h10"></div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table" id="table_data">
+	  <tr>
+<!-- 	    <th>年级</th>
+	    <th>学期</th>
+	     -->
+	    <th>课程</th>
+ 	    <th>作者</th>
+	    <th>体裁</th>
+	    <th>内容</th>
+	    <th>模版</th>
+	    <th>已上传</th>
+	    <th>操作</th>
+	  </tr>
+	</table>
+	<div class="h5"></div>
+	<div class="page"></div>
+</div>
+
+
+<table style="display:none;" id="demo">
+	<tr class="tr">
+<!-- 		<td>年级</td>
+		<td>学期</td> -->
+		<td align="center">课程</td>
+		<td align="center">作者</td>
+		<td align="center">体裁</td>
+		<td align="center">内容</td>
+		<td align="center">模版</td>
+		<td align="center">已上传</td>
+<!-- 		<td></td>
+		<td></td> -->
+		<td align="left">
+<!-- 			<input type="button"  class="ext_btn ext_btn_listen" value="试听" dvideo=""/> -->
+			<input type="button" name="manage" value="内容管理" class="ext_btn ext_btn_success" />
+			<input type="button" name="edit" value="编辑" class="ext_btn ext_btn_submit" />
+			<input type="button" name="copy" value="复制" class="ext_btn ext_btn_success" />
+			<input type="button" name="down" value="下载" class="ext_btn ext_btn_error" />
+			<input type="button" name="up" value="上传" class="ext_btn ext_btn_submit" />
+			<input type="button" name="downup" value="下载已上传" class="ext_btn ext_btn_error" />
+			<input type="button" name="mark" value="备注" class="ext_btn ext_btn_submit" />
+		<!-- 	<input type="button" name="del" value="删除" class="ext_btn ext_btn_error" /> -->
+		</td>
+	</tr>
+</table>
+<div id="jplayer"></div>
+</body>
+</html>
+<script type="text/javascript">
+var pagesize=10;
+$(function(){
+  $.ajaxSetup({async:false});
+  $('#chaxun').click(function(){
+  	pagelist(1,pagesize);
+  });
+
+    $.get("{:U('Yuedu/getGenres')}",{ran:Math.random()},function(data){
+    		$('#genre').empty();
+    		$('#genre').append($("<option>").val(0).text('全部'));
+            $.each(data,function(k,v){
+            	$('#genre').append($("<option>").val(v.id).text(v.name));
+            });
+    });
+    $.get("{:U('Yuedu/getConts')}",{ran:Math.random()},function(data){
+    		$('#cont').empty();
+    		$('#cont').append($("<option>").val(0).text('全部'));
+            $.each(data,function(k,v){
+            	$('#cont').append($("<option>").val(v.id).text(v.name));
+            });
+    });
+
+
+
+});
+
+
+
+
+
+function getBanben()
+{
+  $("#version").empty();
+  var nianji = $("#grade").val();
+  var xueqi = $("#term").val();
+  $.getJSON("../kewen/kcbanben", {nianji:nianji,xueqi:xueqi,random:Math.random()}, function(data){
+    $("#kecheng").empty();
+    $.each(data, function(i,val){
+      $('#version').append($("<option>").val(val.detail_name).text(val.detail_name));
+    });
+  });
+  //getKecheng();
+}
+
+function getKecheng()
+{
+  $("#kecheng").empty();
+  var nianji = $("#grade").val();
+  var xueqi = $("#term").val();
+  var versionid = $("#version").val();
+  $.getJSON("../kewen/kckecheng", {nianji:nianji,xueqi:xueqi,versionid:versionid,random:Math.random()}, function(data){
+    $.each(data, function(i,val){
+      $('#kecheng').append($("<option>").val(val.id).text(val.ks_name));
+    });
+  });
+}
+
+
+
+//添加课程
+$('#addKecheng').click(function(){
+	var myDialog = $.dialog.open('addkecheng',{
+		id:'addKecheng',
+		title:'添加课程',
+		window : 'top',
+		width : 790,
+		height : 370,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata('0');//调用窗口的方法
+						if(re=='error2'){
+							art.dialog.confirm('名称已存在，确定添加？',function(){
+								var re = iframe.savedata('1');
+								pagelist(1,pagesize);
+								art.dialog({id: 'addKecheng'}).close();
+							},function(){
+							});
+							return true;
+						}else if(re=="ok"){
+							pagelist(1,pagesize);
+							return true;
+						}else{
+							return false;
+						}
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+});
+
+//删除课程
+$('input[name="del"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+	var aa=$(this).parent().parent();
+	if($.dialog.confirm('确定删除？',function(){
+		$.get('../Yuedu/delkecheng',{ran:Math.random(),id:id},function(data){
+			$(aa).remove();
+		});
+	}));
+});
+//下载课程
+$('input[name="down"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+	window.open('../Yuedu/flashdown?ran='+Math.random()+'&kechengid='+id);
+//	$.get('../Kewen/flashdown',{ran:Math.random(),kechengid:id},function(data){
+//
+//	});
+});
+
+//复制课程信息
+$('input[name="copy"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+
+	 $.dialog.confirm('确定要复制本课程？', function () {
+	   $.get('../Yuedu/copyKecheng',{ran:Math.random(),id:id},function(data){
+		pagelist(1,pagesize);
+		});
+	}, function () {
+	});
+
+});
+
+//备注课程信息
+$('input[name="mark"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+
+	var myDialog = $.dialog.open('mark?id='+id,{
+		title:'备注课程',
+		window : 'top',
+		width : 790,
+		height : 370,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						if(re==false){
+							art.dialog.alert('添加失败！');
+							return false;
+						}else{
+							pagelist(1,pagesize);
+							return true;
+						}
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+
+});
+//编辑课程信息
+$('input[name="edit"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+	var aa=$(this).parent().parent();
+	var myDialog = $.dialog.open('editkecheng?id='+id,{
+		title:'修改课程',
+		window : 'top',
+		width : 790,
+		height : 370,
+		lock : true,
+		opacity : 0.3,
+		button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						if(re==false){
+							art.dialog.alert('添加失败！');
+							return false;
+						}else{
+							pagelist(1,pagesize);
+							return true;
+						}
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+	});
+});
+//内容管理
+$('input[name="manage"]').live('click',function(){
+	var id=$(this).attr('bid');//课程id
+	var myDialog=$.dialog.open('kechenginfo?id='+id,{
+			title:'内容管理',
+			window : 'top',
+			width : 1000,
+			height : 500,
+			lock : true,
+			opacity : 0.3,
+			button : [
+				 {
+				 	name:'保存',
+					callback:function(){
+						var iframe = this.iframe.contentWindow;
+						var re = iframe.savedata();//调用窗口的方法
+						art.dialog.alert('保存成功!');
+						return false;
+					},
+					focus:true
+				 },
+				 {
+					name : '关闭',
+					callback : function() {
+						return true;
+					},
+					focus : false
+				} ]
+		});
+});
+
+
+
+
+
+//分页查询
+ function pagelist(pageCurrent,page_size){
+ 	var author=$('#author').val();
+	var keywords=$('#keywords').val();
+	var genre=$('#genre').val();
+	var cont=$('#cont').val();
+	var kecheng = $('#kecheng').val();
+ 	$.get("../Yuedu/fenye",
+ 			{
+ 			  ran:Math.random(),
+ 			  pageCurrent:pageCurrent,
+ 			  page_size:page_size,
+ 			  author:author,
+			  keywords:keywords,
+			  genre:genre,
+			  cont:cont,
+			  kecheng:kecheng
+ 			},
+ 			function(data){
+			$(".page").empty();
+			$('.list_table tr:not(:first)').remove();
+			$.each(data,function(k,v){
+				$('.page').html(k);
+				$.each(v,function(k,v){
+					//alert(v.nianji);
+					var tr=$('#demo').children('tbody').children('tr').eq(0).clone();
+					tr.children('td').eq(0).html(v.kecheng);
+					tr.children('td').eq(1).html(v.author);
+					tr.children('td').eq(2).html(v.gname);
+					tr.children('td').eq(3).html(v.cname);
+					tr.children('td').eq(4).html(mobanleixing(v.mobanid));
+					tr.children('td').eq(5).html(isupload(v.url));
+					tr.find('input').attr('bid',v.id);
+					tr.find('input').attr('dvideo',v.filepath);
+					tr.appendTo('.list_table');
+				});
+			});
+ 			$("#SelectPages").change(function(){
+ 				 pagelist($("#SelectPages").val(),page_size);
+ 				 });
+ 		})
+ }
+ //模版类型
+ function mobanleixing(mobanid){
+	if(mobanid==1){
+		moban='现代文模版';
+	}else if(mobanid==2){
+		moban='古文模版';
+	}else{
+		moban='';
+	}
+	return moban;
+ }
+//课程类型
+function isupload(url){
+	if (url === null) {
+		leixing='否';
+	}else{
+		leixing='是';
+	}
+	return leixing;
+}
+
+//点击导入按钮
+$("input[name='up']").live('click',function(){
+	var bid=$(this).attr('bid');
+	var myDialog=$.dialog.open('importFlash?ran='+Math.random()+'&id='+bid,{
+			cancel:false,
+			title:'导入flash',
+			window : 'top',
+			width : 430,
+			height : 160,
+			lock : true,
+			opacity : 0.3,
+			button : [
+				 {
+					name : '关闭',
+					callback:function(){
+					},
+					focus:true
+				} ]
+		});
+});
+
+//下载已上传
+$('input[name="downup"]').live('click',function(){
+	var aa = $(this).parent().parent();
+	var bid=$(this).attr('bid');
+	var isup = $(aa).children('td').eq(5).html();
+
+	if(isup=="否"){
+		art.dialog.alert('请先上传再下载');
+		return false;
+	}else{
+		// 下载
+		window.open('../Yuedu/getUpFlash?ran='+Math.random()+'&id='+bid);
+	}
+})
+
+
+
+
+
+
+
+
+
+
+function jpclear() {
+  $("#jplayer").jPlayer("clearMedia");
+  $("#jplayer").jPlayer("stop");
+  $("#jplayer").unbind($.jPlayer.event.ended);
+  $("#jplayer").unbind($.jPlayer.event.progress);
+}
+
+function jpstart(){
+	$("#jplayer").jPlayer({
+    swfPath: "js",
+    wmode: "window",
+    supplied: "mp3",
+    preload: "none",
+    volume: "1"
+  });
+	$("#jplayer").jPlayer("setMedia", {
+	    mp3: mp3
+	}).jPlayer("play");
+}
+
+
+  //试听
+  $(".ext_btn_listen").live("click",function() {
+//  	$(this).addClass('active');
+//   	$(".ext_btn_listen:not(.active)").val('试听');
+//	$(".ext_btn_listen").removeClass('active');
+		$(this).parent().parent().siblings().find('.ext_btn_listen').val('试听');
+    var mp3 = $(this).attr('dvideo');
+ // var mp3='20150901/55e50a7848625.mp3';
+    if(!mp3){alert("请上传音频");}
+    else
+    {
+
+		 mp3 = "../uploads/" + mp3;
+		if($(this).val()=='试听'){
+			$(this).val('停止');
+			$("#jplayer").jPlayer({
+		    swfPath: "js",
+		    wmode: "window",
+		    supplied: "mp3",
+		    preload: "none",
+		    volume: "1"
+		  });
+			$("#jplayer").jPlayer("setMedia", {
+			    mp3: mp3
+			}).jPlayer("play");
+
+		}else{
+			$(this).val('试听');
+			jpclear();
+		}
+
+	    //mp3 = "../uploads/" + mp3;
+//	    $("#jplayer").jPlayer("setMedia", {
+//	      mp3: mp3
+//	    }).jPlayer("play");
+    }
+  });
+</script>

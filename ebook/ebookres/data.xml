@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<data name="威科姆电子教材">
+
+
+
+
+	<hotpage name="第一整页热点声音" id="2">
+    <leftpage>
+     <hotmusic id="0">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>33.86,36.91|1033.63,36.91|1033.63,207.88|33.86,207.88</plist>
+          <play>00:02:410</play>
+          <stop>00:05:960</stop>
+     </hotmusic>
+    </leftpage>
+    <rightpage>
+    </rightpage>
+	</hotpage>
+	<hotpage name="第一整页热点声音" id="4">
+    <leftpage>
+     <hotmusic id="0">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>629.81,28.41|968.7,28.41|968.7,108.27|629.81,108.27</plist>
+          <play>00:07:130</play>
+          <stop>00:08:600</stop>
+     </hotmusic>
+     <hotmusic id="1">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>22.53,150.89|536.57,150.89|536.57,230.74|22.53,230.74</plist>
+          <play>00:09:510</play>
+          <stop>00:12:720</stop>
+     </hotmusic>
+     <hotmusic id="2">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>76.26,265.04|415.14,265.04|415.14,384.73|76.26,384.73</plist>
+          <play>00:14:130</play>
+          <stop>00:22:240</stop>
+     </hotmusic>
+     <hotmusic id="3">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>333.22,535.62|663.67,535.62|663.67,638.34|333.22,638.34</plist>
+          <play>00:23:270</play>
+          <stop>00:27:100</stop>
+     </hotmusic>
+     <hotmusic id="4">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>734.27,304.88|954.6,304.88|954.6,376.08|734.27,376.08</plist>
+          <play>00:28:030</play>
+          <stop>00:29:040</stop>
+     </hotmusic>
+     <hotmusic id="5">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>751.25,598.33|974.36,598.33|974.36,678.18|751.25,678.18</plist>
+          <play>00:29:470</play>
+          <stop>00:31:020</stop>
+     </hotmusic>
+     <hotmusic id="6">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>47.95,655.32|381.29,655.32|381.29,775.02|47.95,775.02</plist>
+          <play>00:31:790</play>
+          <stop>00:36:120</stop>
+     </hotmusic>
+     <hotmusic id="7">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>262.63,1034.51|601.51,1034.51|601.51,1145.55|262.63,1145.55</plist>
+          <play>00:36:870</play>
+          <stop>00:40:410</stop>
+     </hotmusic>
+     <hotmusic id="8">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>703.19,775.02|1011.1,775.02|1011.1,849.16|703.19,849.16</plist>
+          <play>00:41:470</play>
+          <stop>00:42:590</stop>
+     </hotmusic>
+     <hotmusic id="9">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>660.89,872.02|850.15,872.02|850.15,948.94|660.89,948.94</plist>
+          <play>00:43:630</play>
+          <stop>00:44:760</stop>
+     </hotmusic>
+     <hotmusic id="10">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>28.19,1171.19|663.67,1171.19|663.67,1262.47|28.19,1262.47</plist>
+          <play>00:45:830</play>
+          <stop>00:49:860</stop>
+     </hotmusic>
+     <hotmusic id="11">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>107.23,1299.54|307.8,1299.54|307.8,1521.79|107.23,1521.79</plist>
+          <play>00:50:690</play>
+          <stop>00:51:510</stop>
+     </hotmusic>
+     <hotmusic id="12">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>350.21,1299.54|556.33,1299.54|556.33,1516.08|350.21,1516.08</plist>
+          <play>00:52:050</play>
+          <stop>00:52:830</stop>
+     </hotmusic>
+     <hotmusic id="13">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>601.51,1299.54|799.31,1299.54|799.31,1518.85|601.51,1518.85</plist>
+          <play>00:53:830</play>
+          <stop>00:54:800</stop>
+     </hotmusic>
+     <hotmusic id="14">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>850.15,1299.54|1047.84,1299.54|1047.84,1516.08|850.15,1516.08</plist>
+          <play>00:55:530</play>
+          <stop>00:56:540</stop>
+     </hotmusic>
+    </leftpage>
+    <rightpage>
+     <hotmusic id="0">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>14.1,19.92|463.2,19.92|463.2,105.33|14.1,105.33</plist>
+          <play>00:56:540</play>
+          <stop>01:01:300</stop>
+     </hotmusic>
+     <hotmusic id="1">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>50.84,125.25|389.72,125.25|389.72,247.89|50.84,247.89</plist>
+          <play>01:03:610</play>
+          <stop>01:12:100</stop>
+     </hotmusic>
+     <hotmusic id="2">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>336,370.36|728.6,370.36|728.6,490.06|336,490.06</plist>
+          <play>01:12:810</play>
+          <stop>01:16:920</stop>
+     </hotmusic>
+     <hotmusic id="3">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>607.17,162.32|810.52,162.32|810.52,259.32|607.17,259.32</plist>
+          <play>01:18:250</play>
+          <stop>01:22:280</stop>
+     </hotmusic>
+     <hotmusic id="4">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>900.99,304.88|1013.87,304.88|1013.87,407.43|900.99,407.43</plist>
+          <play>01:22:810</play>
+          <stop>01:23:660</stop>
+     </hotmusic>
+     <hotmusic id="5">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>11.21,507.21|485.74,507.21|485.74,581.35|11.21,581.35</plist>
+          <play>01:24:450</play>
+          <stop>01:27:500</stop>
+     </hotmusic>
+     <hotmusic id="6">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>81.81,598.33|276.72,598.33|276.72,632.62|81.81,632.62</plist>
+          <play>01:28:430</play>
+          <stop>01:29:440</stop>
+     </hotmusic>
+     <hotmusic id="7">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>76.26,661.04|1002.66,661.04|1002.66,988.78|76.26,988.78</plist>
+          <play>01:31:150</play>
+          <stop>01:44:580</stop>
+     </hotmusic>
+    </rightpage>
+	</hotpage>
+	<hotpage name="第一整页热点声音" id="6">
+    <leftpage>
+     <hotmusic id="0">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>672.11,28.41|974.36,28.41|974.36,122.48|672.11,122.48</plist>
+          <play>01:45:750</play>
+          <stop>01:47:200</stop>
+     </hotmusic>
+     <hotmusic id="1">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>47.95,139.62|621.27,139.62|621.27,216.54|47.95,216.54</plist>
+          <play>01:48:030</play>
+          <stop>01:52:140</stop>
+     </hotmusic>
+     <hotmusic id="2">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>121.43,236.46|440.56,236.46|440.56,353.38|121.43,353.38</plist>
+          <play>01:53:450</play>
+          <stop>02:03:300</stop>
+     </hotmusic>
+     <hotmusic id="3">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>336,549.99|717.39,549.99|717.39,658.26|336,658.26</plist>
+          <play>02:03:850</play>
+          <stop>02:07:300</stop>
+     </hotmusic>
+     <hotmusic id="4">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>773.89,179.47|1056.28,179.47|1056.28,279.24|773.89,279.24</plist>
+          <play>02:12:630</play>
+          <stop>02:15:400</stop>
+     </hotmusic>
+     <hotmusic id="5">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>790.76,313.37|1064.71,313.37|1064.71,387.51|790.76,387.51</plist>
+          <play>02:15:400</play>
+          <stop>02:17:480</stop>
+     </hotmusic>
+     <hotmusic id="6">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>480.08,438.79|776.67,438.79|776.67,518.64|480.08,518.64</plist>
+          <play>02:17:750</play>
+          <stop>02:19:480</stop>
+     </hotmusic>
+     <hotmusic id="7">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>765.35,544.28|1081.7,544.28|1081.7,621.19|765.35,621.19</plist>
+          <play>02:19:770</play>
+          <stop>02:22:500</stop>
+     </hotmusic>
+     <hotmusic id="8">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>45.18,686.68|587.41,686.68|587.41,752.32|45.18,752.32</plist>
+          <play>02:23:570</play>
+          <stop>02:26:850</stop>
+     </hotmusic>
+     <hotmusic id="9">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>87.47,772.25|1044.95,772.25|1044.95,1538.94|87.47,1538.94</plist>
+          <play>02:28:010</play>
+          <stop>02:47:840</stop>
+     </hotmusic>
+    </leftpage>
+    <rightpage>
+     <hotmusic id="0">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>19.87,45.56|508.16,45.56|508.16,108.27|19.87,108.27</plist>
+          <play>02:49:030</play>
+          <stop>02:52:440</stop>
+     </hotmusic>
+     <hotmusic id="1">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>150.41,130.97|440,130.97|440,196.61|150.41,196.61</plist>
+          <play>02:53:290</play>
+          <stop>02:55:280</stop>
+     </hotmusic>
+     <hotmusic id="2">
+          <name>热区</name>
+          <link>c7373500e7362b832f508e45298fa0fd.mp3</link>
+          <plist>76.59,222.25|522.26,222.25|522.26,726.69|76.59,726.69</plist>
+          <play>02:56:290</play>
+          <stop>04:16:940</stop>
+     </hotmusic>
+    </rightpage>
+	</hotpage>
+
+
+
+
+<content name="书页内容" id="1" width="1110" height="1570">
+			<page>002.jpg</page>
+			<page>003.jpg</page>
+			<page>004.jpg</page>
+			<page>005.jpg</page>
+			<page>006.jpg</page>
+			<page>007.jpg</page>
+</content>
+
+
+</data>

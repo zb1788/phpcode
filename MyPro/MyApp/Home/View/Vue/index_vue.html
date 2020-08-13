@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户管理</title>
+<style>
+ .page{width:auto;height:25px; margin:auto; line-height:25px;}
+ .page a{display:block; height:25px; padding:0px 6px; border:solid 1px #e7e7e7; border-radius:3px; color:#333;
+ font-family:'微软雅黑'; font-size:13px; text-align:center; text-decoration:none;float:left;margin-right:10px;min-width:20px;}
+ .page a:hover, .page a.this{background:#f7f7f7; font-weight:bold}
+</style>
+<link href="__PUBLIC__/css/style/manage.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/vue.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/axios.min.js"></script>
+
+<script language="javascript">
+// $(document).ready(function(){
+// 	$.ajaxSetup({async:false});
+// 	$('.demo').hide();
+// 	$("#adduser").click(function(){
+// 		//alert('ttt');
+// 		addUserInfo();
+// 	})
+	//展示所有用户信息
+	// $.getJSON('../User/showAll',{ran:Math.random()},function(data){
+	// 	$.each(data,function(key,val){
+	// 		//alert(val.username);
+	// 		var tr = $('.demo tr').eq(0).clone();
+	// 		tr.children('td').eq(0).html(val.username);
+	// 		tr.children('td').eq(1).html(val.ifuse);
+	// 		tr.children('td').eq(2).html(val.ifadmin);
+	// 		tr.children('td').eq(3).find('input').attr('nums',val.id);
+	// 		tr.children('td').eq(3).find('input').attr('ifuse',val.ifuse);
+	// 		if(val.ifuse=='可用'){
+	// 			tr.children('td').eq(3).find('input[name="ifuse"]').attr('value','禁用');///
+	// 		}else{
+	// 			tr.children('td').eq(3).find('input[name="ifuse"]').attr('value','启用');///
+	// 		}
+	// 		if(val.username=='admin'){
+	// 			tr.children('td').eq(3).find('input[name="ifuse"]').hide();
+	// 			tr.children('td').eq(3).find('input[name="del"]').hide();
+	// 		}
+	// 		tr.appendTo('.list_table');
+	// 	})
+	// });
+	//删除用户
+// 	$('input[name="del"]').live('click',function(){
+// 		var userid=$(this).attr('nums');
+// 		delUser(userid);
+// 	});
+// 	//重置密码
+// 	$('input[name="reset"]').live('click',function(){
+// 		var userid=$(this).attr('nums');
+// 		reSet(userid);
+// 	});
+// 	//禁用用户
+// 	$('input[name="ifuse"]').live('click',function(){
+// 		var userid = $(this).attr('nums');
+// 		var ifuse = $(this).attr('ifuse');
+// 		userStatus(ifuse,userid);
+// 	});
+// 	//修改用户
+// 	$('input[name="edit"]').live('click',function(){
+// 		var userid = $(this).attr('nums');
+// 		editUserInfo(userid);
+// 	});
+// })
+//删除用户
+function delUser(id){
+	if($.dialog.confirm('确定删除？',function(){
+	$.getJSON('../User/del',{ran:Math.random(),id:id},function(result){
+		if(result==1){
+			location.reload();
+			}else{
+					art.dialog.alert('删除失败！');
+				}
+		})
+	})
+	);
+}
+//添加用户
+function addUserInfo(){
+	  var myDialog = $.dialog.open('useradd',{
+	      id:'unit_edit',
+	      title:'用户添加',
+	      window:'top',
+	      width:500,
+	      height:250,
+	      lock:true,
+	      opacity:0.3,
+	      button: [
+	        {
+	          name: '保存',
+	          callback: function () {
+	            var iframe = this.iframe.contentWindow;
+	            var re = iframe.addData();
+	            if(re==true){
+	            	location.reload();
+	            }
+	            return re;
+	          },
+	          focus: true
+	        },
+	        {
+	          name: '关闭',
+	          callback: function () {
+	          },
+	          focus: false
+	        }
+	      ]
+	    });
+	}
+//修改用户
+function editUserInfo(id){
+	  var myDialog = $.dialog.open('userupdate?id='+id,{
+	      id:'unit_edit',
+	      title:'密码修改',
+	      window:'top',
+	      width:500,
+	      height:260,
+	      lock:true,
+	      opacity:0.3,
+	      button: [
+	        {
+	          name: '保存',
+	          callback: function () {
+	            var iframe = this.iframe.contentWindow;
+	            var re = iframe.addData();
+	            if(re==true){
+	            	art.dialog.alert('修改成功！');
+	            	setTimeout('location.reload()',1000);
+	            }
+	            return re;
+	          },
+	          focus: true
+	        },
+	        {
+	          name: '关闭',
+	          callback: function () {
+	          },
+	          focus: false
+	        }
+	      ]
+	    });
+	}
+//分页展示
+function pagelist(pageCurrent,page_size){
+	$.post("paging_user.php",
+		{
+		pageCurrent:pageCurrent,
+		page_size:page_size,
+		},
+		function(data){
+			//alert(data);
+		$("#fenye").html(data);
+		 $("#SelectPages").change(function(){
+			 pagelist($("#SelectPages").val(),page_size);
+			 });
+		})
+}
+// //禁用启用用户
+// function userStatus(ifuse,id){
+// 	$.getJSON("../User/userStatus",
+// 			{
+// 				ran:Math.random(),
+// 				ifuse:ifuse,
+// 				id:id
+// 			},
+// 			function(data){
+// 				location.reload();
+// 				//pagelist(pageCurrent,page_size);
+// 				})
+// }
+// //重置密码为123456
+// function reSet(id){
+// 	$.getJSON("../User/resetPasswd",
+// 			{
+// 				ran:Math.random(),
+// 				id:id
+// 			},
+// 			function(data){
+// 					art.dialog.alert('重置成功！');
+// 				})
+// }
+</script>
+
+
+<script>
+
+
+
+</script>
+</head>
+<body>
+<!-- Vue用法1 -->
+<div id="mount">
+
+</div>
+<script>
+//创建构造器
+//全局写法
+var profile = Vue.extend({
+	template: '<p class="place">全局：这是我第{{num}}个模版,{{firstName}}{{lastName}}</p>',
+	data: function(){
+		return {
+			num: 1,
+			firstName: 'z',
+			lastName: 'b'
+		}
+	}
+})
+new profile().$mount('#mount')
+</script>
+
+<div id="mount2">
+
+</div>
+<script>
+//非全局写法
+new Vue({
+	el: '#mount2',
+	template: '<p class="place">非全局模版：这是我第{{num}}个模版,{{firstName}}{{lastName}}</p>',
+	data: function(){
+		return {
+			num: 2,
+			firstName: 'z',
+			lastName: 'b'
+		}
+	}
+})
+</script>
+
+
+<!-- 头部组件-->
+<div id="example">
+	<component-global v-bind:msg="num"></component-global>
+</div>
+<div id="example2">
+	<component-global v-bind:msg="num"></component-global>
+</div>
+<script>
+// Vue全局组件
+//定义组件
+var myComponent = Vue.extend({
+	props: ['msg'],
+	template: '<div class="place"><strong>我是全局的组件，可以调用多次{{msg.name}}啦啦啦</strong></div>'
+})
+//注册全局组件（之后多个地方都可以使用）
+Vue.component('component-global',myComponent)
+new Vue({
+	el: '#example',
+	data: {num:{id:1,name:"2"}}
+})
+new Vue({
+	el: '#example2',
+	data:{num:{id:3,name:"4"}}
+})
+</script>
+
+
+<!-- 局部组件 -->
+<div class="place" id="jubu">
+	<my-jubu></my-jubu>
+</div>
+<script>
+//Vue局部组件
+
+//定义组件
+var children = Vue.extend({
+	template: '<p> {{message}}</p>',
+	data: function(){
+		return {
+			message: '我是可变的'
+		}
+	}
+})
+//注册组建
+new Vue({
+	el: '#jubu',
+	components: {
+		'my-jubu': children
+	}
+})
+</script>
+
+<div class="place" id="parent">
+	<my-parent></my-parent>
+</div>
+<script>
+//父子组件
+var child = Vue.extend({
+	template: '<p>我是child组件模版</p>'
+})
+
+var parent = Vue.extend({
+	template: '<p>我是父组件模版<my-child></my-child></p>',
+	components: {
+		'my-child': child
+	}
+})
+var parentid = new Vue({
+	el: '#parent',
+	components:{
+		'my-parent': parent
+	}
+})
+</script>
+
+
+	<div class="container">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			class="box_border">
+			<tr>
+				<td class="box_top pl_10 f14">用户管理</td>
+				<input type="hidden" id="ifadmin" value="" />
+				<td align="right" class="box_top pl_10 f14">
+					<span id="pl_10" class="pl_10">
+					</span>
+				</td>
+			</tr>
+		</table>
+
+
+
+		<div class="h5"></div>
+		<div id="fenye">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list_table" id="listapp">
+				<tr>
+					<th>id</th>
+					<th>字</th>
+					<th>词</th>
+					<th>长度</th>
+					<th>拼音</th>
+					<th>管理</th>
+				</tr>
+	            <tr v-for="(value,index) in res">
+	                <td>{{value.id}}</td>
+	                <td>{{value.zi}}</td>
+	                <td v-if="(value.zi).length==1">字</td>
+	                <td v-else>词</td>
+	                <td v-on:click="showContent(value.chengyu,value.id)">{{value.chengyu}}</td>
+	                <td>{{value.pinyin}}</td>
+	                <td>
+	                	<input type="text" class="input-text" style="width:140px;" v-model="value.chengyu">
+	                	<input type="button" name="del" v-on:click="del(index,value.id)" value="删除" class="ext_btn ext_btn_error" >
+	                </td>
+	            </tr>
+			</table>
+		</div>
+	</div>
+<script>
+
+
+var listapp = new Vue({
+	el: '#listapp',
+	data :{
+		res:[]
+	},
+	created: function(){
+		this.getResult()
+	},
+	methods:{
+		getResult: function(){
+		  var self = this;
+		  axios.get('../user/getinfo')
+		    .then(function (response) {
+		    	self.res = response.data;
+		    	console.log(self.res);
+		    })
+		    .catch(function (err) {
+		      console.log(err);
+		    });
+		},
+		del: function(index,id){
+			var self = this;
+		  	axios.get('../user/delById',{params:{id:id}})
+			    .then(function (response) {
+			    	if(response.data == 'ok'){
+			    		self.res.splice(index,1);
+			    	}else{
+			    		alert('删除失败');
+			    	}
+			    })
+			    .catch(function (err) {
+			      console.log(err);
+			    });
+		},
+		postFun:function(){
+			// var params = new URLSearchParams();
+			// params.append('id', '1');
+			// params.append('name', 'boz');
+
+			var params = {id:1,name:'boz'};
+			axios.post('../user/postfun',params)
+			    .then(function (response) {
+			    	console.log(response);
+			    })
+			    .catch(function (err) {
+			      console.log(err);
+			    });
+		},
+		showContent:function(msg,id){
+			alert(msg+"|"+id);
+		}
+	}
+	})
+listapp.postFun();
+</script>
+<div id="example-2">
+  <simple-counter></simple-counter>
+  <simple-counter></simple-counter>
+  <simple-counter></simple-counter>
+</div>
+
+<script>
+Vue.component('simple-counter', {
+  template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+  data: function () {
+    return {
+    	counter:0
+    }
+  }
+})
+
+new Vue({
+  el: '#example-2'
+})
+</script>
+
+<div id="example-3">
+	<ol>
+  		<todo-item
+  			v-for="item in groceryList"
+  			v-bind:todo="item">
+    	</todo-item>
+	</ol>
+</div>
+<script>
+// Vue.component('todo-item', {
+//   props: ['todo'],
+//   template: '<li>{{ todo.text }}</li>'
+// })
+
+var zujian = Vue.extend({
+	props: ['todo'],
+	template: '<p id="tttt" v-bind:class="{on:todo.flag==1,off:todo.flag==0}">{{ todo.text }}</p>'
+});
+
+var app111 = new Vue({
+  el: '#example-3',
+  components: {'todo-item': zujian},
+  data: {
+    groceryList: [
+      { id: 0, text: '蔬菜' ,flag:1},
+      { id: 1, text: '奶酪' ,flag:0},
+      { id: 2, text: '随便其它什么人吃的东西',flag:0 }
+    ]
+  }
+})
+
+function abc(){
+	$('#tttt').attr('class','off');
+}
+</script>
+<input type="button" value="xxx" onclick="abc()"/>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="demo" style="display:none;">
+	<tr class="tr">
+		<td align="center" nowrap="nowrap">用户名</td>
+		<td align="center" nowrap="nowrap">状态</td>
+		<td align="center" nowrap="nowrap">级别</td>
+		<td align="center" nowrap="nowrap">
+			<input type="button" name="edit"  class="ext_btn btn_edit" value="修改" />&nbsp;&nbsp;
+			<input type="button" name="ifuse"  class="ext_btn btn_edit" value="禁用"  />&nbsp;&nbsp;
+			<input type="button" name="reset" class="ext_btn btn_edit" value="重置密码" />&nbsp;&nbsp;
+			<input type="button" name="del" class="ext_btn btn_edit" value="删除" />&nbsp;&nbsp;
+		</td>
+	</tr>
+</table>
+</body>
+</html>

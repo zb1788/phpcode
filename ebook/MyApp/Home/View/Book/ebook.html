@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/iframeTools.js"></script>
+</head>
+<body>
+<div clas="main">
+		<div id="workpanel" align="center" style="text-align: center; " >
+			<img id="bookimg" style="display:none;max-width:100%;max-height:100%;vertical-align:top;"  src="__PUBLIC__/page_002.jpg">
+			<div id="rq" style="border-radius:5px;display:block;opacity:0.4;position:absolute;background-color:greenyellow;">
+			</div>
+			<div id="rq1" style="border-radius:5px;display:block;opacity:0.4;position:absolute;background-color:greenyellow;">
+			</div>
+		</div>
+</div>
+</body>
+<script>
+$(function(){
+	//alert(document.body.clientHeight);
+	
+	
+//	var win_size = window.getWinSize();
+//	alert($("#workpanel").offset().top);
+//	max_height = win_size[1] - $("#workpanel").offset().top;
+//	$('#bookimg').css("height", max_height + "px").css("line-height", max_height + "px");
+});
+
+window.getWinSize = function() {
+    return [$(window).width(), $(window).height()];
+    if (window.innerWidth != undefined) {
+        return [window.innerWidth, window.innerHeight]
+    } else {
+        var B = document.body,
+        D = document.documentElement;
+        return [Math.max(D.clientWidth, B.clientWidth), Math.max(D.clientHeight, B.clientHeight)]
+    }
+};
+</script>
+
+
+<script type="text/javascript"> 
+<!-- 
+var winWidth = 0; 
+var winHeight = 0; 
+function findDimensions() //函数：获取尺寸 
+{ 
+//获取窗口宽度 
+if (window.innerWidth) 
+winWidth = window.innerWidth; 
+else if ((document.body) && (document.body.clientWidth)) 
+winWidth = document.body.clientWidth; 
+//获取窗口高度 
+if (window.innerHeight) 
+winHeight = window.innerHeight; 
+else if ((document.body) && (document.body.clientHeight)) 
+winHeight = document.body.clientHeight; 
+//通过深入Document内部对body进行检测，获取窗口大小 
+if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) 
+{ 
+winHeight = document.documentElement.clientHeight; 
+winWidth = document.documentElement.clientWidth; 
+} 
+//结果输出至两个文本框 
+//document.form1.availHeight.value= winHeight; 
+//document.form1.availWidth.value= winWidth; 
+//alert(winHeight);
+winHeight=winHeight-20;
+$('#bookimg').css("height", winHeight + "px").css("line-height", winHeight + "px");
+$('#bookimg').show();
+
+var bookimg_top=$("#bookimg").offset().top;//img标签的上部偏移
+var bookimg_left=$("#bookimg").offset().left;//img标签的左部偏移
+
+var bookimg_height=winHeight;  //图片当前高
+var bookimg_width=winHeight/1206*800; //图片当前宽
+
+x=bookimg_width/460*51;
+y=bookimg_height/650*89;
+w=bookimg_height/650*211;
+h=bookimg_width/460*55;
+
+var left=bookimg_left+x;
+var top=y;
+
+//第二个
+x1=bookimg_width/460*78;
+y1=bookimg_height/650*224;
+w1=bookimg_height/650*154;
+h1=bookimg_width/460*73;
+
+var left1=bookimg_left+x1;
+var top1=y1;
+
+$("#rq").css("left",left+"px").css("top",top+"px").css("width",w+"px").css("height",h+"px");
+$("#rq1").css("left",left1+"px").css("top",top1+"px").css("width",w1+"px").css("height",h1+"px");
+} 
+findDimensions(); 
+//调用函数，获取数值 
+window.onresize=findDimensions; 
+//--> 
+</script>
+</html>
