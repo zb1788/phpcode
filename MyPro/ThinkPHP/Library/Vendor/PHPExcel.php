@@ -20,6 +20,7 @@ function readExcel($filePath,$beginrow = 2,$sheet = 0){
     $allRow = $currentSheet->getHighestRow();
     /**从第二行开始输出，因为excel表中第一行为列名*/
     $all = array();
+    /**
     for($currentRow = $beginrow;$currentRow <= $allRow;$currentRow++){
         $col = array();
         for($currentColumn= 'A';$currentColumn<= $allColumn; $currentColumn++){
@@ -27,7 +28,22 @@ function readExcel($filePath,$beginrow = 2,$sheet = 0){
             $col[$currentColumn] = $val;
         }
         $all[$currentRow]["Column"] = $col;
+    }*/
+	$columnArr1 = array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+	$columnArr2 = array("AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ");
+		
+	$columnArrBase = array_merge($columnArr1,$columnArr2);
+
+	$key = array_search($allColumn, $columnArrBase);
+    for($currentRow = $beginrow;$currentRow <= $allRow;$currentRow++){  
+        $col = array();
+		for($i=0;$i<=$key;$i++){
+			$val = $currentSheet->getCellByColumnAndRow($i,$currentRow)->getValue(); 
+			$col[$columnArrBase[$i]] = $val; 
+		}
+        $all[$currentRow]["Column"] = $col;
     }
+
     return $all;
 }
 /**
